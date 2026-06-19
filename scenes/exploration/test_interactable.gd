@@ -19,6 +19,11 @@ extends Area3D
 	{
 		"text": "S'éloigner",
 		"effect": "leave_stone"
+	},
+	{
+		"text": "Reposer la main sur la pierre",
+		"effect": "touch_stone",
+		"require": ["ancient_stone_touched"]
 	}
 
 ]

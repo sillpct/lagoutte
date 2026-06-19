@@ -26,3 +26,13 @@ func set_flag(flag_name: String, value = true) -> void:
 func has_flag(flag_name: String) -> bool:
 
 	return story_flags.get(flag_name, false)
+
+func check_condition(require: Array = [], forbid: Array = []) -> bool:
+
+	for f in require:
+		if not has_flag(f):
+			return false
+	for f in forbid:
+		if has_flag(f):
+			return false
+	return true

@@ -66,6 +66,8 @@ func show_choices(choices_container) -> void:
 	waiting_for_choice = true
 	choices_container.show()
 	for choice in current_interactable.choices:
+		if not GameState.check_condition(choice.get("require", []), choice.get("forbid", [])):
+			continue
 		var button := Button.new()
 		button.text = choice["text"]
 		var effect = choice["effect"]
