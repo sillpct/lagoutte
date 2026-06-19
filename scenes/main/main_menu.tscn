@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://dr3q5lhlye24n"]
+
+[ext_resource type="Script" uid="uid://dxuolrjg4qr1q" path="res://scenes/main/main_menu.gd" id="1_sd5it"]
+
+[node name="MainMenu" type="Control" unique_id=1488960376]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_sd5it")
+
+[node name="NewGameButton" type="Button" parent="." unique_id=1968610962]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Nouvelle Partie"
+
+[connection signal="pressed" from="NewGameButton" to="." method="_on_new_game_button_pressed"]
