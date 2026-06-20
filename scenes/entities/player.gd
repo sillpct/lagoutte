@@ -68,24 +68,19 @@ func show_choices(choices_container) -> void:
 	for choice in current_interactable.choices:
 		if not GameState.check_condition(choice.get("require", []), choice.get("forbid", [])):
 			continue
+		var choice_data = choice.duplicate(true)
 		var button := Button.new()
-		button.text = choice["text"]
-		var effect = choice["effect"]
+		button.text = choice_data["text"]
 		button.pressed.connect(func():
-			apply_choice_effect(effect)
+			apply_choice_effect(choice_data)
 			close_dialogue()
 		)
 		choices_container.add_child(button)
 
-func apply_choice_effect(effect: String) -> void:
+func apply_choice_effect(choice) -> void:
 
-	match effect:
-		"touch_stone":
-			GameState.set_flag("ancient_stone_touched")
-		"leave_stone":
-			GameState.set_flag("ancient_stone_ignored")
-		_:
-			print("Effet inconnu : ", effect)
+	if choice.has("set_flag"):
+		GameState.set_flag(choice["set_flag"])
 
 func clear_choices(choices_container) -> void:
 

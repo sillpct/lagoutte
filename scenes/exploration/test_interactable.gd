@@ -14,15 +14,15 @@ extends Area3D
 
 	{
 		"text": "Toucher la pierre",
-		"effect": "touch_stone"
+		"set_flag": "ancient_stone_touched"
 	},
 	{
 		"text": "S'éloigner",
-		"effect": "leave_stone"
+		"set_flag": "ancient_stone_ignored"
 	},
 	{
 		"text": "Reposer la main sur la pierre",
-		"effect": "touch_stone",
+		"set_flag": "ancient_stone_touched",
 		"require": ["ancient_stone_touched"]
 	}
 
