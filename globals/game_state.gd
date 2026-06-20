@@ -10,6 +10,9 @@ var unlocked_progression: Dictionary = {}
 
 var story_flags: Dictionary = {}
 
+## Remise à zéro COMPLÈTE de la partie. Réservé à « Nouvelle Partie ».
+## Le changement d'incarnation en jeu NE doit PAS appeler ceci :
+## le monde doit conserver sa mémoire à travers les incarnations.
 func reset() -> void:
 
 	current_incarnation_id = ""
