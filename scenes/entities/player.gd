@@ -21,7 +21,7 @@ func _ready() -> void:
 	pv.reset_to_full()
 	print("PV : ", pv.current_value, " / ", pv.max_value)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 
 	var input_dir := Vector3.ZERO
 	if Input.is_action_pressed("ui_up"):
