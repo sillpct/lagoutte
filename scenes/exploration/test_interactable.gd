@@ -24,6 +24,10 @@ extends Area3D
 		"text": "Reposer la main sur la pierre",
 		"set_flag": "ancient_stone_touched",
 		"require": ["ancient_stone_touched"]
+	},
+	{
+		"text": "Poser la main là où ça brûle",
+		"damage": 30
 	}
 
 ]

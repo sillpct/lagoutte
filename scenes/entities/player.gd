@@ -92,6 +92,9 @@ func apply_choice_effect(choice) -> void:
 
 	if choice.has("set_flag"):
 		GameState.set_flag(choice["set_flag"])
+	if choice.has("damage"):
+		pv.reduce(int(choice["damage"]))
+		print("PV : ", pv.current_value, " / ", pv.max_value)
 
 func clear_choices(choices_container) -> void:
 
