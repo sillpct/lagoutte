@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="IncarnationData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/incarnation_data.gd" id="1_incarnation_data"]
+
+[resource]
+script = ExtResource("1_incarnation_data")
+display_name = "Incarnation de départ"
+origine = "Inconnue"
+profession = "Voyageur"
+vitalite = 100
+force = 20
+esprit = 20
+lucidite = 35
+pv_max = 150
+lucidite_max = 100
+points_action = 3
+points_mouvement = 4

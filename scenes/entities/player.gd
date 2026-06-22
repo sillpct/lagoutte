@@ -2,6 +2,8 @@ extends CharacterBody3D
 
 @export var move_speed: float = 5.0
 
+@export var incarnation: IncarnationData
+
 var current_dialogue_index := 0
 
 var current_interactable = null
