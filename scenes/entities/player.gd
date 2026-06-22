@@ -4,6 +4,8 @@ extends CharacterBody3D
 
 @export var incarnation: IncarnationData
 
+var pv: Stat
+
 var current_dialogue_index := 0
 
 var current_interactable = null
@@ -11,6 +13,13 @@ var current_interactable = null
 var waiting_for_choice := false
 
 var selected_choice := 0
+
+func _ready() -> void:
+
+	pv = Stat.new()
+	pv.max_value = incarnation.pv_max
+	pv.reset_to_full()
+	print("PV : ", pv.current_value, " / ", pv.max_value)
 
 func _physics_process(delta: float) -> void:
 
