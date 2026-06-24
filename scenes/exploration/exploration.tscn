@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dkeacolsiufev" path="res://scenes/exploration/camera_pivot.gd" id="1_pbc0k"]
 [ext_resource type="PackedScene" uid="uid://lugq74m5nw2h" path="res://scenes/entities/player.tscn" id="1_toxw2"]
+[ext_resource type="PackedScene" path="res://scenes/combat/combat_grid.tscn" id="2_combat_grid"]
 [ext_resource type="Script" uid="uid://cwee0pvhnu0xs" path="res://scenes/exploration/test_interactable.gd" id="3_75sxn"]
 [ext_resource type="PackedScene" uid="uid://bfso586b0af53" path="res://scenes/ui/dialogue_ui.tscn" id="3_vlahv"]
 
@@ -28,6 +29,9 @@ size = 20.0
 
 [node name="Ground" type="MeshInstance3D" parent="." unique_id=1967650354]
 mesh = SubResource("BoxMesh_cvbhj")
+
+[node name="CombatGrid" parent="." instance=ExtResource("2_combat_grid")]
+position = Vector3(-4.5, 0.06, -4.5)
 
 [node name="Player" parent="." unique_id=295733018 instance=ExtResource("1_toxw2")]
 
