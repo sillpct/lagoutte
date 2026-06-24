@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://b5es4nmnp0ldb"]
 
+[ext_resource type="Script" path="res://scenes/exploration/exploration.gd" id="1_exploration_script"]
 [ext_resource type="Script" uid="uid://dkeacolsiufev" path="res://scenes/exploration/camera_pivot.gd" id="1_pbc0k"]
 [ext_resource type="PackedScene" uid="uid://lugq74m5nw2h" path="res://scenes/entities/player.tscn" id="1_toxw2"]
 [ext_resource type="PackedScene" path="res://scenes/combat/combat_grid.tscn" id="2_combat_grid"]
@@ -15,6 +16,7 @@ size = Vector3(1, 2, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_pbc0k"]
 
 [node name="Exploration" type="Node3D" unique_id=309051148]
+script = ExtResource("1_exploration_script")
 
 [node name="CameraPivot" type="Node3D" parent="." unique_id=370495805 node_paths=PackedStringArray("target")]
 transform = Transform3D(0.70710677, 0, 0.7071067, 0, 0.99999994, 0, -0.70710677, 0, 0.7071067, 0, 10, 12)
