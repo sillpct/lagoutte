@@ -23,6 +23,12 @@ func _ready() -> void:
 
 func _physics_process(_delta: float) -> void:
 
+	if waiting_for_choice:
+		velocity.x = 0.0
+		velocity.z = 0.0
+		move_and_slide()
+		return
+
 	var input_dir := Vector3.ZERO
 	if Input.is_action_pressed("ui_up"):
 		input_dir.z -= 1
@@ -39,6 +45,9 @@ func _physics_process(_delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
 
+	if waiting_for_choice:
+		handle_choice_input(event)
+		return
 	if event.is_action_pressed("interact"):
 		check_interaction()
 
@@ -75,18 +84,75 @@ func check_interaction() -> void:
 func show_choices(choices_container) -> void:
 
 	waiting_for_choice = true
+	selected_choice = 0
 	choices_container.show()
 	for choice in current_interactable.choices:
 		if not GameState.check_condition(choice.get("require", []), choice.get("forbid", [])):
 			continue
 		var choice_data = choice.duplicate(true)
-		var button := Button.new()
-		button.text = choice_data["text"]
-		button.pressed.connect(func():
-			apply_choice_effect(choice_data)
-			close_dialogue()
-		)
-		choices_container.add_child(button)
+		add_choice_button(choices_container, choice_data)
+	focus_selected_choice(choices_container)
+
+func add_choice_button(choices_container, choice_data: Dictionary) -> void:
+
+	var button_index: int = choices_container.get_child_count()
+	var button := Button.new()
+	button.focus_mode = Control.FOCUS_ALL
+	button.text = choice_data["text"]
+	button.mouse_entered.connect(func():
+		selected_choice = button_index
+		focus_selected_choice(choices_container)
+	)
+	button.pressed.connect(func():
+		confirm_choice(choice_data)
+	)
+	choices_container.add_child(button)
+
+func handle_choice_input(event: InputEvent) -> void:
+
+	var choices_container = get_tree().current_scene.get_node("DialogueUI/DialogueBox/ChoicesContainer")
+	if event.is_action_pressed("ui_up"):
+		move_choice_selection(choices_container, -1)
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("ui_down"):
+		move_choice_selection(choices_container, 1)
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("ui_accept"):
+		activate_selected_choice(choices_container)
+		get_viewport().set_input_as_handled()
+
+func move_choice_selection(choices_container, direction: int) -> void:
+
+	var choice_count: int = choices_container.get_child_count()
+	if choice_count == 0:
+		return
+	selected_choice = wrapi(selected_choice + direction, 0, choice_count)
+	focus_selected_choice(choices_container)
+
+func focus_selected_choice(choices_container) -> void:
+
+	var choice_count: int = choices_container.get_child_count()
+	if choice_count == 0:
+		return
+	selected_choice = clampi(selected_choice, 0, choice_count - 1)
+	var button := choices_container.get_child(selected_choice) as Button
+	if button != null:
+		button.grab_focus()
+
+func activate_selected_choice(choices_container) -> void:
+
+	var choice_count: int = choices_container.get_child_count()
+	if choice_count == 0:
+		return
+	selected_choice = clampi(selected_choice, 0, choice_count - 1)
+	var button := choices_container.get_child(selected_choice) as Button
+	if button != null:
+		button.pressed.emit()
+
+func confirm_choice(choice: Dictionary) -> void:
+
+	apply_choice_effect(choice)
+	close_dialogue()
 
 func apply_choice_effect(choice) -> void:
 
