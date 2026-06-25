@@ -7,25 +7,23 @@ const REACHABLE_CELL_COLOR := Color(0.15, 0.35, 0.75)
 const CURSOR_CELL_COLOR := Color(1.0, 0.85, 0.15)
 
 @export var grid: CombatGrid
+@export var combat_manager: CombatManager
 @export var active_unit: Node3D
 
-var pm_max := 0
-var pm_current := 0
 var cursor_cell := START_CELL
 var _reachable_cells: Array[Vector2i] = []
+var _event_bus = null
 
 func _ready() -> void:
-	if grid == null or active_unit == null:
-		push_warning("CombatMovement a besoin d'une grille et d'une unité active.")
-		return
-	var incarnation := active_unit.get("incarnation") as IncarnationData
-	if incarnation == null:
-		push_warning("L'unité active n'a pas d'incarnation pour initialiser ses PM.")
+	if grid == null or combat_manager == null or active_unit == null:
+		push_warning("CombatMovement a besoin d'une grille, d'un manager de combat et d'une unité active.")
 		return
 
+	_event_bus = get_node_or_null("/root/EventBus")
+	if _event_bus != null and not _event_bus.turn_started.is_connected(_on_turn_started):
+		_event_bus.turn_started.connect(_on_turn_started)
+
 	active_unit.set_physics_process(false)
-	pm_max = incarnation.points_mouvement
-	pm_current = pm_max
 
 	if not grid.place_unit(active_unit, START_CELL.x, START_CELL.y):
 		push_warning("Impossible de placer l'unité active sur la case de départ (5, 5).")
@@ -37,10 +35,9 @@ func _ready() -> void:
 		"Case (5, 5) — occupant : ", grid.get_occupant(5, 5),
 		" | libre : ", grid.is_cell_free(5, 5)
 	)
-	print("PM : ", pm_current, " / ", pm_max)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if grid == null or active_unit == null:
+	if grid == null or combat_manager == null or active_unit == null:
 		return
 
 	if event is InputEventMouseMotion:
@@ -75,6 +72,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func get_reachable_cells() -> Array[Vector2i]:
 	var result: Array[Vector2i] = []
+	if combat_manager.get_current_unit() != active_unit:
+		return result
+
 	var origin := grid.world_to_cell(active_unit.global_position)
 
 	for row in range(grid.grid_height):
@@ -82,7 +82,7 @@ func get_reachable_cells() -> Array[Vector2i]:
 			if not grid.is_cell_free(col, row):
 				continue
 			var destination := Vector2i(col, row)
-			if _get_manhattan_distance(origin, destination) <= pm_current:
+			if _get_manhattan_distance(origin, destination) <= combat_manager.get_pm_current(active_unit):
 				result.append(destination)
 
 	return result
@@ -123,13 +123,17 @@ func _update_cursor_from_mouse(mouse_position: Vector2) -> void:
 	_refresh_display()
 
 func _try_move_to_cursor() -> void:
+	if combat_manager.get_current_unit() != active_unit:
+		print("Déplacement refusé : ce n'est pas le tour de cette unité.")
+		return
+
 	if not _reachable_cells.has(cursor_cell):
 		print("Déplacement refusé : case hors portée, occupée ou invalide.")
 		return
 
 	var origin := grid.world_to_cell(active_unit.global_position)
 	var cost := _get_manhattan_distance(origin, cursor_cell)
-	if cost > pm_current:
+	if cost > combat_manager.get_pm_current(active_unit):
 		print("Déplacement refusé : PM insuffisants.")
 		return
 
@@ -137,14 +141,27 @@ func _try_move_to_cursor() -> void:
 		print("Déplacement refusé : placement impossible.")
 		return
 
-	pm_current -= cost
-	print("Déplacement vers ", cursor_cell, " | coût : ", cost, " | PM restants : ", pm_current, " / ", pm_max)
+	if not combat_manager.spend_pm(active_unit, cost):
+		print("Déplacement refusé : PM insuffisants.")
+		return
+
+	print(
+		"Déplacement vers ", cursor_cell,
+		" | coût : ", cost,
+		" | PM restants : ", combat_manager.get_pm_current(active_unit),
+		" / ", combat_manager.get_pm_max(active_unit)
+	)
 	_refresh_reachable_cells()
 
 func _refresh_reachable_cells() -> void:
 	_reachable_cells = get_reachable_cells()
 	print("Cases atteignables : ", _reachable_cells)
 	_refresh_display()
+
+func _on_turn_started(unit: Node) -> void:
+	if unit != active_unit:
+		return
+	_refresh_reachable_cells()
 
 func _refresh_display() -> void:
 	for row in range(grid.grid_height):

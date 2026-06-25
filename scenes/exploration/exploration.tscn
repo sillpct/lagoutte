@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://cwee0pvhnu0xs" path="res://scenes/exploration/test_interactable.gd" id="3_75sxn"]
 [ext_resource type="PackedScene" uid="uid://bfso586b0af53" path="res://scenes/ui/dialogue_ui.tscn" id="3_vlahv"]
 [ext_resource type="Script" uid="uid://bym5hwctac3a" path="res://scenes/combat/combat_movement.gd" id="7_combat_movement"]
+[ext_resource type="Script" uid="uid://dm3q0ggxnmpoy" path="res://scenes/combat/combat_manager.gd" id="8_combat_manager"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_cvbhj"]
 size = Vector3(20, 0.1, 20)
@@ -36,9 +37,14 @@ position = Vector3(-4.5, 0.06, -4.5)
 
 [node name="Player" parent="." unique_id=295733018 instance=ExtResource("1_toxw2")]
 
-[node name="CombatMovement" type="Node" parent="." unique_id=171960228 node_paths=PackedStringArray("grid", "active_unit")]
+[node name="CombatManager" type="Node" parent="." unique_id=1196098833 node_paths=PackedStringArray("units")]
+script = ExtResource("8_combat_manager")
+units = [NodePath("../Player")]
+
+[node name="CombatMovement" type="Node" parent="." unique_id=171960228 node_paths=PackedStringArray("grid", "combat_manager", "active_unit")]
 script = ExtResource("7_combat_movement")
 grid = NodePath("../CombatGrid")
+combat_manager = NodePath("../CombatManager")
 active_unit = NodePath("../Player")
 
 [node name="SunLight" type="DirectionalLight3D" parent="." unique_id=893214508]
