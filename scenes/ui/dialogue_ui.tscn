@@ -10,6 +10,7 @@ offset_right = 22.0
 offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="DialogueBox" type="Panel" parent="." unique_id=484197165 groups=["dialogue_box"]]
 visible = false
@@ -24,6 +25,7 @@ offset_right = -116.0
 offset_bottom = -26.0
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 2
 
 [node name="DialogueText" type="Label" parent="DialogueBox" unique_id=1503589852]
 layout_mode = 1
