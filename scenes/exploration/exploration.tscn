@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://b5es4nmnp0ldb"]
 
-[ext_resource type="Script" path="res://scenes/exploration/exploration.gd" id="1_exploration_script"]
 [ext_resource type="Script" uid="uid://dkeacolsiufev" path="res://scenes/exploration/camera_pivot.gd" id="1_pbc0k"]
 [ext_resource type="PackedScene" uid="uid://lugq74m5nw2h" path="res://scenes/entities/player.tscn" id="1_toxw2"]
 [ext_resource type="PackedScene" path="res://scenes/combat/combat_grid.tscn" id="2_combat_grid"]
 [ext_resource type="Script" uid="uid://cwee0pvhnu0xs" path="res://scenes/exploration/test_interactable.gd" id="3_75sxn"]
 [ext_resource type="PackedScene" uid="uid://bfso586b0af53" path="res://scenes/ui/dialogue_ui.tscn" id="3_vlahv"]
+[ext_resource type="Script" uid="uid://bym5hwctac3a" path="res://scenes/combat/combat_movement.gd" id="7_combat_movement"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_cvbhj"]
 size = Vector3(20, 0.1, 20)
@@ -16,7 +16,6 @@ size = Vector3(1, 2, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_pbc0k"]
 
 [node name="Exploration" type="Node3D" unique_id=309051148]
-script = ExtResource("1_exploration_script")
 
 [node name="CameraPivot" type="Node3D" parent="." unique_id=370495805 node_paths=PackedStringArray("target")]
 transform = Transform3D(0.70710677, 0, 0.7071067, 0, 0.99999994, 0, -0.70710677, 0, 0.7071067, 0, 10, 12)
@@ -36,6 +35,11 @@ mesh = SubResource("BoxMesh_cvbhj")
 position = Vector3(-4.5, 0.06, -4.5)
 
 [node name="Player" parent="." unique_id=295733018 instance=ExtResource("1_toxw2")]
+
+[node name="CombatMovement" type="Node" parent="." unique_id=171960228 node_paths=PackedStringArray("grid", "active_unit")]
+script = ExtResource("7_combat_movement")
+grid = NodePath("../CombatGrid")
+active_unit = NodePath("../Player")
 
 [node name="SunLight" type="DirectionalLight3D" parent="." unique_id=893214508]
 transform = Transform3D(0.70710677, -0.61237246, 0.35355335, 0, 0.49999997, 0.86602545, -0.70710677, -0.61237246, 0.35355335, 0, 0, 0)

@@ -58,15 +58,20 @@ func clear_cell(col: int, row: int) -> void:
 func _ready() -> void:
 	_build_cell_visuals()
 
+func get_cell_visual(col: int, row: int) -> MeshInstance3D:
+	return cell_visuals.get_node_or_null("Cell_%d_%d" % [col, row]) as MeshInstance3D
+
+func set_cell_color(col: int, row: int, color: Color) -> void:
+	var cell_visual := get_cell_visual(col, row)
+	if cell_visual == null:
+		return
+	cell_visual.material_override = _create_cell_material(color)
+
 func _build_cell_visuals() -> void:
 	var cell_mesh := PlaneMesh.new()
 	cell_mesh.size = Vector2.ONE * cell_size * 0.9
 
-	var cell_material := StandardMaterial3D.new()
-	cell_material.albedo_color = Color(0.22, 0.28, 0.32)
-	cell_material.roughness = 1.0
-	cell_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	cell_mesh.material = cell_material
+	cell_mesh.material = _create_cell_material(Color(0.22, 0.28, 0.32))
 
 	for row in range(grid_height):
 		for col in range(grid_width):
@@ -76,3 +81,10 @@ func _build_cell_visuals() -> void:
 			cell_visual.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			cell_visuals.add_child(cell_visual)
 			cell_visual.global_position = cell_to_world(col, row)
+
+func _create_cell_material(color: Color) -> StandardMaterial3D:
+	var cell_material := StandardMaterial3D.new()
+	cell_material.albedo_color = color
+	cell_material.roughness = 1.0
+	cell_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	return cell_material
