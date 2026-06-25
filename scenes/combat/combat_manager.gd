@@ -78,6 +78,13 @@ func get_pa_current(unit: Node3D) -> int:
 func get_pa_max(unit: Node3D) -> int:
 	return _get_unit_resource(unit, "pa_max")
 
+func spend_pa(unit: Node3D, amount: int) -> bool:
+	if amount < 0 or get_pa_current(unit) < amount:
+		return false
+
+	_resources_by_unit[unit]["pa_current"] = get_pa_current(unit) - amount
+	return true
+
 func _get_unit_resource(unit: Node3D, resource_name: String) -> int:
 	if not _resources_by_unit.has(unit):
 		return 0

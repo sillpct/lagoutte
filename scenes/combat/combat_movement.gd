@@ -9,6 +9,7 @@ const CURSOR_CELL_COLOR := Color(1.0, 0.85, 0.15)
 @export var grid: CombatGrid
 @export var combat_manager: CombatManager
 @export var active_unit: Node3D
+@export var combat_attack: Node
 
 var cursor_cell := START_CELL
 var _reachable_cells: Array[Vector2i] = []
@@ -46,6 +47,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			_update_cursor_from_mouse(event.position)
+			if is_attack_mode_active():
+				return
 			_try_move_to_cursor()
 			get_viewport().set_input_as_handled()
 			return
@@ -60,6 +63,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("ui_right"):
 		cursor_delta.x += 1
 	elif event.is_action_pressed("ui_accept"):
+		if is_attack_mode_active():
+			return
 		_try_move_to_cursor()
 		get_viewport().set_input_as_handled()
 		return
@@ -164,6 +169,10 @@ func _on_turn_started(unit: Node) -> void:
 	_refresh_reachable_cells()
 
 func _refresh_display() -> void:
+	if is_attack_mode_active():
+		combat_attack.refresh_attack_display()
+		return
+
 	for row in range(grid.grid_height):
 		for col in range(grid.grid_width):
 			grid.set_cell_color(col, row, NORMAL_CELL_COLOR)
@@ -172,6 +181,13 @@ func _refresh_display() -> void:
 		grid.set_cell_color(cell.x, cell.y, REACHABLE_CELL_COLOR)
 
 	grid.set_cell_color(cursor_cell.x, cursor_cell.y, CURSOR_CELL_COLOR)
+
+func is_attack_mode_active() -> bool:
+	return (
+		combat_attack != null
+		and combat_attack.has_method("is_attack_mode_active")
+		and combat_attack.is_attack_mode_active()
+	)
 
 func _get_manhattan_distance(from_cell: Vector2i, to_cell: Vector2i) -> int:
 	return abs(to_cell.x - from_cell.x) + abs(to_cell.y - from_cell.y)
