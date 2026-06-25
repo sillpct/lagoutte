@@ -43,6 +43,16 @@ func _unhandled_input(event: InputEvent) -> void:
 	if grid == null or active_unit == null:
 		return
 
+	if event is InputEventMouseMotion:
+		_update_cursor_from_mouse(event.position)
+		return
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			_update_cursor_from_mouse(event.position)
+			_try_move_to_cursor()
+			get_viewport().set_input_as_handled()
+			return
+
 	var cursor_delta := Vector2i.ZERO
 	if event.is_action_pressed("ui_up"):
 		cursor_delta.y -= 1
@@ -86,6 +96,30 @@ func _move_cursor(delta: Vector2i) -> void:
 		return
 
 	cursor_cell = next_cell
+	_refresh_display()
+
+func _update_cursor_from_mouse(mouse_position: Vector2) -> void:
+	var camera := get_viewport().get_camera_3d()
+	if camera == null:
+		return
+
+	var ray_origin := camera.project_ray_origin(mouse_position)
+	var ray_direction := camera.project_ray_normal(mouse_position)
+	if is_zero_approx(ray_direction.y):
+		return
+
+	var distance_to_grid_plane := (grid.global_position.y - ray_origin.y) / ray_direction.y
+	if distance_to_grid_plane < 0.0:
+		return
+
+	var world_position := ray_origin + ray_direction * distance_to_grid_plane
+	var cell := grid.world_to_cell(world_position)
+	if not grid.is_valid_cell(cell.x, cell.y):
+		return
+	if cell == cursor_cell:
+		return
+
+	cursor_cell = cell
 	_refresh_display()
 
 func _try_move_to_cursor() -> void:
