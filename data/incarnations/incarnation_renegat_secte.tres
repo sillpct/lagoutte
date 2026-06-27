@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="IncarnationData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/incarnation_data.gd" id="1_incarnation_data"]
+
+[resource]
+script = ExtResource("1_incarnation_data")
+display_name = "Renégat de secte"
+origine = "Culte brisé"
+profession = "Renégat"
+vitalite = 40
+force = 12
+esprit = 10
+lucidite = 20
+pv_max = 50
+lucidite_max = 50
+points_action = 2
+points_mouvement = 3

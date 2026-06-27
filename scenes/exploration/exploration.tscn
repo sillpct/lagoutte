@@ -8,18 +8,20 @@
 [ext_resource type="Script" uid="uid://bym5hwctac3a" path="res://scenes/combat/combat_movement.gd" id="7_combat_movement"]
 [ext_resource type="Script" uid="uid://dm3q0ggxnmpoy" path="res://scenes/combat/combat_manager.gd" id="8_combat_manager"]
 [ext_resource type="Script" uid="uid://cyk7oavvq34an" path="res://scenes/combat/combat_attack.gd" id="9_combat_attack"]
-[ext_resource type="Script" uid="uid://cw6wx5if76a4l" path="res://scenes/combat/training_dummy.gd" id="10_training_dummy"]
+[ext_resource type="Script" uid="uid://dl8t3dtna6qqd" path="res://scenes/combat/sect_renegade.gd" id="10_sect_renegade"]
+[ext_resource type="Resource" path="res://data/incarnations/incarnation_renegat_secte.tres" id="11_renegade_data"]
+[ext_resource type="Script" uid="uid://clgwxcuk1pa0q" path="res://scenes/combat/enemy_brain.gd" id="12_enemy_brain"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_cvbhj"]
 size = Vector3(20, 0.1, 20)
+
+[sub_resource type="BoxMesh" id="BoxMesh_sect_renegade"]
+size = Vector3(0.75, 1.5, 0.75)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pbc0k"]
 size = Vector3(1, 2, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_pbc0k"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_training_dummy"]
-size = Vector3(0.75, 1.5, 0.75)
 
 [node name="Exploration" type="Node3D" unique_id=309051148]
 
@@ -42,9 +44,10 @@ position = Vector3(-4.5, 0.06, -4.5)
 
 [node name="Player" parent="." unique_id=295733018 instance=ExtResource("1_toxw2")]
 
-[node name="CombatManager" type="Node" parent="." unique_id=1196098833 node_paths=PackedStringArray("units")]
+[node name="CombatManager" type="Node" parent="." unique_id=1196098833 node_paths=PackedStringArray("grid", "units")]
 script = ExtResource("8_combat_manager")
-units = [NodePath("../Player")]
+grid = NodePath("../CombatGrid")
+units = [NodePath("../Player"), NodePath("../SectRenegade")]
 
 [node name="CombatMovement" type="Node" parent="." unique_id=171960228 node_paths=PackedStringArray("grid", "combat_manager", "active_unit", "combat_attack")]
 script = ExtResource("7_combat_movement")
@@ -53,20 +56,28 @@ combat_manager = NodePath("../CombatManager")
 active_unit = NodePath("../Player")
 combat_attack = NodePath("../CombatAttack")
 
-[node name="TrainingDummy" type="Node3D" parent="." unique_id=1232763424]
-script = ExtResource("10_training_dummy")
+[node name="SectRenegade" type="Node3D" parent="." unique_id=1232763424]
+script = ExtResource("10_sect_renegade")
+incarnation = ExtResource("11_renegade_data")
 
-[node name="Visual" type="MeshInstance3D" parent="TrainingDummy" unique_id=1076779725]
+[node name="Visual" type="MeshInstance3D" parent="SectRenegade" unique_id=1076779725]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
-mesh = SubResource("BoxMesh_training_dummy")
+mesh = SubResource("BoxMesh_sect_renegade")
 
-[node name="CombatAttack" type="Node" parent="." unique_id=1469147104 node_paths=PackedStringArray("grid", "combat_manager", "combat_movement", "active_unit", "test_target")]
+[node name="CombatAttack" type="Node" parent="." unique_id=1469147104 node_paths=PackedStringArray("grid", "combat_manager", "combat_movement", "active_unit")]
 script = ExtResource("9_combat_attack")
 grid = NodePath("../CombatGrid")
 combat_manager = NodePath("../CombatManager")
 combat_movement = NodePath("../CombatMovement")
 active_unit = NodePath("../Player")
-test_target = NodePath("../TrainingDummy")
+
+[node name="EnemyBrain" type="Node" parent="." unique_id=1982347245 node_paths=PackedStringArray("grid", "combat_manager", "combat_attack", "unit", "target")]
+script = ExtResource("12_enemy_brain")
+grid = NodePath("../CombatGrid")
+combat_manager = NodePath("../CombatManager")
+combat_attack = NodePath("../CombatAttack")
+unit = NodePath("../SectRenegade")
+target = NodePath("../Player")
 
 [node name="SunLight" type="DirectionalLight3D" parent="." unique_id=893214508]
 transform = Transform3D(0.70710677, -0.61237246, 0.35355335, 0, 0.49999997, 0.86602545, -0.70710677, -0.61237246, 0.35355335, 0, 0, 0)

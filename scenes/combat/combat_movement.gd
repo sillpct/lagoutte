@@ -87,7 +87,7 @@ func get_reachable_cells() -> Array[Vector2i]:
 			if not grid.is_cell_free(col, row):
 				continue
 			var destination := Vector2i(col, row)
-			if _get_manhattan_distance(origin, destination) <= combat_manager.get_pm_current(active_unit):
+			if CombatRules.get_manhattan_distance(origin, destination) <= combat_manager.get_pm_current(active_unit):
 				result.append(destination)
 
 	return result
@@ -137,7 +137,7 @@ func _try_move_to_cursor() -> void:
 		return
 
 	var origin := grid.world_to_cell(active_unit.global_position)
-	var cost := _get_manhattan_distance(origin, cursor_cell)
+	var cost := CombatRules.get_manhattan_distance(origin, cursor_cell)
 	if cost > combat_manager.get_pm_current(active_unit):
 		print("Déplacement refusé : PM insuffisants.")
 		return
@@ -188,6 +188,3 @@ func is_attack_mode_active() -> bool:
 		and combat_attack.has_method("is_attack_mode_active")
 		and combat_attack.is_attack_mode_active()
 	)
-
-func _get_manhattan_distance(from_cell: Vector2i, to_cell: Vector2i) -> int:
-	return abs(to_cell.x - from_cell.x) + abs(to_cell.y - from_cell.y)
