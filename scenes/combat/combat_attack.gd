@@ -60,7 +60,7 @@ func set_attack_mode_active(is_active: bool) -> void:
 
 func try_attack_selected_cell() -> void:
 	if try_attack(active_unit, combat_movement.cursor_cell):
-		_refresh_attack_cells()
+		set_attack_mode_active(false)
 
 func try_attack(attacker: Node3D, target_cell: Vector2i) -> bool:
 	if combat_manager.get_current_unit() != attacker:
@@ -73,16 +73,27 @@ func try_attack(attacker: Node3D, target_cell: Vector2i) -> bool:
 		return false
 
 	var target := grid.get_occupant(target_cell.x, target_cell.y)
-	if target == null or target == attacker:
-		print("Attaque refusée : aucune cible valide sur cette case.")
-		return false
-	if not (target.get("pv") is Stat):
-		print("Attaque refusée : la cible n'a pas de PV.")
-		return false
-
 	if not combat_manager.spend_pa(attacker, ATTACK_PA_COST):
 		print("Attaque refusée : PA insuffisants.")
 		return false
+	if target == null:
+		print(
+			attacker.name, " frappe dans le vide",
+			" — PA restants: ", combat_manager.get_pa_current(attacker)
+		)
+		return true
+	if target == attacker:
+		print(
+			attacker.name, " frappe dans le vide",
+			" — PA restants: ", combat_manager.get_pa_current(attacker)
+		)
+		return true
+	if not (target.get("pv") is Stat):
+		print(
+			attacker.name, " frappe dans le vide",
+			" — PA restants: ", combat_manager.get_pa_current(attacker)
+		)
+		return true
 
 	var damage := get_attack_damage(attacker)
 	var target_pv := target.get("pv") as Stat
