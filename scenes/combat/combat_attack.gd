@@ -1,7 +1,6 @@
 class_name CombatAttack
 extends Node
 
-const ATTACK_RANGE := 1
 const ATTACK_PA_COST := 1
 const NORMAL_CELL_COLOR := Color(0.22, 0.28, 0.32)
 const ATTACK_CELL_COLOR := Color(0.85, 0.12, 0.10)
