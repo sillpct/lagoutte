@@ -31,3 +31,26 @@ layout_mode = 2
 alignment = 1
 theme_override_constants/separation = 8
 mouse_filter = 2
+
+[node name="BottomBar" type="MarginContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -180.0
+offset_top = -72.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+mouse_filter = 2
+
+[node name="EndTurnButton" type="Button" parent="Root/BottomBar"]
+layout_mode = 2
+text = "Passer le tour"
+
+[connection signal="pressed" from="Root/BottomBar/EndTurnButton" to="." method="_on_end_turn_button_pressed"]

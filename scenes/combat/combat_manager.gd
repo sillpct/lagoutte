@@ -23,7 +23,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if get_current_unit() == null:
 		return
 	if event.is_action_pressed("end_turn"):
-		end_turn()
+		request_player_end_turn()
 		get_viewport().set_input_as_handled()
 
 func start_turn(unit: Node3D) -> void:
@@ -63,6 +63,15 @@ func end_turn() -> void:
 
 	current_unit_index = wrapi(current_unit_index + 1, 0, units.size())
 	start_turn(get_current_unit())
+
+func request_player_end_turn() -> void:
+	if not can_player_end_turn():
+		return
+	end_turn()
+
+func can_player_end_turn() -> bool:
+	var unit := get_current_unit()
+	return unit != null and unit.name == "Player"
 
 func get_current_unit() -> Node3D:
 	if units.is_empty() or current_unit_index < 0 or current_unit_index >= units.size():

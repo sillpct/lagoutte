@@ -9,6 +9,7 @@ const INACTIVE_BORDER_COLOR := Color(0.04, 0.05, 0.07)
 @export var combat_manager: CombatManager
 
 @onready var turn_order_bar: HBoxContainer = $Root/MarginContainer/TurnOrderBar
+@onready var end_turn_button: Button = $Root/BottomBar/EndTurnButton
 
 var _event_bus = null
 
@@ -25,6 +26,7 @@ func _ready() -> void:
 			_event_bus.turn_ended.connect(_on_turn_changed)
 
 	refresh_turn_order()
+	_refresh_end_turn_button()
 
 func refresh_turn_order() -> void:
 	for child in turn_order_bar.get_children():
@@ -97,6 +99,20 @@ func _listen_to_unit_removal(unit: Node3D) -> void:
 
 func _on_turn_changed(_unit: Node) -> void:
 	refresh_turn_order()
+	_refresh_end_turn_button()
 
 func _on_unit_removed_from_tree() -> void:
 	call_deferred("refresh_turn_order")
+	call_deferred("_refresh_end_turn_button")
+
+func _refresh_end_turn_button() -> void:
+	if combat_manager == null:
+		end_turn_button.disabled = true
+		return
+	end_turn_button.disabled = not combat_manager.can_player_end_turn()
+
+func _on_end_turn_button_pressed() -> void:
+	if combat_manager == null:
+		return
+	combat_manager.request_player_end_turn()
+	_refresh_end_turn_button()
