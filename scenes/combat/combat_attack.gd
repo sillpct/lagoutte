@@ -11,7 +11,6 @@ const CURSOR_CELL_COLOR := Color(1.0, 0.85, 0.15)
 @export var combat_movement: CombatMovement
 @export var active_unit: Node3D
 
-var _attack_mode_active := false
 var _attack_cells: Array[Vector2i] = []
 var _event_bus = null
 
@@ -29,11 +28,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 
 	if event.is_action_pressed("toggle_attack_mode"):
-		set_attack_mode_active(not _attack_mode_active)
+		combat_movement.toggle_attack_mode()
 		get_viewport().set_input_as_handled()
 		return
 
-	if not _attack_mode_active:
+	if not is_attack_mode_active():
 		return
 
 	if event is InputEventMouseButton:
@@ -46,20 +45,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func is_attack_mode_active() -> bool:
-	return _attack_mode_active
-
-func set_attack_mode_active(is_active: bool) -> void:
-	_attack_mode_active = is_active
-	if _attack_mode_active:
-		_refresh_attack_cells()
-		print("Mode attaque : actif")
-	else:
-		print("Mode attaque : inactif")
-		combat_movement._refresh_reachable_cells()
+	return combat_movement != null and combat_movement.is_attack_mode_active()
 
 func try_attack_selected_cell() -> void:
 	if try_attack(active_unit, combat_movement.cursor_cell):
-		set_attack_mode_active(false)
+		combat_movement.set_neutral_mode()
 
 func try_attack(attacker: Node3D, target_cell: Vector2i) -> bool:
 	if combat_manager.get_current_unit() != attacker:
@@ -130,7 +120,7 @@ func get_attack_cells_for(unit: Node3D) -> Array[Vector2i]:
 func get_attack_cells() -> Array[Vector2i]:
 	return get_attack_cells_for(active_unit)
 
-func _refresh_attack_cells() -> void:
+func refresh_attack_cells() -> void:
 	_attack_cells = get_attack_cells()
 	print("Cases d'attaque : ", _attack_cells)
 	refresh_attack_display()
@@ -146,6 +136,6 @@ func refresh_attack_display() -> void:
 	grid.set_cell_color(combat_movement.cursor_cell.x, combat_movement.cursor_cell.y, CURSOR_CELL_COLOR)
 
 func _on_turn_started(unit: Node) -> void:
-	if unit != active_unit or not _attack_mode_active:
+	if unit != active_unit or not is_attack_mode_active():
 		return
-	_refresh_attack_cells()
+	refresh_attack_cells()

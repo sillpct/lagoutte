@@ -1,6 +1,12 @@
 class_name CombatMovement
 extends Node
 
+enum PlayerCombatMode {
+	NEUTRAL,
+	MOVEMENT,
+	ATTACK,
+}
+
 const START_CELL := Vector2i(5, 5)
 const NORMAL_CELL_COLOR := Color(0.22, 0.28, 0.32)
 const REACHABLE_CELL_COLOR := Color(0.15, 0.35, 0.75)
@@ -12,6 +18,7 @@ const CURSOR_CELL_COLOR := Color(1.0, 0.85, 0.15)
 @export var combat_attack: Node
 
 var cursor_cell := START_CELL
+var current_mode := PlayerCombatMode.NEUTRAL
 var _reachable_cells: Array[Vector2i] = []
 var _event_bus = null
 
@@ -31,7 +38,7 @@ func _ready() -> void:
 		return
 
 	cursor_cell = START_CELL
-	_refresh_reachable_cells()
+	set_combat_mode(PlayerCombatMode.NEUTRAL)
 	print(
 		"Case (5, 5) — occupant : ", grid.get_occupant(5, 5),
 		" | libre : ", grid.is_cell_free(5, 5)
@@ -47,11 +54,16 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			_update_cursor_from_mouse(event.position)
-			if is_attack_mode_active():
+			if is_attack_mode_active() or is_neutral_mode_active():
 				return
 			_try_move_to_cursor()
 			get_viewport().set_input_as_handled()
 			return
+
+	if event.is_action_pressed("toggle_movement_mode"):
+		toggle_movement_mode()
+		get_viewport().set_input_as_handled()
+		return
 
 	var cursor_delta := Vector2i.ZERO
 	if event.is_action_pressed("ui_up"):
@@ -63,13 +75,15 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("ui_right"):
 		cursor_delta.x += 1
 	elif event.is_action_pressed("ui_accept"):
-		if is_attack_mode_active():
+		if is_attack_mode_active() or is_neutral_mode_active():
 			return
 		_try_move_to_cursor()
 		get_viewport().set_input_as_handled()
 		return
 
 	if cursor_delta == Vector2i.ZERO:
+		return
+	if is_neutral_mode_active():
 		return
 
 	_move_cursor(cursor_delta)
@@ -163,14 +177,16 @@ func _refresh_reachable_cells() -> void:
 	print("Cases atteignables : ", _reachable_cells)
 	_refresh_display()
 
-func _on_turn_started(unit: Node) -> void:
-	if unit != active_unit:
-		return
-	_refresh_reachable_cells()
+func _on_turn_started(_unit: Node) -> void:
+	set_combat_mode(PlayerCombatMode.NEUTRAL)
 
 func _refresh_display() -> void:
 	if is_attack_mode_active():
 		combat_attack.refresh_attack_display()
+		return
+
+	if is_neutral_mode_active():
+		_refresh_neutral_display()
 		return
 
 	for row in range(grid.grid_height):
@@ -182,9 +198,48 @@ func _refresh_display() -> void:
 
 	grid.set_cell_color(cursor_cell.x, cursor_cell.y, CURSOR_CELL_COLOR)
 
+func _refresh_neutral_display() -> void:
+	for row in range(grid.grid_height):
+		for col in range(grid.grid_width):
+			grid.set_cell_color(col, row, NORMAL_CELL_COLOR)
+
+func set_combat_mode(new_mode: PlayerCombatMode) -> void:
+	if new_mode != PlayerCombatMode.NEUTRAL and combat_manager.get_current_unit() != active_unit:
+		return
+
+	current_mode = new_mode
+	match current_mode:
+		PlayerCombatMode.NEUTRAL:
+			print("Mode combat : neutre")
+			_refresh_neutral_display()
+		PlayerCombatMode.MOVEMENT:
+			print("Mode combat : déplacement")
+			_refresh_reachable_cells()
+		PlayerCombatMode.ATTACK:
+			print("Mode combat : attaque")
+			if combat_attack != null and combat_attack.has_method("refresh_attack_cells"):
+				combat_attack.refresh_attack_cells()
+
+func set_neutral_mode() -> void:
+	set_combat_mode(PlayerCombatMode.NEUTRAL)
+
+func toggle_movement_mode() -> void:
+	if is_movement_mode_active():
+		set_combat_mode(PlayerCombatMode.NEUTRAL)
+	else:
+		set_combat_mode(PlayerCombatMode.MOVEMENT)
+
+func toggle_attack_mode() -> void:
+	if is_attack_mode_active():
+		set_combat_mode(PlayerCombatMode.NEUTRAL)
+	else:
+		set_combat_mode(PlayerCombatMode.ATTACK)
+
+func is_neutral_mode_active() -> bool:
+	return current_mode == PlayerCombatMode.NEUTRAL
+
+func is_movement_mode_active() -> bool:
+	return current_mode == PlayerCombatMode.MOVEMENT
+
 func is_attack_mode_active() -> bool:
-	return (
-		combat_attack != null
-		and combat_attack.has_method("is_attack_mode_active")
-		and combat_attack.is_attack_mode_active()
-	)
+	return current_mode == PlayerCombatMode.ATTACK
