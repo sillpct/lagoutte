@@ -87,6 +87,7 @@ func try_attack(attacker: Node3D, target_cell: Vector2i) -> bool:
 	var damage := get_attack_damage(attacker)
 	var target_pv := target.get("pv") as Stat
 	target_pv.reduce(damage)
+	combat_manager.notify_unit_resources_changed(target)
 	print(
 		attacker.name, " attaque ", target.name,
 		" — dégâts: ", damage,

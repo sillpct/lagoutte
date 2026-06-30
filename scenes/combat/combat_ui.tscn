@@ -32,6 +32,95 @@ alignment = 1
 theme_override_constants/separation = 8
 mouse_filter = 2
 
+[node name="EnemyResourcePanel" type="MarginContainer" parent="Root"]
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -256.0
+offset_top = 16.0
+offset_bottom = 72.0
+grow_horizontal = 0
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 8
+mouse_filter = 2
+
+[node name="EnemyResources" type="VBoxContainer" parent="Root/EnemyResourcePanel"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="EnemyNameLabel" type="Label" parent="Root/EnemyResourcePanel/EnemyResources"]
+layout_mode = 2
+text = "Renégat"
+
+[node name="EnemyHPBar" type="ProgressBar" parent="Root/EnemyResourcePanel/EnemyResources"]
+custom_minimum_size = Vector2(220, 16)
+layout_mode = 2
+show_percentage = false
+
+[node name="PlayerResourcePanel" type="MarginContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -132.0
+offset_right = 260.0
+grow_vertical = 0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+mouse_filter = 2
+
+[node name="PlayerResources" type="VBoxContainer" parent="Root/PlayerResourcePanel"]
+layout_mode = 2
+theme_override_constants/separation = 6
+mouse_filter = 2
+
+[node name="PlayerNameLabel" type="Label" parent="Root/PlayerResourcePanel/PlayerResources"]
+layout_mode = 2
+text = "Joueur"
+
+[node name="PlayerHPLabel" type="Label" parent="Root/PlayerResourcePanel/PlayerResources"]
+layout_mode = 2
+text = "PV: 0/0"
+
+[node name="PlayerHPBar" type="ProgressBar" parent="Root/PlayerResourcePanel/PlayerResources"]
+custom_minimum_size = Vector2(220, 18)
+layout_mode = 2
+show_percentage = false
+
+[node name="PARow" type="HBoxContainer" parent="Root/PlayerResourcePanel/PlayerResources"]
+layout_mode = 2
+theme_override_constants/separation = 8
+mouse_filter = 2
+
+[node name="PALabel" type="Label" parent="Root/PlayerResourcePanel/PlayerResources/PARow"]
+layout_mode = 2
+text = "PA: 0/0"
+
+[node name="PAPips" type="HBoxContainer" parent="Root/PlayerResourcePanel/PlayerResources/PARow"]
+layout_mode = 2
+theme_override_constants/separation = 4
+mouse_filter = 2
+
+[node name="PMRow" type="HBoxContainer" parent="Root/PlayerResourcePanel/PlayerResources"]
+layout_mode = 2
+theme_override_constants/separation = 8
+mouse_filter = 2
+
+[node name="PMLabel" type="Label" parent="Root/PlayerResourcePanel/PlayerResources/PMRow"]
+layout_mode = 2
+text = "PM: 0/0"
+
+[node name="PMPips" type="HBoxContainer" parent="Root/PlayerResourcePanel/PlayerResources/PMRow"]
+layout_mode = 2
+theme_override_constants/separation = 4
+mouse_filter = 2
+
 [node name="ActionBar" type="MarginContainer" parent="Root"]
 layout_mode = 1
 anchors_preset = 7

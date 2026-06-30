@@ -53,6 +53,11 @@ func start_turn(unit: Node3D) -> void:
 	if _event_bus != null:
 		_event_bus.turn_started.emit(unit)
 
+func notify_unit_resources_changed(unit: Node3D) -> void:
+	if unit == null:
+		return
+	unit_resources_changed.emit(unit)
+
 func end_turn() -> void:
 	if units.is_empty():
 		return

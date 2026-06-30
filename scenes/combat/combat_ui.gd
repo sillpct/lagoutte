@@ -5,6 +5,10 @@ const PLAYER_COLOR := Color(0.15, 0.35, 0.85)
 const ENEMY_COLOR := Color(0.75, 0.12, 0.10)
 const ACTIVE_BORDER_COLOR := Color(1.0, 0.9, 0.25)
 const INACTIVE_BORDER_COLOR := Color(0.04, 0.05, 0.07)
+const PLAYER_HP_COLOR := Color(0.18, 0.75, 0.35)
+const ENEMY_HP_COLOR := Color(0.85, 0.18, 0.14)
+const RESOURCE_ACTIVE_COLOR := Color(0.95, 0.82, 0.25)
+const RESOURCE_EMPTY_COLOR := Color(0.16, 0.17, 0.19)
 
 @export var combat_manager: CombatManager
 @export var combat_movement: CombatMovement
@@ -13,6 +17,15 @@ const INACTIVE_BORDER_COLOR := Color(0.04, 0.05, 0.07)
 @onready var movement_button: Button = $Root/ActionBar/ActionButtons/MovementButton
 @onready var attack_button: Button = $Root/ActionBar/ActionButtons/AttackButton
 @onready var end_turn_button: Button = $Root/BottomBar/EndTurnButton
+@onready var player_hp_label: Label = $Root/PlayerResourcePanel/PlayerResources/PlayerHPLabel
+@onready var player_hp_bar: ProgressBar = $Root/PlayerResourcePanel/PlayerResources/PlayerHPBar
+@onready var pa_label: Label = $Root/PlayerResourcePanel/PlayerResources/PARow/PALabel
+@onready var pa_pips: HBoxContainer = $Root/PlayerResourcePanel/PlayerResources/PARow/PAPips
+@onready var pm_label: Label = $Root/PlayerResourcePanel/PlayerResources/PMRow/PMLabel
+@onready var pm_pips: HBoxContainer = $Root/PlayerResourcePanel/PlayerResources/PMRow/PMPips
+@onready var enemy_resource_panel: MarginContainer = $Root/EnemyResourcePanel
+@onready var enemy_name_label: Label = $Root/EnemyResourcePanel/EnemyResources/EnemyNameLabel
+@onready var enemy_hp_bar: ProgressBar = $Root/EnemyResourcePanel/EnemyResources/EnemyHPBar
 
 var _event_bus = null
 
@@ -38,6 +51,7 @@ func _ready() -> void:
 	refresh_turn_order()
 	_refresh_end_turn_button()
 	_refresh_action_buttons()
+	_refresh_resource_bars()
 
 func refresh_turn_order() -> void:
 	for child in turn_order_bar.get_children():
@@ -112,11 +126,13 @@ func _on_turn_changed(_unit: Node) -> void:
 	refresh_turn_order()
 	_refresh_end_turn_button()
 	_refresh_action_buttons()
+	_refresh_resource_bars()
 
 func _on_unit_removed_from_tree() -> void:
 	call_deferred("refresh_turn_order")
 	call_deferred("_refresh_end_turn_button")
 	call_deferred("_refresh_action_buttons")
+	call_deferred("_refresh_resource_bars")
 
 func _refresh_end_turn_button() -> void:
 	if combat_manager == null:
@@ -170,3 +186,105 @@ func _on_combat_mode_changed(_new_mode: int) -> void:
 
 func _on_unit_resources_changed(_unit: Node3D) -> void:
 	_refresh_action_buttons()
+	_refresh_resource_bars()
+
+func _refresh_resource_bars() -> void:
+	if combat_manager == null or combat_movement == null:
+		return
+
+	var player_unit := combat_movement.active_unit
+	_refresh_unit_hp(player_unit, player_hp_bar, player_hp_label, PLAYER_HP_COLOR)
+	_refresh_player_pa_pm(player_unit)
+	_refresh_enemy_hp()
+
+func _refresh_unit_hp(unit: Node3D, hp_bar: ProgressBar, hp_label: Label, hp_color: Color) -> void:
+	var pv := _get_unit_pv(unit)
+	if pv == null:
+		hp_bar.max_value = 1.0
+		hp_bar.value = 0.0
+		if hp_label != null:
+			hp_label.text = "PV: 0/0"
+		return
+
+	hp_bar.max_value = max(1, pv.max_value)
+	hp_bar.value = clampi(pv.current_value, 0, pv.max_value)
+	hp_bar.add_theme_stylebox_override("fill", _create_bar_fill_style(hp_color))
+	if hp_label != null:
+		hp_label.text = "PV: %d/%d" % [pv.current_value, pv.max_value]
+
+func _refresh_player_pa_pm(player_unit: Node3D) -> void:
+	var pa_current := combat_manager.get_pa_current(player_unit)
+	var pa_max := combat_manager.get_pa_max(player_unit)
+	var pm_current := combat_manager.get_pm_current(player_unit)
+	var pm_max := combat_manager.get_pm_max(player_unit)
+
+	pa_label.text = "PA: %d/%d" % [pa_current, pa_max]
+	pm_label.text = "PM: %d/%d" % [pm_current, pm_max]
+	_rebuild_resource_pips(pa_pips, pa_current, pa_max, true)
+	_rebuild_resource_pips(pm_pips, pm_current, pm_max, false)
+
+func _refresh_enemy_hp() -> void:
+	var enemy := _get_first_enemy_unit()
+	if enemy == null:
+		enemy_resource_panel.hide()
+		return
+
+	enemy_resource_panel.show()
+	enemy_name_label.text = _get_unit_label(enemy)
+	_refresh_unit_hp(enemy, enemy_hp_bar, null, ENEMY_HP_COLOR)
+
+func _rebuild_resource_pips(container: HBoxContainer, current_value: int, max_value: int, is_round: bool) -> void:
+	for child in container.get_children():
+		child.queue_free()
+
+	for index in range(max_value):
+		var pip := Panel.new()
+		pip.custom_minimum_size = Vector2(14.0, 14.0)
+		pip.add_theme_stylebox_override(
+			"panel",
+			_create_pip_style(index < current_value, is_round)
+		)
+		container.add_child(pip)
+
+func _create_pip_style(is_active: bool, is_round: bool) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = RESOURCE_ACTIVE_COLOR if is_active else RESOURCE_EMPTY_COLOR
+	style.border_width_left = 1
+	style.border_width_top = 1
+	style.border_width_right = 1
+	style.border_width_bottom = 1
+	style.border_color = INACTIVE_BORDER_COLOR
+	if is_round:
+		style.corner_radius_top_left = 8
+		style.corner_radius_top_right = 8
+		style.corner_radius_bottom_left = 8
+		style.corner_radius_bottom_right = 8
+	else:
+		style.corner_radius_top_left = 2
+		style.corner_radius_top_right = 2
+		style.corner_radius_bottom_left = 2
+		style.corner_radius_bottom_right = 2
+	return style
+
+func _create_bar_fill_style(color: Color) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = color
+	style.corner_radius_top_left = 2
+	style.corner_radius_top_right = 2
+	style.corner_radius_bottom_left = 2
+	style.corner_radius_bottom_right = 2
+	return style
+
+func _get_unit_pv(unit: Node3D) -> Stat:
+	if unit == null or not is_instance_valid(unit):
+		return null
+	return unit.get("pv") as Stat
+
+func _get_first_enemy_unit() -> Node3D:
+	if combat_manager == null or combat_movement == null:
+		return null
+
+	for unit in combat_manager.units:
+		if unit != combat_movement.active_unit and unit != null and is_instance_valid(unit):
+			return unit
+	return null
