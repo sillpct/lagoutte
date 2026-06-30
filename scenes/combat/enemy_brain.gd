@@ -2,6 +2,9 @@ class_name EnemyBrain
 extends Node
 
 const START_CELL := Vector2i(8, 5)
+const TURN_START_PAUSE := 0.5
+const AFTER_MOVE_PAUSE := 0.45
+const BEFORE_END_TURN_PAUSE := 0.45
 
 @export var grid: CombatGrid
 @export var combat_manager: CombatManager
@@ -36,22 +39,44 @@ func play_turn() -> void:
 	if combat_manager.get_current_unit() != unit:
 		return
 
+	await get_tree().create_timer(TURN_START_PAUSE).timeout
+	if not _can_continue_turn():
+		return
+
 	var unit_cell := grid.world_to_cell(unit.global_position)
 	var target_cell := grid.world_to_cell(target.global_position)
 
 	if CombatRules.is_adjacent(unit_cell, target_cell):
 		combat_attack.try_attack(unit, target_cell)
 	else:
+		var cell_before_move := unit_cell
 		_move_toward_target(unit_cell, target_cell)
 		unit_cell = grid.world_to_cell(unit.global_position)
+		if unit_cell != cell_before_move:
+			await get_tree().create_timer(AFTER_MOVE_PAUSE).timeout
+			if not _can_continue_turn():
+				return
+			target_cell = grid.world_to_cell(target.global_position)
 		if CombatRules.is_adjacent(unit_cell, target_cell):
 			combat_attack.try_attack(unit, target_cell)
 
 	if is_instance_valid(unit) and combat_manager.units.has(unit):
 		if combat_manager.units.has(target):
+			await get_tree().create_timer(BEFORE_END_TURN_PAUSE).timeout
+			if not _can_continue_turn():
+				return
 			combat_manager.end_turn()
 		else:
 			print("Renégat de secte : cible neutralisée.")
+
+func _can_continue_turn() -> bool:
+	return (
+		is_instance_valid(unit)
+		and is_instance_valid(target)
+		and combat_manager.units.has(unit)
+		and combat_manager.units.has(target)
+		and combat_manager.get_current_unit() == unit
+	)
 
 func _move_toward_target(unit_cell: Vector2i, target_cell: Vector2i) -> void:
 	var pm_available := combat_manager.get_pm_current(unit)
