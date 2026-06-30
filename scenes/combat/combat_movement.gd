@@ -38,7 +38,7 @@ func _ready() -> void:
 		return
 
 	cursor_cell = START_CELL
-	set_combat_mode(PlayerCombatMode.NEUTRAL)
+	set_combat_mode(PlayerCombatMode.MOVEMENT)
 	print(
 		"Case (5, 5) — occupant : ", grid.get_occupant(5, 5),
 		" | libre : ", grid.is_cell_free(5, 5)
@@ -177,8 +177,11 @@ func _refresh_reachable_cells() -> void:
 	print("Cases atteignables : ", _reachable_cells)
 	_refresh_display()
 
-func _on_turn_started(_unit: Node) -> void:
-	set_combat_mode(PlayerCombatMode.NEUTRAL)
+func _on_turn_started(unit: Node) -> void:
+	if unit == active_unit:
+		set_combat_mode(PlayerCombatMode.MOVEMENT)
+	else:
+		set_combat_mode(PlayerCombatMode.NEUTRAL)
 
 func _refresh_display() -> void:
 	if is_attack_mode_active():
