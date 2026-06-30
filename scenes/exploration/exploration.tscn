@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://dl8t3dtna6qqd" path="res://scenes/combat/sect_renegade.gd" id="10_sect_renegade"]
 [ext_resource type="Resource" path="res://data/incarnations/incarnation_renegat_secte.tres" id="11_renegade_data"]
 [ext_resource type="Script" uid="uid://clgwxcuk1pa0q" path="res://scenes/combat/enemy_brain.gd" id="12_enemy_brain"]
+[ext_resource type="PackedScene" path="res://scenes/combat/combat_ui.tscn" id="13_combat_ui"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_cvbhj"]
 size = Vector3(20, 0.1, 20)
@@ -78,6 +79,9 @@ combat_manager = NodePath("../CombatManager")
 combat_attack = NodePath("../CombatAttack")
 unit = NodePath("../SectRenegade")
 target = NodePath("../Player")
+
+[node name="CombatUI" parent="." node_paths=PackedStringArray("combat_manager") instance=ExtResource("13_combat_ui")]
+combat_manager = NodePath("../CombatManager")
 
 [node name="SunLight" type="DirectionalLight3D" parent="." unique_id=893214508]
 transform = Transform3D(0.70710677, -0.61237246, 0.35355335, 0, 0.49999997, 0.86602545, -0.70710677, -0.61237246, 0.35355335, 0, 0, 0)
