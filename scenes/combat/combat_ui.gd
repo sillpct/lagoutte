@@ -32,6 +32,8 @@ func _ready() -> void:
 			_event_bus.turn_ended.connect(_on_turn_changed)
 	if not combat_movement.mode_changed.is_connected(_on_combat_mode_changed):
 		combat_movement.mode_changed.connect(_on_combat_mode_changed)
+	if not combat_manager.unit_resources_changed.is_connected(_on_unit_resources_changed):
+		combat_manager.unit_resources_changed.connect(_on_unit_resources_changed)
 
 	refresh_turn_order()
 	_refresh_end_turn_button()
@@ -130,14 +132,16 @@ func _on_end_turn_button_pressed() -> void:
 	_refresh_action_buttons()
 
 func _refresh_action_buttons() -> void:
-	var actions_enabled := _can_player_use_actions()
-	movement_button.disabled = not actions_enabled
-	attack_button.disabled = not actions_enabled
-
-	if combat_movement == null:
+	if combat_manager == null or combat_movement == null:
+		movement_button.disabled = true
+		attack_button.disabled = true
 		movement_button.set_pressed_no_signal(false)
 		attack_button.set_pressed_no_signal(false)
 		return
+
+	var actions_enabled := _can_player_use_actions()
+	movement_button.disabled = not actions_enabled or not combat_manager.can_unit_move(combat_movement.active_unit)
+	attack_button.disabled = not actions_enabled or not combat_manager.can_unit_attack(combat_movement.active_unit)
 
 	movement_button.set_pressed_no_signal(combat_movement.is_movement_mode_active())
 	attack_button.set_pressed_no_signal(combat_movement.is_attack_mode_active())
@@ -150,16 +154,19 @@ func _can_player_use_actions() -> bool:
 	)
 
 func _on_movement_button_pressed() -> void:
-	if not _can_player_use_actions():
+	if not _can_player_use_actions() or not combat_manager.can_unit_move(combat_movement.active_unit):
 		return
 	combat_movement.toggle_movement_mode()
 	_refresh_action_buttons()
 
 func _on_attack_button_pressed() -> void:
-	if not _can_player_use_actions():
+	if not _can_player_use_actions() or not combat_manager.can_unit_attack(combat_movement.active_unit):
 		return
 	combat_movement.toggle_attack_mode()
 	_refresh_action_buttons()
 
 func _on_combat_mode_changed(_new_mode: int) -> void:
+	_refresh_action_buttons()
+
+func _on_unit_resources_changed(_unit: Node3D) -> void:
 	_refresh_action_buttons()

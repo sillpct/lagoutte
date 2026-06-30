@@ -32,6 +32,8 @@ func _ready() -> void:
 	_event_bus = get_node_or_null("/root/EventBus")
 	if _event_bus != null and not _event_bus.turn_started.is_connected(_on_turn_started):
 		_event_bus.turn_started.connect(_on_turn_started)
+	if not combat_manager.unit_resources_changed.is_connected(_on_unit_resources_changed):
+		combat_manager.unit_resources_changed.connect(_on_unit_resources_changed)
 
 	active_unit.set_physics_process(false)
 
@@ -211,6 +213,10 @@ func _refresh_neutral_display() -> void:
 func set_combat_mode(new_mode: PlayerCombatMode) -> void:
 	if new_mode != PlayerCombatMode.NEUTRAL and combat_manager.get_current_unit() != active_unit:
 		return
+	if new_mode == PlayerCombatMode.MOVEMENT and not combat_manager.can_unit_move(active_unit):
+		return
+	if new_mode == PlayerCombatMode.ATTACK and not combat_manager.can_unit_attack(active_unit):
+		return
 
 	current_mode = new_mode
 	match current_mode:
@@ -249,3 +255,11 @@ func is_movement_mode_active() -> bool:
 
 func is_attack_mode_active() -> bool:
 	return current_mode == PlayerCombatMode.ATTACK
+
+func _on_unit_resources_changed(unit: Node3D) -> void:
+	if unit != active_unit:
+		return
+	if is_movement_mode_active() and not combat_manager.can_unit_move(active_unit):
+		set_neutral_mode()
+	elif is_attack_mode_active() and not combat_manager.can_unit_attack(active_unit):
+		set_neutral_mode()

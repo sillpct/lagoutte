@@ -1,6 +1,8 @@
 class_name CombatManager
 extends Node
 
+signal unit_resources_changed(unit: Node3D)
+
 @export var grid: CombatGrid
 @export var units: Array[Node3D] = []
 
@@ -47,6 +49,7 @@ func start_turn(unit: Node3D) -> void:
 		" — PM: ", get_pm_current(unit), "/", get_pm_max(unit),
 		", PA: ", get_pa_current(unit), "/", get_pa_max(unit)
 	)
+	unit_resources_changed.emit(unit)
 	if _event_bus != null:
 		_event_bus.turn_started.emit(unit)
 
@@ -89,7 +92,11 @@ func spend_pm(unit: Node3D, amount: int) -> bool:
 		return false
 
 	_resources_by_unit[unit]["pm_current"] = get_pm_current(unit) - amount
+	unit_resources_changed.emit(unit)
 	return true
+
+func can_unit_move(unit: Node3D) -> bool:
+	return get_pm_current(unit) > 0
 
 func get_pa_current(unit: Node3D) -> int:
 	return _get_unit_resource(unit, "pa_current")
@@ -102,7 +109,11 @@ func spend_pa(unit: Node3D, amount: int) -> bool:
 		return false
 
 	_resources_by_unit[unit]["pa_current"] = get_pa_current(unit) - amount
+	unit_resources_changed.emit(unit)
 	return true
+
+func can_unit_attack(unit: Node3D) -> bool:
+	return get_pa_current(unit) > 0
 
 func remove_unit(unit: Node3D) -> void:
 	if unit == null:
