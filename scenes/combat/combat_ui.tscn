@@ -32,6 +32,41 @@ alignment = 1
 theme_override_constants/separation = 8
 mouse_filter = 2
 
+[node name="ActionBar" type="MarginContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -76.0
+offset_right = 150.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+mouse_filter = 2
+
+[node name="ActionButtons" type="HBoxContainer" parent="Root/ActionBar"]
+layout_mode = 2
+theme_override_constants/separation = 8
+mouse_filter = 2
+
+[node name="MovementButton" type="Button" parent="Root/ActionBar/ActionButtons"]
+custom_minimum_size = Vector2(128, 42)
+layout_mode = 2
+toggle_mode = true
+text = "Déplacement"
+
+[node name="AttackButton" type="Button" parent="Root/ActionBar/ActionButtons"]
+custom_minimum_size = Vector2(128, 42)
+layout_mode = 2
+toggle_mode = true
+text = "Attaque"
+
 [node name="BottomBar" type="MarginContainer" parent="Root"]
 layout_mode = 1
 anchors_preset = 3
@@ -53,4 +88,6 @@ mouse_filter = 2
 layout_mode = 2
 text = "Passer le tour"
 
+[connection signal="pressed" from="Root/ActionBar/ActionButtons/MovementButton" to="." method="_on_movement_button_pressed"]
+[connection signal="pressed" from="Root/ActionBar/ActionButtons/AttackButton" to="." method="_on_attack_button_pressed"]
 [connection signal="pressed" from="Root/BottomBar/EndTurnButton" to="." method="_on_end_turn_button_pressed"]

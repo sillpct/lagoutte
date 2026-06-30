@@ -7,6 +7,8 @@ enum PlayerCombatMode {
 	ATTACK,
 }
 
+signal mode_changed(new_mode: int)
+
 const START_CELL := Vector2i(5, 5)
 const NORMAL_CELL_COLOR := Color(0.22, 0.28, 0.32)
 const REACHABLE_CELL_COLOR := Color(0.15, 0.35, 0.75)
@@ -222,6 +224,7 @@ func set_combat_mode(new_mode: PlayerCombatMode) -> void:
 			print("Mode combat : attaque")
 			if combat_attack != null and combat_attack.has_method("refresh_attack_cells"):
 				combat_attack.refresh_attack_cells()
+	mode_changed.emit(current_mode)
 
 func set_neutral_mode() -> void:
 	set_combat_mode(PlayerCombatMode.NEUTRAL)

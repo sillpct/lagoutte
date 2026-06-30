@@ -7,8 +7,11 @@ const ACTIVE_BORDER_COLOR := Color(1.0, 0.9, 0.25)
 const INACTIVE_BORDER_COLOR := Color(0.04, 0.05, 0.07)
 
 @export var combat_manager: CombatManager
+@export var combat_movement: CombatMovement
 
 @onready var turn_order_bar: HBoxContainer = $Root/MarginContainer/TurnOrderBar
+@onready var movement_button: Button = $Root/ActionBar/ActionButtons/MovementButton
+@onready var attack_button: Button = $Root/ActionBar/ActionButtons/AttackButton
 @onready var end_turn_button: Button = $Root/BottomBar/EndTurnButton
 
 var _event_bus = null
@@ -17,6 +20,9 @@ func _ready() -> void:
 	if combat_manager == null:
 		push_warning("CombatUI a besoin d'un CombatManager pour afficher l'ordre de tour.")
 		return
+	if combat_movement == null:
+		push_warning("CombatUI a besoin d'un CombatMovement pour afficher les actions de combat.")
+		return
 
 	_event_bus = get_node_or_null("/root/EventBus")
 	if _event_bus != null:
@@ -24,9 +30,12 @@ func _ready() -> void:
 			_event_bus.turn_started.connect(_on_turn_changed)
 		if not _event_bus.turn_ended.is_connected(_on_turn_changed):
 			_event_bus.turn_ended.connect(_on_turn_changed)
+	if not combat_movement.mode_changed.is_connected(_on_combat_mode_changed):
+		combat_movement.mode_changed.connect(_on_combat_mode_changed)
 
 	refresh_turn_order()
 	_refresh_end_turn_button()
+	_refresh_action_buttons()
 
 func refresh_turn_order() -> void:
 	for child in turn_order_bar.get_children():
@@ -100,10 +109,12 @@ func _listen_to_unit_removal(unit: Node3D) -> void:
 func _on_turn_changed(_unit: Node) -> void:
 	refresh_turn_order()
 	_refresh_end_turn_button()
+	_refresh_action_buttons()
 
 func _on_unit_removed_from_tree() -> void:
 	call_deferred("refresh_turn_order")
 	call_deferred("_refresh_end_turn_button")
+	call_deferred("_refresh_action_buttons")
 
 func _refresh_end_turn_button() -> void:
 	if combat_manager == null:
@@ -116,3 +127,39 @@ func _on_end_turn_button_pressed() -> void:
 		return
 	combat_manager.request_player_end_turn()
 	_refresh_end_turn_button()
+	_refresh_action_buttons()
+
+func _refresh_action_buttons() -> void:
+	var actions_enabled := _can_player_use_actions()
+	movement_button.disabled = not actions_enabled
+	attack_button.disabled = not actions_enabled
+
+	if combat_movement == null:
+		movement_button.set_pressed_no_signal(false)
+		attack_button.set_pressed_no_signal(false)
+		return
+
+	movement_button.set_pressed_no_signal(combat_movement.is_movement_mode_active())
+	attack_button.set_pressed_no_signal(combat_movement.is_attack_mode_active())
+
+func _can_player_use_actions() -> bool:
+	return (
+		combat_manager != null
+		and combat_movement != null
+		and combat_manager.can_player_end_turn()
+	)
+
+func _on_movement_button_pressed() -> void:
+	if not _can_player_use_actions():
+		return
+	combat_movement.toggle_movement_mode()
+	_refresh_action_buttons()
+
+func _on_attack_button_pressed() -> void:
+	if not _can_player_use_actions():
+		return
+	combat_movement.toggle_attack_mode()
+	_refresh_action_buttons()
+
+func _on_combat_mode_changed(_new_mode: int) -> void:
+	_refresh_action_buttons()
