@@ -80,7 +80,7 @@ combat_attack = NodePath("../CombatAttack")
 unit = NodePath("../SectRenegade")
 target = NodePath("../Player")
 
-[node name="CombatUI" parent="." node_paths=PackedStringArray("combat_manager", "combat_movement") instance=ExtResource("13_combat_ui")]
+[node name="CombatUI" parent="." unique_id=1135194789 node_paths=PackedStringArray("combat_manager", "combat_movement") instance=ExtResource("13_combat_ui")]
 combat_manager = NodePath("../CombatManager")
 combat_movement = NodePath("../CombatMovement")
 
