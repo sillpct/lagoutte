@@ -131,7 +131,6 @@ func get_attack_cells() -> Array[Vector2i]:
 
 func refresh_attack_cells() -> void:
 	_attack_cells = get_attack_cells()
-	print("Cases d'attaque : ", _attack_cells)
 	refresh_attack_display()
 
 func refresh_attack_display() -> void:
