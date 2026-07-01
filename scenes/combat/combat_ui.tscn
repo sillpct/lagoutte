@@ -61,6 +61,25 @@ custom_minimum_size = Vector2(220, 16)
 layout_mode = 2
 show_percentage = false
 
+[node name="CombatResultLabel" type="Label" parent="Root"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -18.0
+offset_right = 60.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 32
+text = "gagné"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="PlayerResourcePanel" type="MarginContainer" parent="Root"]
 layout_mode = 1
 anchors_preset = 2
