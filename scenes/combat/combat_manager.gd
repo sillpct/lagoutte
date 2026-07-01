@@ -80,7 +80,6 @@ func end_turn() -> void:
 		return
 	if _event_bus != null:
 		_event_bus.turn_ended.emit(unit)
-	print("Fin du tour de ", unit.name)
 
 	current_unit_index = wrapi(current_unit_index + 1, 0, units.size())
 	start_turn(get_current_unit())
