@@ -1,11 +1,18 @@
 class_name CombatManager
 extends Node
 
+enum CombatIssue {
+	VICTORY,
+	DEFEAT,
+}
+
 signal unit_resources_changed(unit: Node3D)
+signal combat_ended(issue: CombatIssue)
 
 @export var grid: CombatGrid
 @export var units: Array[Node3D] = []
 
+var combat_over := false
 var current_unit_index := 0
 var _resources_by_unit: Dictionary = {}
 var _event_bus = null
@@ -22,6 +29,8 @@ func _ready() -> void:
 	start_turn(get_current_unit())
 
 func _unhandled_input(event: InputEvent) -> void:
+	if combat_over:
+		return
 	if get_current_unit() == null:
 		return
 	if event.is_action_pressed("end_turn"):
@@ -29,6 +38,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func start_turn(unit: Node3D) -> void:
+	if combat_over:
+		return
 	if unit == null:
 		return
 
@@ -59,6 +70,8 @@ func notify_unit_resources_changed(unit: Node3D) -> void:
 	unit_resources_changed.emit(unit)
 
 func end_turn() -> void:
+	if combat_over:
+		return
 	if units.is_empty():
 		return
 
@@ -73,15 +86,21 @@ func end_turn() -> void:
 	start_turn(get_current_unit())
 
 func request_player_end_turn() -> void:
+	if combat_over:
+		return
 	if not can_player_end_turn():
 		return
 	end_turn()
 
 func can_player_end_turn() -> bool:
+	if combat_over:
+		return false
 	var unit := get_current_unit()
 	return unit != null and unit.name == "Player"
 
 func get_current_unit() -> Node3D:
+	if combat_over:
+		return null
 	if units.is_empty() or current_unit_index < 0 or current_unit_index >= units.size():
 		return null
 	return units[current_unit_index]
@@ -143,8 +162,35 @@ func remove_unit(unit: Node3D) -> void:
 	else:
 		current_unit_index = 0
 
+	_check_combat_end()
 	print(unit.name, " quitte le combat.")
 	unit.queue_free()
+
+func _check_combat_end() -> void:
+	if combat_over:
+		return
+
+	var has_player := false
+	var has_enemy := false
+	for unit in units:
+		if unit.name == "Player":
+			has_player = true
+		else:
+			has_enemy = true
+
+	if not has_player:
+		_end_combat(CombatIssue.DEFEAT)
+	elif not has_enemy:
+		_end_combat(CombatIssue.VICTORY)
+
+func _end_combat(issue: CombatIssue) -> void:
+	if combat_over:
+		return
+
+	combat_over = true
+	var issue_text := "victoire" if issue == CombatIssue.VICTORY else "défaite"
+	print("Combat terminé : ", issue_text)
+	combat_ended.emit(issue)
 
 func _get_unit_resource(unit: Node3D, resource_name: String) -> int:
 	if not _resources_by_unit.has(unit):
