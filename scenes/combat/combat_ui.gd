@@ -26,6 +26,7 @@ const RESOURCE_EMPTY_COLOR := Color(0.16, 0.17, 0.19)
 @onready var enemy_resource_panel: MarginContainer = $Root/EnemyResourcePanel
 @onready var enemy_name_label: Label = $Root/EnemyResourcePanel/EnemyResources/EnemyNameLabel
 @onready var enemy_hp_bar: ProgressBar = $Root/EnemyResourcePanel/EnemyResources/EnemyHPBar
+@onready var combat_result_label: Label = $Root/CombatResultLabel
 
 var _event_bus = null
 
@@ -47,7 +48,10 @@ func _ready() -> void:
 		combat_movement.mode_changed.connect(_on_combat_mode_changed)
 	if not combat_manager.unit_resources_changed.is_connected(_on_unit_resources_changed):
 		combat_manager.unit_resources_changed.connect(_on_unit_resources_changed)
+	if not combat_manager.combat_ended.is_connected(_on_combat_ended):
+		combat_manager.combat_ended.connect(_on_combat_ended)
 
+	combat_result_label.hide()
 	refresh_turn_order()
 	_refresh_end_turn_button()
 	_refresh_action_buttons()
@@ -138,10 +142,10 @@ func _refresh_end_turn_button() -> void:
 	if combat_manager == null:
 		end_turn_button.disabled = true
 		return
-	end_turn_button.disabled = not combat_manager.can_player_end_turn()
+	end_turn_button.disabled = combat_manager.combat_over or not combat_manager.can_player_end_turn()
 
 func _on_end_turn_button_pressed() -> void:
-	if combat_manager == null:
+	if combat_manager == null or combat_manager.combat_over:
 		return
 	combat_manager.request_player_end_turn()
 	_refresh_end_turn_button()
@@ -166,6 +170,7 @@ func _can_player_use_actions() -> bool:
 	return (
 		combat_manager != null
 		and combat_movement != null
+		and not combat_manager.combat_over
 		and combat_manager.can_player_end_turn()
 	)
 
@@ -188,11 +193,23 @@ func _on_unit_resources_changed(_unit: Node3D) -> void:
 	_refresh_action_buttons()
 	_refresh_resource_bars()
 
+func _on_combat_ended(issue: int) -> void:
+	if issue == CombatManager.CombatIssue.VICTORY:
+		combat_result_label.text = "gagné"
+	else:
+		combat_result_label.text = "perdu"
+	combat_result_label.show()
+	_refresh_end_turn_button()
+	_refresh_action_buttons()
+	_refresh_resource_bars()
+
 func _refresh_resource_bars() -> void:
 	if combat_manager == null or combat_movement == null:
 		return
 
-	var player_unit := combat_movement.active_unit
+	var player_unit: Node3D = combat_movement.active_unit
+	if not is_instance_valid(player_unit):
+		player_unit = null
 	_refresh_unit_hp(player_unit, player_hp_bar, player_hp_label, PLAYER_HP_COLOR)
 	_refresh_player_pa_pm(player_unit)
 	_refresh_enemy_hp()
