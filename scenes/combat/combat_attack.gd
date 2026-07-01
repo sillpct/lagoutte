@@ -26,6 +26,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if grid == null or combat_manager == null or combat_movement == null or active_unit == null:
 		return
+	if combat_manager.combat_over:
+		return
 
 	if event.is_action_pressed("toggle_attack_mode"):
 		combat_movement.toggle_attack_mode()
@@ -48,10 +50,14 @@ func is_attack_mode_active() -> bool:
 	return combat_movement != null and combat_movement.is_attack_mode_active()
 
 func try_attack_selected_cell() -> void:
+	if combat_manager.combat_over:
+		return
 	if try_attack(active_unit, combat_movement.cursor_cell):
 		combat_movement.set_neutral_mode()
 
 func try_attack(attacker: Node3D, target_cell: Vector2i) -> bool:
+	if combat_manager.combat_over:
+		return false
 	if combat_manager.get_current_unit() != attacker:
 		print("Attaque refusée : ce n'est pas le tour de cette unité.")
 		return false
@@ -107,6 +113,8 @@ func get_attack_damage(attacker: Node3D) -> int:
 
 func get_attack_cells_for(unit: Node3D) -> Array[Vector2i]:
 	var result: Array[Vector2i] = []
+	if combat_manager.combat_over:
+		return result
 	if combat_manager.get_current_unit() != unit:
 		return result
 
@@ -137,6 +145,8 @@ func refresh_attack_display() -> void:
 	grid.set_cell_color(combat_movement.cursor_cell.x, combat_movement.cursor_cell.y, CURSOR_CELL_COLOR)
 
 func _on_turn_started(unit: Node) -> void:
+	if combat_manager.combat_over:
+		return
 	if unit != active_unit or not is_attack_mode_active():
 		return
 	refresh_attack_cells()
