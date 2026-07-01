@@ -28,11 +28,15 @@ func _ready() -> void:
 		push_warning("Impossible de placer le renégat de secte sur la case de test (8, 5).")
 
 func _on_turn_started(active_unit: Node) -> void:
+	if combat_manager.combat_over:
+		return
 	if active_unit != unit:
 		return
 	call_deferred("play_turn")
 
 func play_turn() -> void:
+	if combat_manager.combat_over:
+		return
 	if not is_instance_valid(unit) or not is_instance_valid(target) or not combat_manager.units.has(target):
 		print("Renégat de secte : aucune cible active.")
 		return
@@ -48,9 +52,13 @@ func play_turn() -> void:
 
 	if CombatRules.is_adjacent(unit_cell, target_cell):
 		combat_attack.try_attack(unit, target_cell)
+		if combat_manager.combat_over:
+			return
 	else:
 		var cell_before_move := unit_cell
 		_move_toward_target(unit_cell, target_cell)
+		if combat_manager.combat_over:
+			return
 		unit_cell = grid.world_to_cell(unit.global_position)
 		if unit_cell != cell_before_move:
 			await get_tree().create_timer(AFTER_MOVE_PAUSE).timeout
@@ -59,6 +67,8 @@ func play_turn() -> void:
 			target_cell = grid.world_to_cell(target.global_position)
 		if CombatRules.is_adjacent(unit_cell, target_cell):
 			combat_attack.try_attack(unit, target_cell)
+			if combat_manager.combat_over:
+				return
 
 	if is_instance_valid(unit) and combat_manager.units.has(unit):
 		if combat_manager.units.has(target):
@@ -71,7 +81,8 @@ func play_turn() -> void:
 
 func _can_continue_turn() -> bool:
 	return (
-		is_instance_valid(unit)
+		not combat_manager.combat_over
+		and is_instance_valid(unit)
 		and is_instance_valid(target)
 		and combat_manager.units.has(unit)
 		and combat_manager.units.has(target)
@@ -79,6 +90,8 @@ func _can_continue_turn() -> bool:
 	)
 
 func _move_toward_target(unit_cell: Vector2i, target_cell: Vector2i) -> void:
+	if combat_manager.combat_over:
+		return
 	var pm_available := combat_manager.get_pm_current(unit)
 	var destination := CombatRules.get_step_toward(unit_cell, target_cell, grid, pm_available)
 	if destination == unit_cell:
