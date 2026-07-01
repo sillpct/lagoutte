@@ -186,7 +186,6 @@ func _try_move_to_cursor() -> void:
 
 func _refresh_reachable_cells() -> void:
 	_reachable_cells = get_reachable_cells()
-	print("Cases atteignables : ", _reachable_cells)
 	_refresh_display()
 
 func _on_turn_started(unit: Node) -> void:
@@ -233,13 +232,10 @@ func set_combat_mode(new_mode: PlayerCombatMode) -> void:
 	current_mode = new_mode
 	match current_mode:
 		PlayerCombatMode.NEUTRAL:
-			print("Mode combat : neutre")
 			_refresh_neutral_display()
 		PlayerCombatMode.MOVEMENT:
-			print("Mode combat : déplacement")
 			_refresh_reachable_cells()
 		PlayerCombatMode.ATTACK:
-			print("Mode combat : attaque")
 			if combat_attack != null and combat_attack.has_method("refresh_attack_cells"):
 				combat_attack.refresh_attack_cells()
 	mode_changed.emit(current_mode)
