@@ -34,6 +34,8 @@ func _ready() -> void:
 		_event_bus.turn_started.connect(_on_turn_started)
 	if not combat_manager.unit_resources_changed.is_connected(_on_unit_resources_changed):
 		combat_manager.unit_resources_changed.connect(_on_unit_resources_changed)
+	if not combat_manager.combat_ended.is_connected(_on_combat_ended):
+		combat_manager.combat_ended.connect(_on_combat_ended)
 
 	active_unit.set_physics_process(false)
 
@@ -50,6 +52,8 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if grid == null or combat_manager == null or active_unit == null:
+		return
+	if combat_manager.combat_over:
 		return
 
 	if event is InputEventMouseMotion:
@@ -95,6 +99,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func get_reachable_cells() -> Array[Vector2i]:
 	var result: Array[Vector2i] = []
+	if combat_manager.combat_over:
+		return result
 	if combat_manager.get_current_unit() != active_unit:
 		return result
 
@@ -146,6 +152,8 @@ func _update_cursor_from_mouse(mouse_position: Vector2) -> void:
 	_refresh_display()
 
 func _try_move_to_cursor() -> void:
+	if combat_manager.combat_over:
+		return
 	if combat_manager.get_current_unit() != active_unit:
 		print("Déplacement refusé : ce n'est pas le tour de cette unité.")
 		return
@@ -182,6 +190,8 @@ func _refresh_reachable_cells() -> void:
 	_refresh_display()
 
 func _on_turn_started(unit: Node) -> void:
+	if combat_manager.combat_over:
+		return
 	if unit == active_unit:
 		set_combat_mode(PlayerCombatMode.MOVEMENT)
 	else:
@@ -211,6 +221,8 @@ func _refresh_neutral_display() -> void:
 			grid.set_cell_color(col, row, NORMAL_CELL_COLOR)
 
 func set_combat_mode(new_mode: PlayerCombatMode) -> void:
+	if combat_manager.combat_over and new_mode != PlayerCombatMode.NEUTRAL:
+		return
 	if new_mode != PlayerCombatMode.NEUTRAL and combat_manager.get_current_unit() != active_unit:
 		return
 	if new_mode == PlayerCombatMode.MOVEMENT and not combat_manager.can_unit_move(active_unit):
@@ -263,3 +275,8 @@ func _on_unit_resources_changed(unit: Node3D) -> void:
 		set_neutral_mode()
 	elif is_attack_mode_active() and not combat_manager.can_unit_attack(active_unit):
 		set_neutral_mode()
+
+func _on_combat_ended(_issue: int) -> void:
+	current_mode = PlayerCombatMode.NEUTRAL
+	_refresh_neutral_display()
+	mode_changed.emit(current_mode)
