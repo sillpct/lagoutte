@@ -11,8 +11,14 @@ const HOVERABLE_UNIT_COLLISION_MASK := 4
 @onready var hp_label: Label = $Root/Panel/Content/HPLabel
 
 var hovered_unit: Node3D
+var _highlighted_mesh: MeshInstance3D
+var _original_material_override: Material
+var _highlight_material: StandardMaterial3D
 
 func _ready() -> void:
+	_highlight_material = StandardMaterial3D.new()
+	_highlight_material.albedo_color = Color.WHITE
+	_highlight_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	panel.hide()
 	if combat_manager != null and not combat_manager.unit_resources_changed.is_connected(_on_unit_resources_changed):
 		combat_manager.unit_resources_changed.connect(_on_unit_resources_changed)
@@ -20,9 +26,10 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	var detected_unit := _detect_hovered_unit()
 	if detected_unit != hovered_unit:
-		hovered_unit = detected_unit
+		_set_hovered_unit(detected_unit)
 
 	if hovered_unit == null or not is_instance_valid(hovered_unit):
+		_set_hovered_unit(null)
 		panel.hide()
 		return
 
@@ -68,6 +75,36 @@ func _refresh_panel() -> void:
 		hp_label.text = "PV: %d/%d" % [pv.current_value, pv.max_value]
 
 	panel.show()
+
+func _set_hovered_unit(unit: Node3D) -> void:
+	_restore_highlight()
+	hovered_unit = unit
+	if hovered_unit != null and is_instance_valid(hovered_unit):
+		_apply_highlight(hovered_unit)
+
+func _apply_highlight(unit: Node3D) -> void:
+	var mesh := _find_first_mesh_instance(unit)
+	if mesh == null:
+		return
+
+	_highlighted_mesh = mesh
+	_original_material_override = mesh.material_override
+	_highlighted_mesh.material_override = _highlight_material
+
+func _restore_highlight() -> void:
+	if _highlighted_mesh != null and is_instance_valid(_highlighted_mesh):
+		_highlighted_mesh.material_override = _original_material_override
+	_highlighted_mesh = null
+	_original_material_override = null
+
+func _find_first_mesh_instance(node: Node) -> MeshInstance3D:
+	for child in node.get_children():
+		if child is MeshInstance3D:
+			return child as MeshInstance3D
+		var found_mesh := _find_first_mesh_instance(child)
+		if found_mesh != null:
+			return found_mesh
+	return null
 
 func _get_unit_label(unit: Node3D) -> String:
 	if unit.name == "Player":
