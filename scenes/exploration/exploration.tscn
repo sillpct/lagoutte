@@ -97,8 +97,10 @@ target = NodePath("../Player")
 combat_manager = NodePath("../CombatManager")
 combat_movement = NodePath("../CombatMovement")
 
-[node name="UnitHoverUI" parent="." unique_id=528331503 node_paths=PackedStringArray("combat_manager") instance=ExtResource("14_unit_hover_ui")]
+[node name="UnitHoverUI" parent="." unique_id=528331503 node_paths=PackedStringArray("combat_manager", "combat_movement", "combat_attack") instance=ExtResource("14_unit_hover_ui")]
 combat_manager = NodePath("../CombatManager")
+combat_movement = NodePath("../CombatMovement")
+combat_attack = NodePath("../CombatAttack")
 
 [node name="SunLight" type="DirectionalLight3D" parent="." unique_id=893214508]
 transform = Transform3D(0.70710677, -0.61237246, 0.35355335, 0, 0.49999997, 0.86602545, -0.70710677, -0.61237246, 0.35355335, 0, 0, 0)
