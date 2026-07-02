@@ -93,15 +93,27 @@ func _move_toward_target(unit_cell: Vector2i, target_cell: Vector2i) -> void:
 	if combat_manager.combat_over:
 		return
 	var pm_available := combat_manager.get_pm_current(unit)
-	var destination := CombatRules.get_step_toward(unit_cell, target_cell, grid, pm_available)
-	if destination == unit_cell:
+	if pm_available <= 0:
+		print("Renégat de secte : PM insuffisants.")
+		return
+
+	var origin := unit.global_position
+	var destination_cell := _get_best_adjacent_attack_cell(unit_cell, target_cell)
+	var destination_world := grid.cell_to_world(destination_cell.x, destination_cell.y) if destination_cell != unit_cell else target.global_position
+	var limited_destination := CombatRules.get_world_step_toward(
+		origin,
+		destination_world,
+		float(pm_available)
+	)
+	var distance_traveled := CombatRules.get_world_distance(origin, limited_destination)
+	if is_zero_approx(distance_traveled):
 		print("Renégat de secte : aucun déplacement possible.")
 		return
 
-	var cost := CombatRules.get_manhattan_distance(unit_cell, destination)
+	var cost := ceili(clampf(distance_traveled, 0.0, float(pm_available)))
 	if cost <= 0:
 		return
-	if not grid.place_unit(unit, destination.x, destination.y):
+	if not grid.place_unit_at_world(unit, limited_destination):
 		print("Renégat de secte : placement impossible.")
 		return
 	if not combat_manager.spend_pm(unit, cost):
@@ -109,8 +121,34 @@ func _move_toward_target(unit_cell: Vector2i, target_cell: Vector2i) -> void:
 		return
 
 	print(
-		"Renégat de secte avance vers ", destination,
+		"Renégat de secte avance vers ", unit.global_position,
 		" — coût: ", cost,
 		", PM restants: ", combat_manager.get_pm_current(unit),
 		" / ", combat_manager.get_pm_max(unit)
 	)
+
+func _get_best_adjacent_attack_cell(unit_cell: Vector2i, target_cell: Vector2i) -> Vector2i:
+	var best_cell := unit_cell
+	var best_distance := INF
+	var adjacent_cells := [
+		Vector2i(target_cell.x + 1, target_cell.y),
+		Vector2i(target_cell.x - 1, target_cell.y),
+		Vector2i(target_cell.x, target_cell.y + 1),
+		Vector2i(target_cell.x, target_cell.y - 1),
+	]
+
+	for candidate in adjacent_cells:
+		if not grid.is_valid_cell(candidate.x, candidate.y):
+			continue
+		var occupant := grid.get_occupant(candidate.x, candidate.y)
+		if occupant != null and occupant != unit:
+			continue
+		var distance := CombatRules.get_world_distance(
+			grid.cell_to_world(unit_cell.x, unit_cell.y),
+			grid.cell_to_world(candidate.x, candidate.y)
+		)
+		if distance < best_distance:
+			best_cell = candidate
+			best_distance = distance
+
+	return best_cell
