@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://clgwxcuk1pa0q" path="res://scenes/combat/enemy_brain.gd" id="12_enemy_brain"]
 [ext_resource type="PackedScene" path="res://scenes/combat/combat_ui.tscn" id="13_combat_ui"]
 [ext_resource type="PackedScene" uid="uid://cva4qf4lhn5w7" path="res://scenes/ui/unit_hover_ui.tscn" id="14_unit_hover_ui"]
+[ext_resource type="Script" uid="uid://c1ume82aalxlw" path="res://scenes/combat/combat_range_visual.gd" id="15_combat_range_visual"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_cvbhj"]
 size = Vector3(20, 0.1, 20)
@@ -48,6 +49,12 @@ mesh = SubResource("BoxMesh_cvbhj")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0.06, -4.5)
 
 [node name="Player" parent="." unique_id=295733018 instance=ExtResource("1_toxw2")]
+
+[node name="CombatRangeVisual" type="MeshInstance3D" parent="." unique_id=1278997254 node_paths=PackedStringArray("combat_movement", "combat_manager", "active_unit")]
+script = ExtResource("15_combat_range_visual")
+combat_movement = NodePath("../CombatMovement")
+combat_manager = NodePath("../CombatManager")
+active_unit = NodePath("../Player")
 
 [node name="CombatManager" type="Node" parent="." unique_id=1196098833 node_paths=PackedStringArray("grid", "units")]
 script = ExtResource("8_combat_manager")
