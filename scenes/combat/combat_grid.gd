@@ -4,6 +4,7 @@ extends Node3D
 @export var grid_width: int = 10
 @export var grid_height: int = 10
 @export var cell_size: float = 1.0
+@export var show_cell_visuals := false
 
 const DEFAULT_OCCUPATION_RADIUS := 0.45
 
@@ -120,12 +121,17 @@ func _unregister_unit(unit: Node3D) -> void:
 # --- Affichage temporaire ---
 
 func _ready() -> void:
-	_build_cell_visuals()
+	if show_cell_visuals:
+		_build_cell_visuals()
+	else:
+		cell_visuals.hide()
 
 func get_cell_visual(col: int, row: int) -> MeshInstance3D:
 	return cell_visuals.get_node_or_null("Cell_%d_%d" % [col, row]) as MeshInstance3D
 
 func set_cell_color(col: int, row: int, color: Color) -> void:
+	if not show_cell_visuals:
+		return
 	var cell_visual := get_cell_visual(col, row)
 	if cell_visual == null:
 		return
