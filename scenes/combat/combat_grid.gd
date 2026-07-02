@@ -5,7 +5,10 @@ extends Node3D
 @export var grid_height: int = 10
 @export var cell_size: float = 1.0
 
-var _occupants: Dictionary = {}
+const DEFAULT_OCCUPATION_RADIUS := 0.45
+
+var _placed_units: Array[Node3D] = []
+var _occupation_radius_by_unit: Dictionary = {}
 
 @onready var cell_visuals: Node3D = $CellVisuals
 
@@ -28,30 +31,91 @@ func is_valid_cell(col: int, row: int) -> bool:
 # --- Occupation des cases ---
 
 func get_occupant(col: int, row: int) -> Node3D:
-	return _occupants.get(Vector2i(col, row), null)
+	var target_cell := Vector2i(col, row)
+	for unit in _placed_units:
+		if unit == null or not is_instance_valid(unit):
+			continue
+		if world_to_cell(unit.global_position) == target_cell:
+			return unit
+	return null
 
 func is_cell_free(col: int, row: int) -> bool:
 	return is_valid_cell(col, row) and get_occupant(col, row) == null
 
 func place_unit(unit: Node3D, col: int, row: int) -> bool:
-	if unit == null or not is_cell_free(col, row):
+	if not is_valid_cell(col, row):
 		return false
-
-	var previous_cell: Variant = null
-	for occupied_cell in _occupants:
-		if _occupants[occupied_cell] == unit:
-			previous_cell = occupied_cell
-			break
-	if previous_cell != null:
-		_occupants.erase(previous_cell)
-
-	var destination := Vector2i(col, row)
-	_occupants[destination] = unit
-	unit.global_position = cell_to_world(col, row)
-	return true
+	return place_unit_at_world(unit, cell_to_world(col, row))
 
 func clear_cell(col: int, row: int) -> void:
-	_occupants.erase(Vector2i(col, row))
+	var occupant := get_occupant(col, row)
+	if occupant == null:
+		return
+	_unregister_unit(occupant)
+
+# --- Occupation en positions monde ---
+
+func get_unit_position(unit: Node3D) -> Vector3:
+	if unit == null:
+		return Vector3.ZERO
+	return unit.global_position
+
+func get_unit_occupation_radius(unit: Node3D) -> float:
+	return float(_occupation_radius_by_unit.get(unit, DEFAULT_OCCUPATION_RADIUS))
+
+func set_unit_occupation_radius(unit: Node3D, radius: float) -> void:
+	if unit == null:
+		return
+	_occupation_radius_by_unit[unit] = maxf(0.0, radius)
+
+func is_world_position_free(
+	position: Vector3,
+	radius: float = DEFAULT_OCCUPATION_RADIUS,
+	ignore_unit: Node3D = null
+) -> bool:
+	var safe_radius := maxf(0.0, radius)
+	for unit in _placed_units:
+		if unit == null or not is_instance_valid(unit) or unit == ignore_unit:
+			continue
+		var minimum_distance := safe_radius + get_unit_occupation_radius(unit)
+		if CombatRules.get_world_distance(position, unit.global_position) < minimum_distance:
+			return false
+	return true
+
+func place_unit_at_world(
+	unit: Node3D,
+	world_position: Vector3,
+	radius: float = DEFAULT_OCCUPATION_RADIUS
+) -> bool:
+	if unit == null:
+		return false
+
+	var safe_radius := maxf(0.0, radius)
+	if not is_world_position_free(world_position, safe_radius, unit):
+		return false
+
+	_register_unit(unit)
+	set_unit_occupation_radius(unit, safe_radius)
+	unit.global_position = world_position
+	return true
+
+func get_units_in_radius(position: Vector3, radius: float) -> Array[Node3D]:
+	var units_in_radius: Array[Node3D] = []
+	var safe_radius := maxf(0.0, radius)
+	for unit in _placed_units:
+		if unit == null or not is_instance_valid(unit):
+			continue
+		if CombatRules.get_world_distance(position, unit.global_position) <= safe_radius:
+			units_in_radius.append(unit)
+	return units_in_radius
+
+func _register_unit(unit: Node3D) -> void:
+	if not _placed_units.has(unit):
+		_placed_units.append(unit)
+
+func _unregister_unit(unit: Node3D) -> void:
+	_placed_units.erase(unit)
+	_occupation_radius_by_unit.erase(unit)
 
 # --- Affichage temporaire ---
 
