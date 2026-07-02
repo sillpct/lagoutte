@@ -2,29 +2,24 @@ class_name CombatAttack
 extends Node
 
 const ATTACK_PA_COST := 1
+const MELEE_RANGE := 1.0
 const NORMAL_CELL_COLOR := Color(0.22, 0.28, 0.32)
-const ATTACK_CELL_COLOR := Color(0.85, 0.12, 0.10)
-const CURSOR_CELL_COLOR := Color(1.0, 0.85, 0.15)
 
 @export var grid: CombatGrid
 @export var combat_manager: CombatManager
 @export var combat_movement: CombatMovement
 @export var active_unit: Node3D
-
-var _attack_cells: Array[Vector2i] = []
-var _event_bus = null
+## Dette temporaire : l'attaque lit la cible déjà détectée par l'UI de survol.
+## À remplacer plus tard par un service neutre WorldMouseQuery partagé par l'UI et le combat.
+@export var unit_hover_ui: UnitHoverUI
 
 func _ready() -> void:
-	if grid == null or combat_manager == null or combat_movement == null or active_unit == null:
-		push_warning("CombatAttack a besoin d'une grille, d'un manager, du mouvement et d'une unité active.")
+	if grid == null or combat_manager == null or combat_movement == null or active_unit == null or unit_hover_ui == null:
+		push_warning("CombatAttack a besoin d'une grille, d'un manager, du mouvement, d'une unité active et de l'UI de survol.")
 		return
 
-	_event_bus = get_node_or_null("/root/EventBus")
-	if _event_bus != null and not _event_bus.turn_started.is_connected(_on_turn_started):
-		_event_bus.turn_started.connect(_on_turn_started)
-
 func _unhandled_input(event: InputEvent) -> void:
-	if grid == null or combat_manager == null or combat_movement == null or active_unit == null:
+	if grid == null or combat_manager == null or combat_movement == null or active_unit == null or unit_hover_ui == null:
 		return
 	if combat_manager.combat_over:
 		return
@@ -39,56 +34,51 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			try_attack_selected_cell()
+			try_player_attack_from_mouse(event.position)
 			get_viewport().set_input_as_handled()
 			return
-	if event.is_action_pressed("ui_accept"):
-		try_attack_selected_cell()
-		get_viewport().set_input_as_handled()
 
 func is_attack_mode_active() -> bool:
 	return combat_movement != null and combat_movement.is_attack_mode_active()
 
-func try_attack_selected_cell() -> void:
+func try_player_attack_from_mouse(mouse_position: Vector2) -> void:
 	if combat_manager.combat_over:
 		return
-	if try_attack(active_unit, combat_movement.cursor_cell):
+
+	var clicked_world_position := combat_movement.get_world_position_from_mouse(mouse_position)
+	if clicked_world_position == CombatMovement.INVALID_WORLD_POSITION:
+		return
+	if not CombatRules.is_within_world_range(active_unit.global_position, clicked_world_position, MELEE_RANGE):
+		print("Attaque refusée : hors de portée.")
+		return
+
+	var target := _get_hovered_valid_target()
+	var attack_started := false
+	if target == null:
+		attack_started = try_attack_empty(active_unit)
+	else:
+		attack_started = try_attack(active_unit, target)
+
+	if attack_started:
 		combat_movement.set_neutral_mode()
 
-func try_attack(attacker: Node3D, target_cell: Vector2i) -> bool:
+func try_attack(attacker: Node3D, target: Node3D) -> bool:
 	if combat_manager.combat_over:
 		return false
-	if combat_manager.get_current_unit() != attacker:
-		print("Attaque refusée : ce n'est pas le tour de cette unité.")
+	if target == null or not is_instance_valid(target):
+		print("Attaque refusée : cible invalide.")
 		return false
-
-	var attacker_cell := grid.world_to_cell(attacker.global_position)
-	if not CombatRules.is_adjacent(attacker_cell, target_cell) or attacker_cell == target_cell:
-		print("Attaque refusée : case hors portée.")
-		return false
-
-	var target := grid.get_occupant(target_cell.x, target_cell.y)
-	if not combat_manager.spend_pa(attacker, ATTACK_PA_COST):
-		print("Attaque refusée : PA insuffisants.")
-		return false
-	if target == null:
-		print(
-			attacker.name, " frappe dans le vide",
-			" — PA restants: ", combat_manager.get_pa_current(attacker)
-		)
-		return true
 	if target == attacker:
-		print(
-			attacker.name, " frappe dans le vide",
-			" — PA restants: ", combat_manager.get_pa_current(attacker)
-		)
-		return true
+		print("Attaque refusée : cible invalide.")
+		return false
+	if not is_target_in_range(attacker, target):
+		print("Attaque refusée : hors de portée.")
+		return false
 	if not (target.get("pv") is Stat):
-		print(
-			attacker.name, " frappe dans le vide",
-			" — PA restants: ", combat_manager.get_pa_current(attacker)
-		)
-		return true
+		print("Attaque refusée : cible sans PV.")
+		return false
+	if not _spend_attack_pa(attacker):
+		return false
 
 	var damage := get_attack_damage(attacker)
 	var target_pv := target.get("pv") as Stat
@@ -105,47 +95,49 @@ func try_attack(attacker: Node3D, target_cell: Vector2i) -> bool:
 
 	return true
 
+func try_attack_empty(attacker: Node3D) -> bool:
+	if combat_manager.combat_over:
+		return false
+	if not _spend_attack_pa(attacker):
+		return false
+
+	print(
+		attacker.name, " frappe dans le vide",
+		" — PA restants: ", combat_manager.get_pa_current(attacker)
+	)
+	return true
+
+func is_target_in_range(attacker: Node3D, target: Node3D) -> bool:
+	if attacker == null or target == null or not is_instance_valid(attacker) or not is_instance_valid(target):
+		return false
+	return CombatRules.is_within_world_range(attacker.global_position, target.global_position, MELEE_RANGE)
+
+func _spend_attack_pa(attacker: Node3D) -> bool:
+	if combat_manager.get_current_unit() != attacker:
+		print("Attaque refusée : ce n'est pas le tour de cette unité.")
+		return false
+	if not combat_manager.spend_pa(attacker, ATTACK_PA_COST):
+		print("Attaque refusée : PA insuffisants.")
+		return false
+	return true
+
+func _get_hovered_valid_target() -> Node3D:
+	var target := unit_hover_ui.hovered_unit
+	if target == null or not is_instance_valid(target):
+		return null
+	if target == active_unit:
+		return null
+	if not (target.get("pv") is Stat):
+		return null
+	return target
+
 func get_attack_damage(attacker: Node3D) -> int:
 	var incarnation := attacker.get("incarnation") as IncarnationData
 	if incarnation == null:
 		return 0
 	return incarnation.force
 
-func get_attack_cells_for(unit: Node3D) -> Array[Vector2i]:
-	var result: Array[Vector2i] = []
-	if combat_manager.combat_over:
-		return result
-	if combat_manager.get_current_unit() != unit:
-		return result
-
-	var origin := grid.world_to_cell(unit.global_position)
-	for row in range(grid.grid_height):
-		for col in range(grid.grid_width):
-			var cell := Vector2i(col, row)
-			if CombatRules.is_adjacent(origin, cell) and cell != origin:
-				result.append(cell)
-	return result
-
-func get_attack_cells() -> Array[Vector2i]:
-	return get_attack_cells_for(active_unit)
-
-func refresh_attack_cells() -> void:
-	_attack_cells = get_attack_cells()
-	refresh_attack_display()
-
 func refresh_attack_display() -> void:
 	for row in range(grid.grid_height):
 		for col in range(grid.grid_width):
 			grid.set_cell_color(col, row, NORMAL_CELL_COLOR)
-
-	for cell in _attack_cells:
-		grid.set_cell_color(cell.x, cell.y, ATTACK_CELL_COLOR)
-
-	grid.set_cell_color(combat_movement.cursor_cell.x, combat_movement.cursor_cell.y, CURSOR_CELL_COLOR)
-
-func _on_turn_started(unit: Node) -> void:
-	if combat_manager.combat_over:
-		return
-	if unit != active_unit or not is_attack_mode_active():
-		return
-	refresh_attack_cells()
