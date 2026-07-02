@@ -77,12 +77,13 @@ collision_mask = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 shape = SubResource("BoxShape3D_hover_renegade")
 
-[node name="CombatAttack" type="Node" parent="." unique_id=1469147104 node_paths=PackedStringArray("grid", "combat_manager", "combat_movement", "active_unit")]
+[node name="CombatAttack" type="Node" parent="." unique_id=1469147104 node_paths=PackedStringArray("grid", "combat_manager", "combat_movement", "active_unit", "unit_hover_ui")]
 script = ExtResource("9_combat_attack")
 grid = NodePath("../CombatGrid")
 combat_manager = NodePath("../CombatManager")
 combat_movement = NodePath("../CombatMovement")
 active_unit = NodePath("../Player")
+unit_hover_ui = NodePath("../UnitHoverUI")
 
 [node name="EnemyBrain" type="Node" parent="." unique_id=1982347245 node_paths=PackedStringArray("grid", "combat_manager", "combat_attack", "unit", "target")]
 script = ExtResource("12_enemy_brain")
