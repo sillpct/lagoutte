@@ -192,25 +192,10 @@ func _on_turn_started(unit: Node) -> void:
 		set_combat_mode(PlayerCombatMode.NEUTRAL)
 
 func _refresh_display() -> void:
-	if is_attack_mode_active():
-		combat_attack.refresh_attack_display()
-		return
-
-	if is_neutral_mode_active():
-		_refresh_neutral_display()
-		return
-
-	for row in range(grid.grid_height):
-		for col in range(grid.grid_width):
-			grid.set_cell_color(col, row, NORMAL_CELL_COLOR)
-
-	if grid.is_valid_cell(cursor_cell.x, cursor_cell.y):
-		grid.set_cell_color(cursor_cell.x, cursor_cell.y, CURSOR_CELL_COLOR)
+	pass
 
 func _refresh_neutral_display() -> void:
-	for row in range(grid.grid_height):
-		for col in range(grid.grid_width):
-			grid.set_cell_color(col, row, NORMAL_CELL_COLOR)
+	pass
 
 func set_combat_mode(new_mode: PlayerCombatMode) -> void:
 	if combat_manager.combat_over and new_mode != PlayerCombatMode.NEUTRAL:
