@@ -88,7 +88,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if cursor_delta == Vector2i.ZERO:
 		return
-	if is_neutral_mode_active() or is_movement_mode_active():
+	if is_neutral_mode_active() or is_movement_mode_active() or is_attack_mode_active():
 		return
 
 	_move_cursor(cursor_delta)
@@ -106,7 +106,7 @@ func _move_cursor(delta: Vector2i) -> void:
 	_refresh_display()
 
 func _update_cursor_from_mouse(mouse_position: Vector2) -> void:
-	var world_position := _get_world_position_from_mouse(mouse_position)
+	var world_position := get_world_position_from_mouse(mouse_position)
 	if world_position == INVALID_WORLD_POSITION:
 		return
 
@@ -122,7 +122,7 @@ func _update_cursor_from_mouse(mouse_position: Vector2) -> void:
 	cursor_cell = cell
 	_refresh_display()
 
-func _get_world_position_from_mouse(mouse_position: Vector2) -> Vector3:
+func get_world_position_from_mouse(mouse_position: Vector2) -> Vector3:
 	var camera := get_viewport().get_camera_3d()
 	if camera == null:
 		return INVALID_WORLD_POSITION
@@ -230,9 +230,6 @@ func set_combat_mode(new_mode: PlayerCombatMode) -> void:
 			movement_target_world = active_unit.global_position
 			cursor_cell = grid.world_to_cell(active_unit.global_position)
 			_refresh_display()
-		PlayerCombatMode.ATTACK:
-			if combat_attack != null and combat_attack.has_method("refresh_attack_cells"):
-				combat_attack.refresh_attack_cells()
 	mode_changed.emit(current_mode)
 
 func set_neutral_mode() -> void:
