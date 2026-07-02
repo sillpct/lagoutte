@@ -2,7 +2,7 @@ class_name CombatAttack
 extends Node
 
 const ATTACK_PA_COST := 1
-const MELEE_RANGE := 1.0
+const MELEE_RANGE := 1.5
 const NORMAL_CELL_COLOR := Color(0.22, 0.28, 0.32)
 
 @export var grid: CombatGrid
@@ -138,6 +138,4 @@ func get_attack_damage(attacker: Node3D) -> int:
 	return incarnation.force
 
 func refresh_attack_display() -> void:
-	for row in range(grid.grid_height):
-		for col in range(grid.grid_width):
-			grid.set_cell_color(col, row, NORMAL_CELL_COLOR)
+	pass
