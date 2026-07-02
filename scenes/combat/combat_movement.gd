@@ -11,8 +11,8 @@ signal mode_changed(new_mode: int)
 
 const START_CELL := Vector2i(5, 5)
 const NORMAL_CELL_COLOR := Color(0.22, 0.28, 0.32)
-const REACHABLE_CELL_COLOR := Color(0.15, 0.35, 0.75)
 const CURSOR_CELL_COLOR := Color(1.0, 0.85, 0.15)
+const INVALID_WORLD_POSITION := Vector3(INF, INF, INF)
 
 @export var grid: CombatGrid
 @export var combat_manager: CombatManager
@@ -20,8 +20,8 @@ const CURSOR_CELL_COLOR := Color(1.0, 0.85, 0.15)
 @export var combat_attack: Node
 
 var cursor_cell := START_CELL
+var movement_target_world := Vector3.ZERO
 var current_mode := PlayerCombatMode.NEUTRAL
-var _reachable_cells: Array[Vector2i] = []
 var _event_bus = null
 
 func _ready() -> void:
@@ -44,6 +44,7 @@ func _ready() -> void:
 		return
 
 	cursor_cell = START_CELL
+	movement_target_world = active_unit.global_position
 	set_combat_mode(PlayerCombatMode.MOVEMENT)
 	print(
 		"Case (5, 5) — occupant : ", grid.get_occupant(5, 5),
@@ -64,7 +65,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			_update_cursor_from_mouse(event.position)
 			if is_attack_mode_active() or is_neutral_mode_active():
 				return
-			_try_move_to_cursor()
+			_try_move_to_world_target()
 			get_viewport().set_input_as_handled()
 			return
 
@@ -83,38 +84,15 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("ui_right"):
 		cursor_delta.x += 1
 	elif event.is_action_pressed("ui_accept"):
-		if is_attack_mode_active() or is_neutral_mode_active():
-			return
-		_try_move_to_cursor()
-		get_viewport().set_input_as_handled()
 		return
 
 	if cursor_delta == Vector2i.ZERO:
 		return
-	if is_neutral_mode_active():
+	if is_neutral_mode_active() or is_movement_mode_active():
 		return
 
 	_move_cursor(cursor_delta)
 	get_viewport().set_input_as_handled()
-
-func get_reachable_cells() -> Array[Vector2i]:
-	var result: Array[Vector2i] = []
-	if combat_manager.combat_over:
-		return result
-	if combat_manager.get_current_unit() != active_unit:
-		return result
-
-	var origin := grid.world_to_cell(active_unit.global_position)
-
-	for row in range(grid.grid_height):
-		for col in range(grid.grid_width):
-			if not grid.is_cell_free(col, row):
-				continue
-			var destination := Vector2i(col, row)
-			if CombatRules.get_manhattan_distance(origin, destination) <= combat_manager.get_pm_current(active_unit):
-				result.append(destination)
-
-	return result
 
 func _move_cursor(delta: Vector2i) -> void:
 	var next_cell := cursor_cell + delta
@@ -128,20 +106,13 @@ func _move_cursor(delta: Vector2i) -> void:
 	_refresh_display()
 
 func _update_cursor_from_mouse(mouse_position: Vector2) -> void:
-	var camera := get_viewport().get_camera_3d()
-	if camera == null:
+	var world_position := _get_world_position_from_mouse(mouse_position)
+	if world_position == INVALID_WORLD_POSITION:
 		return
 
-	var ray_origin := camera.project_ray_origin(mouse_position)
-	var ray_direction := camera.project_ray_normal(mouse_position)
-	if is_zero_approx(ray_direction.y):
-		return
+	if is_movement_mode_active():
+		movement_target_world = world_position
 
-	var distance_to_grid_plane := (grid.global_position.y - ray_origin.y) / ray_direction.y
-	if distance_to_grid_plane < 0.0:
-		return
-
-	var world_position := ray_origin + ray_direction * distance_to_grid_plane
 	var cell := grid.world_to_cell(world_position)
 	if not grid.is_valid_cell(cell.x, cell.y):
 		return
@@ -151,24 +122,50 @@ func _update_cursor_from_mouse(mouse_position: Vector2) -> void:
 	cursor_cell = cell
 	_refresh_display()
 
-func _try_move_to_cursor() -> void:
+func _get_world_position_from_mouse(mouse_position: Vector2) -> Vector3:
+	var camera := get_viewport().get_camera_3d()
+	if camera == null:
+		return INVALID_WORLD_POSITION
+
+	var ray_origin := camera.project_ray_origin(mouse_position)
+	var ray_direction := camera.project_ray_normal(mouse_position)
+	if is_zero_approx(ray_direction.y):
+		return INVALID_WORLD_POSITION
+
+	var distance_to_grid_plane := (grid.global_position.y - ray_origin.y) / ray_direction.y
+	if distance_to_grid_plane < 0.0:
+		return INVALID_WORLD_POSITION
+
+	return ray_origin + ray_direction * distance_to_grid_plane
+
+func _try_move_to_world_target() -> void:
 	if combat_manager.combat_over:
 		return
 	if combat_manager.get_current_unit() != active_unit:
 		print("Déplacement refusé : ce n'est pas le tour de cette unité.")
 		return
 
-	if not _reachable_cells.has(cursor_cell):
-		print("Déplacement refusé : case hors portée, occupée ou invalide.")
-		return
-
-	var origin := grid.world_to_cell(active_unit.global_position)
-	var cost := CombatRules.get_manhattan_distance(origin, cursor_cell)
-	if cost > combat_manager.get_pm_current(active_unit):
+	var movement_budget := combat_manager.get_pm_current(active_unit)
+	if movement_budget <= 0:
 		print("Déplacement refusé : PM insuffisants.")
 		return
 
-	if not grid.place_unit(active_unit, cursor_cell.x, cursor_cell.y):
+	var origin := active_unit.global_position
+	var destination := movement_target_world
+	var distance_to_target := CombatRules.get_world_distance(origin, destination)
+	if distance_to_target > float(movement_budget):
+		destination = CombatRules.get_world_step_toward(origin, destination, float(movement_budget))
+
+	var distance_traveled := CombatRules.get_world_distance(origin, destination)
+	if is_zero_approx(distance_traveled):
+		return
+
+	var cost := ceili(clampf(distance_traveled, 0.0, float(movement_budget)))
+	if cost > movement_budget:
+		print("Déplacement refusé : PM insuffisants.")
+		return
+
+	if not grid.place_unit_at_world(active_unit, destination):
 		print("Déplacement refusé : placement impossible.")
 		return
 
@@ -176,16 +173,14 @@ func _try_move_to_cursor() -> void:
 		print("Déplacement refusé : PM insuffisants.")
 		return
 
+	movement_target_world = active_unit.global_position
+	cursor_cell = grid.world_to_cell(active_unit.global_position)
 	print(
-		"Déplacement vers ", cursor_cell,
+		"Déplacement vers ", active_unit.global_position,
 		" | coût : ", cost,
 		" | PM restants : ", combat_manager.get_pm_current(active_unit),
 		" / ", combat_manager.get_pm_max(active_unit)
 	)
-	_refresh_reachable_cells()
-
-func _refresh_reachable_cells() -> void:
-	_reachable_cells = get_reachable_cells()
 	_refresh_display()
 
 func _on_turn_started(unit: Node) -> void:
@@ -209,10 +204,8 @@ func _refresh_display() -> void:
 		for col in range(grid.grid_width):
 			grid.set_cell_color(col, row, NORMAL_CELL_COLOR)
 
-	for cell in _reachable_cells:
-		grid.set_cell_color(cell.x, cell.y, REACHABLE_CELL_COLOR)
-
-	grid.set_cell_color(cursor_cell.x, cursor_cell.y, CURSOR_CELL_COLOR)
+	if grid.is_valid_cell(cursor_cell.x, cursor_cell.y):
+		grid.set_cell_color(cursor_cell.x, cursor_cell.y, CURSOR_CELL_COLOR)
 
 func _refresh_neutral_display() -> void:
 	for row in range(grid.grid_height):
@@ -234,7 +227,9 @@ func set_combat_mode(new_mode: PlayerCombatMode) -> void:
 		PlayerCombatMode.NEUTRAL:
 			_refresh_neutral_display()
 		PlayerCombatMode.MOVEMENT:
-			_refresh_reachable_cells()
+			movement_target_world = active_unit.global_position
+			cursor_cell = grid.world_to_cell(active_unit.global_position)
+			_refresh_display()
 		PlayerCombatMode.ATTACK:
 			if combat_attack != null and combat_attack.has_method("refresh_attack_cells"):
 				combat_attack.refresh_attack_cells()
