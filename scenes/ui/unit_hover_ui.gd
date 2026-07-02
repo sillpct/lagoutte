@@ -1,9 +1,20 @@
 class_name UnitHoverUI
 extends CanvasLayer
 
+enum HighlightKind {
+	NONE,
+	HOVER,
+	ATTACK_VALID,
+}
+
 const HOVERABLE_UNIT_COLLISION_MASK := 4
 
 @export var combat_manager: CombatManager
+## Dette temporaire : l'UI lit le mode/portée combat pour choisir la couleur.
+## Couplage bidirectionnel avec CombatAttack, qui lit déjà hovered_unit.
+## À remplacer par un service de feedback de sélection neutre + WorldMouseQuery.
+@export var combat_movement: CombatMovement
+@export var combat_attack: CombatAttack
 @export var ray_length: float = 1000.0
 
 @onready var panel: PanelContainer = $Root/Panel
@@ -14,11 +25,16 @@ var hovered_unit: Node3D
 var _highlighted_mesh: MeshInstance3D
 var _original_material_override: Material
 var _highlight_material: StandardMaterial3D
+var _attack_highlight_material: StandardMaterial3D
+var _current_highlight_kind := HighlightKind.NONE
 
 func _ready() -> void:
 	_highlight_material = StandardMaterial3D.new()
 	_highlight_material.albedo_color = Color.WHITE
 	_highlight_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	_attack_highlight_material = StandardMaterial3D.new()
+	_attack_highlight_material.albedo_color = Color(1.0, 0.86, 0.18)
+	_attack_highlight_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	panel.hide()
 	if combat_manager != null and not combat_manager.unit_resources_changed.is_connected(_on_unit_resources_changed):
 		combat_manager.unit_resources_changed.connect(_on_unit_resources_changed)
@@ -33,6 +49,7 @@ func _process(_delta: float) -> void:
 		panel.hide()
 		return
 
+	_apply_highlight(hovered_unit, _get_desired_highlight_kind(hovered_unit))
 	_refresh_panel()
 
 func _detect_hovered_unit() -> Node3D:
@@ -80,22 +97,51 @@ func _set_hovered_unit(unit: Node3D) -> void:
 	_restore_highlight()
 	hovered_unit = unit
 	if hovered_unit != null and is_instance_valid(hovered_unit):
-		_apply_highlight(hovered_unit)
+		_apply_highlight(hovered_unit, _get_desired_highlight_kind(hovered_unit))
 
-func _apply_highlight(unit: Node3D) -> void:
+func _apply_highlight(unit: Node3D, highlight_kind: HighlightKind) -> void:
+	if highlight_kind == HighlightKind.NONE:
+		_restore_highlight()
+		return
 	var mesh := _find_first_mesh_instance(unit)
 	if mesh == null:
 		return
 
-	_highlighted_mesh = mesh
-	_original_material_override = mesh.material_override
-	_highlighted_mesh.material_override = _highlight_material
+	if _highlighted_mesh != mesh:
+		_restore_highlight()
+		_highlighted_mesh = mesh
+		_original_material_override = mesh.material_override
+
+	if _current_highlight_kind == highlight_kind:
+		return
+
+	_highlighted_mesh.material_override = _get_material_for_highlight(highlight_kind)
+	_current_highlight_kind = highlight_kind
 
 func _restore_highlight() -> void:
 	if _highlighted_mesh != null and is_instance_valid(_highlighted_mesh):
 		_highlighted_mesh.material_override = _original_material_override
 	_highlighted_mesh = null
 	_original_material_override = null
+	_current_highlight_kind = HighlightKind.NONE
+
+func _get_desired_highlight_kind(unit: Node3D) -> HighlightKind:
+	if unit == null or not is_instance_valid(unit):
+		return HighlightKind.NONE
+	if (
+		combat_movement != null
+		and combat_attack != null
+		and combat_movement.is_attack_mode_active()
+		and unit != combat_movement.active_unit
+		and combat_attack.is_target_in_range(combat_movement.active_unit, unit)
+	):
+		return HighlightKind.ATTACK_VALID
+	return HighlightKind.HOVER
+
+func _get_material_for_highlight(highlight_kind: HighlightKind) -> Material:
+	if highlight_kind == HighlightKind.ATTACK_VALID:
+		return _attack_highlight_material
+	return _highlight_material
 
 func _find_first_mesh_instance(node: Node) -> MeshInstance3D:
 	for child in node.get_children():
