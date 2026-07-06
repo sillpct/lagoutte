@@ -16,4 +16,4 @@ extends Resource
 @export var pv_max: int = 150
 @export var lucidite_max: int = 100
 @export var points_action: int = 3
-@export var points_mouvement: int = 4
+@export var agilite: int = 4
