@@ -49,15 +49,15 @@ func start_turn(unit: Node3D) -> void:
 		return
 
 	_resources_by_unit[unit] = {
-		"pm_max": incarnation.points_mouvement,
-		"pm_current": incarnation.points_mouvement,
+		"agility_max": incarnation.agilite,
+		"agility_current": incarnation.agilite,
 		"pa_max": incarnation.points_action,
 		"pa_current": incarnation.points_action,
 	}
 
 	print(
 		"Tour de ", unit.name,
-		" — PM: ", get_pm_current(unit), "/", get_pm_max(unit),
+		" — Agilité: ", get_agility_current(unit), "/", get_agility_max(unit),
 		", PA: ", get_pa_current(unit), "/", get_pa_max(unit)
 	)
 	unit_resources_changed.emit(unit)
@@ -104,22 +104,22 @@ func get_current_unit() -> Node3D:
 		return null
 	return units[current_unit_index]
 
-func get_pm_current(unit: Node3D) -> int:
-	return _get_unit_resource(unit, "pm_current")
+func get_agility_current(unit: Node3D) -> int:
+	return _get_unit_resource(unit, "agility_current")
 
-func get_pm_max(unit: Node3D) -> int:
-	return _get_unit_resource(unit, "pm_max")
+func get_agility_max(unit: Node3D) -> int:
+	return _get_unit_resource(unit, "agility_max")
 
-func spend_pm(unit: Node3D, amount: int) -> bool:
-	if amount < 0 or get_pm_current(unit) < amount:
+func spend_agility(unit: Node3D, amount: int) -> bool:
+	if amount < 0 or get_agility_current(unit) < amount:
 		return false
 
-	_resources_by_unit[unit]["pm_current"] = get_pm_current(unit) - amount
+	_resources_by_unit[unit]["agility_current"] = get_agility_current(unit) - amount
 	unit_resources_changed.emit(unit)
 	return true
 
 func can_unit_move(unit: Node3D) -> bool:
-	return get_pm_current(unit) > 0
+	return get_agility_current(unit) > 0
 
 func get_pa_current(unit: Node3D) -> int:
 	return _get_unit_resource(unit, "pa_current")
