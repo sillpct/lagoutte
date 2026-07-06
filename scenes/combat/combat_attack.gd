@@ -2,7 +2,7 @@ class_name CombatAttack
 extends Node
 
 const ATTACK_PA_COST := 1
-const MELEE_RANGE := 1.5
+const MELEE_RANGE := 0.6
 const NORMAL_CELL_COLOR := Color(0.22, 0.28, 0.32)
 
 @export var grid: CombatGrid
@@ -48,13 +48,13 @@ func try_player_attack_from_mouse(mouse_position: Vector2) -> void:
 	var clicked_world_position := combat_movement.get_world_position_from_mouse(mouse_position)
 	if clicked_world_position == CombatMovement.INVALID_WORLD_POSITION:
 		return
-	if not CombatRules.is_within_world_range(active_unit.global_position, clicked_world_position, MELEE_RANGE):
-		print("Attaque refusée : hors de portée.")
-		return
 
 	var target := _get_hovered_valid_target()
 	var attack_started := false
 	if target == null:
+		if not CombatRules.is_within_world_range(active_unit.global_position, clicked_world_position, MELEE_RANGE):
+			print("Attaque refusée : hors de portée.")
+			return
 		attack_started = try_attack_empty(active_unit)
 	else:
 		attack_started = try_attack(active_unit, target)
@@ -110,7 +110,18 @@ func try_attack_empty(attacker: Node3D) -> bool:
 func is_target_in_range(attacker: Node3D, target: Node3D) -> bool:
 	if attacker == null or target == null or not is_instance_valid(attacker) or not is_instance_valid(target):
 		return false
-	return CombatRules.is_within_world_range(attacker.global_position, target.global_position, MELEE_RANGE)
+	var effective_range := get_effective_melee_range(attacker, target)
+	return CombatRules.is_within_world_range(attacker.global_position, target.global_position, effective_range)
+
+func get_effective_melee_range(attacker: Node3D, target: Node3D) -> float:
+	return (
+		MELEE_RANGE
+		+ grid.get_unit_occupation_radius(attacker)
+		+ grid.get_unit_occupation_radius(target)
+	)
+
+static func get_standard_effective_melee_range() -> float:
+	return MELEE_RANGE + CombatGrid.DEFAULT_OCCUPATION_RADIUS * 2.0
 
 func _spend_attack_pa(attacker: Node3D) -> bool:
 	if combat_manager.get_current_unit() != attacker:
