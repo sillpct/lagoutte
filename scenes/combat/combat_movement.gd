@@ -145,9 +145,9 @@ func _try_move_to_world_target() -> void:
 		print("Déplacement refusé : ce n'est pas le tour de cette unité.")
 		return
 
-	var movement_budget := combat_manager.get_pm_current(active_unit)
+	var movement_budget := combat_manager.get_agility_current(active_unit)
 	if movement_budget <= 0:
-		print("Déplacement refusé : PM insuffisants.")
+		print("Déplacement refusé : Agilité insuffisante.")
 		return
 
 	var origin := active_unit.global_position
@@ -162,15 +162,15 @@ func _try_move_to_world_target() -> void:
 
 	var cost := ceili(clampf(distance_traveled, 0.0, float(movement_budget)))
 	if cost > movement_budget:
-		print("Déplacement refusé : PM insuffisants.")
+		print("Déplacement refusé : Agilité insuffisante.")
 		return
 
 	if not grid.place_unit_at_world(active_unit, destination):
 		print("Déplacement refusé : placement impossible.")
 		return
 
-	if not combat_manager.spend_pm(active_unit, cost):
-		print("Déplacement refusé : PM insuffisants.")
+	if not combat_manager.spend_agility(active_unit, cost):
+		print("Déplacement refusé : Agilité insuffisante.")
 		return
 
 	movement_target_world = active_unit.global_position
@@ -178,8 +178,8 @@ func _try_move_to_world_target() -> void:
 	print(
 		"Déplacement vers ", active_unit.global_position,
 		" | coût : ", cost,
-		" | PM restants : ", combat_manager.get_pm_current(active_unit),
-		" / ", combat_manager.get_pm_max(active_unit)
+		" | Agilité restante : ", combat_manager.get_agility_current(active_unit),
+		" / ", combat_manager.get_agility_max(active_unit)
 	)
 	_refresh_display()
 
