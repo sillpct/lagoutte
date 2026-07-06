@@ -9,7 +9,7 @@
 [ext_resource type="Script" uid="uid://dm3q0ggxnmpoy" path="res://scenes/combat/combat_manager.gd" id="8_combat_manager"]
 [ext_resource type="Script" uid="uid://cyk7oavvq34an" path="res://scenes/combat/combat_attack.gd" id="9_combat_attack"]
 [ext_resource type="Script" uid="uid://dl8t3dtna6qqd" path="res://scenes/combat/sect_renegade.gd" id="10_sect_renegade"]
-[ext_resource type="Resource" path="res://data/incarnations/incarnation_renegat_secte.tres" id="11_renegade_data"]
+[ext_resource type="Resource" uid="uid://b60qbnshvoldq" path="res://data/incarnations/incarnation_renegat_secte.tres" id="11_renegade_data"]
 [ext_resource type="Script" uid="uid://clgwxcuk1pa0q" path="res://scenes/combat/enemy_brain.gd" id="12_enemy_brain"]
 [ext_resource type="PackedScene" path="res://scenes/combat/combat_ui.tscn" id="13_combat_ui"]
 [ext_resource type="PackedScene" uid="uid://cva4qf4lhn5w7" path="res://scenes/ui/unit_hover_ui.tscn" id="14_unit_hover_ui"]
