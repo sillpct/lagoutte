@@ -87,16 +87,16 @@ func _can_continue_turn() -> bool:
 func _move_toward_target() -> void:
 	if combat_manager.combat_over:
 		return
-	var pm_available := combat_manager.get_pm_current(unit)
-	if pm_available <= 0:
-		print("Renégat de secte : PM insuffisants.")
+	var agility_available := combat_manager.get_agility_current(unit)
+	if agility_available <= 0:
+		print("Renégat de secte : Agilité insuffisante.")
 		return
 
 	var origin := unit.global_position
 	var limited_destination := CombatRules.get_world_step_toward(
 		origin,
 		target.global_position,
-		float(pm_available),
+		float(agility_available),
 		CombatAttack.MELEE_RANGE
 	)
 	var distance_traveled := CombatRules.get_world_distance(origin, limited_destination)
@@ -104,19 +104,19 @@ func _move_toward_target() -> void:
 		print("Renégat de secte : aucun déplacement possible.")
 		return
 
-	var cost := ceili(clampf(distance_traveled, 0.0, float(pm_available)))
+	var cost := ceili(clampf(distance_traveled, 0.0, float(agility_available)))
 	if cost <= 0:
 		return
 	if not grid.place_unit_at_world(unit, limited_destination):
 		print("Renégat de secte : placement impossible.")
 		return
-	if not combat_manager.spend_pm(unit, cost):
-		print("Renégat de secte : PM insuffisants.")
+	if not combat_manager.spend_agility(unit, cost):
+		print("Renégat de secte : Agilité insuffisante.")
 		return
 
 	print(
 		"Renégat de secte avance vers ", unit.global_position,
 		" — coût: ", cost,
-		", PM restants: ", combat_manager.get_pm_current(unit),
-		" / ", combat_manager.get_pm_max(unit)
+		", Agilité restante: ", combat_manager.get_agility_current(unit),
+		" / ", combat_manager.get_agility_max(unit)
 	)
