@@ -52,7 +52,7 @@ func try_player_attack_from_mouse(mouse_position: Vector2) -> void:
 	var target := _get_hovered_valid_target()
 	var attack_started := false
 	if target == null:
-		if not CombatRules.is_within_world_range(active_unit.global_position, clicked_world_position, MELEE_RANGE):
+		if not CombatRules.is_within_world_range(active_unit.global_position, clicked_world_position, CombatAttack.get_standard_effective_melee_range()):
 			print("Attaque refusée : hors de portée.")
 			return
 		attack_started = try_attack_empty(active_unit)
@@ -147,6 +147,3 @@ func get_attack_damage(attacker: Node3D) -> int:
 	if incarnation == null:
 		return 0
 	return incarnation.force
-
-func refresh_attack_display() -> void:
-	pass
