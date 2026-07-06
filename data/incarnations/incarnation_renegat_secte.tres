@@ -14,4 +14,4 @@ lucidite = 20
 pv_max = 50
 lucidite_max = 50
 points_action = 2
-points_mouvement = 3
+agilite = 3
