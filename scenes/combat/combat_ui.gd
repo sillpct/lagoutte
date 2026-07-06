@@ -21,8 +21,6 @@ const RESOURCE_EMPTY_COLOR := Color(0.16, 0.17, 0.19)
 @onready var player_hp_bar: ProgressBar = $Root/PlayerResourcePanel/PlayerResources/PlayerHPBar
 @onready var pa_label: Label = $Root/PlayerResourcePanel/PlayerResources/PARow/PALabel
 @onready var pa_pips: HBoxContainer = $Root/PlayerResourcePanel/PlayerResources/PARow/PAPips
-@onready var pm_label: Label = $Root/PlayerResourcePanel/PlayerResources/PMRow/PMLabel
-@onready var pm_pips: HBoxContainer = $Root/PlayerResourcePanel/PlayerResources/PMRow/PMPips
 @onready var enemy_resource_panel: MarginContainer = $Root/EnemyResourcePanel
 @onready var enemy_name_label: Label = $Root/EnemyResourcePanel/EnemyResources/EnemyNameLabel
 @onready var enemy_hp_bar: ProgressBar = $Root/EnemyResourcePanel/EnemyResources/EnemyHPBar
@@ -211,7 +209,7 @@ func _refresh_resource_bars() -> void:
 	if not is_instance_valid(player_unit):
 		player_unit = null
 	_refresh_unit_hp(player_unit, player_hp_bar, player_hp_label, PLAYER_HP_COLOR)
-	_refresh_player_pa_pm(player_unit)
+	_refresh_player_pa(player_unit)
 	_refresh_enemy_hp()
 
 func _refresh_unit_hp(unit: Node3D, hp_bar: ProgressBar, hp_label: Label, hp_color: Color) -> void:
@@ -229,16 +227,12 @@ func _refresh_unit_hp(unit: Node3D, hp_bar: ProgressBar, hp_label: Label, hp_col
 	if hp_label != null:
 		hp_label.text = "PV: %d/%d" % [pv.current_value, pv.max_value]
 
-func _refresh_player_pa_pm(player_unit: Node3D) -> void:
+func _refresh_player_pa(player_unit: Node3D) -> void:
 	var pa_current := combat_manager.get_pa_current(player_unit)
 	var pa_max := combat_manager.get_pa_max(player_unit)
-	var pm_current := combat_manager.get_pm_current(player_unit)
-	var pm_max := combat_manager.get_pm_max(player_unit)
 
 	pa_label.text = "PA: %d/%d" % [pa_current, pa_max]
-	pm_label.text = "PM: %d/%d" % [pm_current, pm_max]
 	_rebuild_resource_pips(pa_pips, pa_current, pa_max, true)
-	_rebuild_resource_pips(pm_pips, pm_current, pm_max, false)
 
 func _refresh_enemy_hp() -> void:
 	var enemy := _get_first_enemy_unit()
