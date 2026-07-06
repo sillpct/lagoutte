@@ -10,8 +10,6 @@ enum PlayerCombatMode {
 signal mode_changed(new_mode: int)
 
 const START_CELL := Vector2i(5, 5)
-const NORMAL_CELL_COLOR := Color(0.22, 0.28, 0.32)
-const CURSOR_CELL_COLOR := Color(1.0, 0.85, 0.15)
 const INVALID_WORLD_POSITION := Vector3(INF, INF, INF)
 
 @export var grid: CombatGrid
@@ -19,7 +17,6 @@ const INVALID_WORLD_POSITION := Vector3(INF, INF, INF)
 @export var active_unit: Node3D
 @export var combat_attack: Node
 
-var cursor_cell := START_CELL
 var movement_target_world := Vector3.ZERO
 var current_mode := PlayerCombatMode.NEUTRAL
 var _event_bus = null
@@ -43,7 +40,6 @@ func _ready() -> void:
 		push_warning("Impossible de placer l'unité active sur la case de départ (5, 5).")
 		return
 
-	cursor_cell = START_CELL
 	movement_target_world = active_unit.global_position
 	set_combat_mode(PlayerCombatMode.MOVEMENT)
 	print(
@@ -74,36 +70,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		return
 
-	var cursor_delta := Vector2i.ZERO
-	if event.is_action_pressed("ui_up"):
-		cursor_delta.y -= 1
-	elif event.is_action_pressed("ui_down"):
-		cursor_delta.y += 1
-	elif event.is_action_pressed("ui_left"):
-		cursor_delta.x -= 1
-	elif event.is_action_pressed("ui_right"):
-		cursor_delta.x += 1
-	elif event.is_action_pressed("ui_accept"):
-		return
-
-	if cursor_delta == Vector2i.ZERO:
-		return
-	if is_neutral_mode_active() or is_movement_mode_active() or is_attack_mode_active():
-		return
-
-	_move_cursor(cursor_delta)
-	get_viewport().set_input_as_handled()
-
-func _move_cursor(delta: Vector2i) -> void:
-	var next_cell := cursor_cell + delta
-	next_cell.x = clampi(next_cell.x, 0, grid.grid_width - 1)
-	next_cell.y = clampi(next_cell.y, 0, grid.grid_height - 1)
-
-	if next_cell == cursor_cell:
-		return
-
-	cursor_cell = next_cell
-
 func _update_cursor_from_mouse(mouse_position: Vector2) -> void:
 	var world_position := get_world_position_from_mouse(mouse_position)
 	if world_position == INVALID_WORLD_POSITION:
@@ -111,14 +77,6 @@ func _update_cursor_from_mouse(mouse_position: Vector2) -> void:
 
 	if is_movement_mode_active():
 		movement_target_world = world_position
-
-	var cell := grid.world_to_cell(world_position)
-	if not grid.is_valid_cell(cell.x, cell.y):
-		return
-	if cell == cursor_cell:
-		return
-
-	cursor_cell = cell
 
 func get_world_position_from_mouse(mouse_position: Vector2) -> Vector3:
 	var camera := get_viewport().get_camera_3d()
@@ -172,7 +130,6 @@ func _try_move_to_world_target() -> void:
 		return
 
 	movement_target_world = active_unit.global_position
-	cursor_cell = grid.world_to_cell(active_unit.global_position)
 	print(
 		"Déplacement vers ", active_unit.global_position,
 		" | coût : ", cost,
@@ -202,7 +159,6 @@ func set_combat_mode(new_mode: PlayerCombatMode) -> void:
 	match current_mode:
 		PlayerCombatMode.MOVEMENT:
 			movement_target_world = active_unit.global_position
-			cursor_cell = grid.world_to_cell(active_unit.global_position)
 	mode_changed.emit(current_mode)
 
 func set_neutral_mode() -> void:
