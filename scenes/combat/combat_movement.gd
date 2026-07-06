@@ -103,7 +103,6 @@ func _move_cursor(delta: Vector2i) -> void:
 		return
 
 	cursor_cell = next_cell
-	_refresh_display()
 
 func _update_cursor_from_mouse(mouse_position: Vector2) -> void:
 	var world_position := get_world_position_from_mouse(mouse_position)
@@ -120,7 +119,6 @@ func _update_cursor_from_mouse(mouse_position: Vector2) -> void:
 		return
 
 	cursor_cell = cell
-	_refresh_display()
 
 func get_world_position_from_mouse(mouse_position: Vector2) -> Vector3:
 	var camera := get_viewport().get_camera_3d()
@@ -181,7 +179,6 @@ func _try_move_to_world_target() -> void:
 		" | Agilité restante : ", combat_manager.get_agility_current(active_unit),
 		" / ", combat_manager.get_agility_max(active_unit)
 	)
-	_refresh_display()
 
 func _on_turn_started(unit: Node) -> void:
 	if combat_manager.combat_over:
@@ -190,12 +187,6 @@ func _on_turn_started(unit: Node) -> void:
 		set_combat_mode(PlayerCombatMode.MOVEMENT)
 	else:
 		set_combat_mode(PlayerCombatMode.NEUTRAL)
-
-func _refresh_display() -> void:
-	pass
-
-func _refresh_neutral_display() -> void:
-	pass
 
 func set_combat_mode(new_mode: PlayerCombatMode) -> void:
 	if combat_manager.combat_over and new_mode != PlayerCombatMode.NEUTRAL:
@@ -209,12 +200,9 @@ func set_combat_mode(new_mode: PlayerCombatMode) -> void:
 
 	current_mode = new_mode
 	match current_mode:
-		PlayerCombatMode.NEUTRAL:
-			_refresh_neutral_display()
 		PlayerCombatMode.MOVEMENT:
 			movement_target_world = active_unit.global_position
 			cursor_cell = grid.world_to_cell(active_unit.global_position)
-			_refresh_display()
 	mode_changed.emit(current_mode)
 
 func set_neutral_mode() -> void:
@@ -251,5 +239,4 @@ func _on_unit_resources_changed(unit: Node3D) -> void:
 
 func _on_combat_ended(_issue: int) -> void:
 	current_mode = PlayerCombatMode.NEUTRAL
-	_refresh_neutral_display()
 	mode_changed.emit(current_mode)
