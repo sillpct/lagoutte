@@ -47,7 +47,7 @@ func refresh() -> void:
 		return
 
 	if combat_movement.is_movement_mode_active():
-		show_range(active_unit.global_position, float(combat_manager.get_pm_current(active_unit)), BLUE_MOVEMENT_COLOR)
+		show_range(active_unit.global_position, float(combat_manager.get_agility_current(active_unit)), BLUE_MOVEMENT_COLOR)
 	elif combat_movement.is_attack_mode_active():
 		show_range(active_unit.global_position, CombatAttack.MELEE_RANGE, RED_ATTACK_COLOR)
 	else:
