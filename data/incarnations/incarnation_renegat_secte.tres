@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="IncarnationData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="IncarnationData" format=3 uid="uid://b60qbnshvoldq"]
 
-[ext_resource type="Script" path="res://resources/incarnation_data.gd" id="1_incarnation_data"]
+[ext_resource type="Script" uid="uid://b2scib0v7f2ql" path="res://resources/incarnation_data.gd" id="1_incarnation_data"]
 
 [resource]
 script = ExtResource("1_incarnation_data")
