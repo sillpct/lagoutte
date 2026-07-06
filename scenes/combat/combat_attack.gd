@@ -3,7 +3,6 @@ extends Node
 
 const ATTACK_PA_COST := 1
 const MELEE_RANGE := 0.6
-const NORMAL_CELL_COLOR := Color(0.22, 0.28, 0.32)
 
 @export var grid: CombatGrid
 @export var combat_manager: CombatManager
