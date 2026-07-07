@@ -8,17 +8,15 @@ const MELEE_RANGE := 0.6
 @export var combat_manager: CombatManager
 @export var combat_movement: CombatMovement
 @export var active_unit: Node3D
-## Dette temporaire : l'attaque lit la cible déjà détectée par l'UI de survol.
-## À remplacer plus tard par un service neutre WorldMouseQuery partagé par l'UI et le combat.
-@export var unit_hover_ui: UnitHoverUI
+@export var world_mouse_query: WorldMouseQuery
 
 func _ready() -> void:
-	if grid == null or combat_manager == null or combat_movement == null or active_unit == null or unit_hover_ui == null:
-		push_warning("CombatAttack a besoin d'une grille, d'un manager, du mouvement, d'une unité active et de l'UI de survol.")
+	if grid == null or combat_manager == null or combat_movement == null or active_unit == null or world_mouse_query == null:
+		push_warning("CombatAttack a besoin d'une grille, d'un manager, du mouvement, d'une unité active et du service WorldMouseQuery.")
 		return
 
 func _unhandled_input(event: InputEvent) -> void:
-	if grid == null or combat_manager == null or combat_movement == null or active_unit == null or unit_hover_ui == null:
+	if grid == null or combat_manager == null or combat_movement == null or active_unit == null or world_mouse_query == null:
 		return
 	if combat_manager.combat_over:
 		return
@@ -40,12 +38,12 @@ func _unhandled_input(event: InputEvent) -> void:
 func is_attack_mode_active() -> bool:
 	return combat_movement != null and combat_movement.is_attack_mode_active()
 
-func try_player_attack_from_mouse(mouse_position: Vector2) -> void:
+func try_player_attack_from_mouse(_mouse_position: Vector2) -> void:
 	if combat_manager.combat_over:
 		return
 
-	var clicked_world_position := combat_movement.get_world_position_from_mouse(mouse_position)
-	if clicked_world_position == CombatMovement.INVALID_WORLD_POSITION:
+	var clicked_world_position := world_mouse_query.get_ground_point()
+	if clicked_world_position == WorldMouseQuery.INVALID_WORLD_POSITION:
 		return
 
 	var target := _get_hovered_valid_target()
@@ -132,7 +130,7 @@ func _spend_attack_pa(attacker: Node3D) -> bool:
 	return true
 
 func _get_hovered_valid_target() -> Node3D:
-	var target := unit_hover_ui.hovered_unit
+	var target := world_mouse_query.get_hovered_unit()
 	if target == null or not is_instance_valid(target):
 		return null
 	if target == active_unit:
