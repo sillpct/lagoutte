@@ -7,15 +7,12 @@ enum HighlightKind {
 	ATTACK_VALID,
 }
 
-const HOVERABLE_UNIT_COLLISION_MASK := 4
-
 @export var combat_manager: CombatManager
-## Dette temporaire : l'UI lit le mode/portée combat pour choisir la couleur.
-## Couplage bidirectionnel avec CombatAttack, qui lit déjà hovered_unit.
-## À remplacer par un service de feedback de sélection neutre + WorldMouseQuery.
+@export var world_mouse_query: WorldMouseQuery
+## Couplage UI → combat assumé : l'UI lit le mode/portée pour choisir le feedback jaune.
+## À extraire vers un SelectionFeedback neutre si un deuxième feedback de ciblage apparaît.
 @export var combat_movement: CombatMovement
 @export var combat_attack: CombatAttack
-@export var ray_length: float = 1000.0
 
 @onready var panel: PanelContainer = $Root/Panel
 @onready var name_label: Label = $Root/Panel/Content/NameLabel
@@ -40,7 +37,7 @@ func _ready() -> void:
 		combat_manager.unit_resources_changed.connect(_on_unit_resources_changed)
 
 func _process(_delta: float) -> void:
-	var detected_unit := _detect_hovered_unit()
+	var detected_unit := world_mouse_query.get_hovered_unit() if world_mouse_query != null else null
 	if detected_unit != hovered_unit:
 		_set_hovered_unit(detected_unit)
 
@@ -51,36 +48,6 @@ func _process(_delta: float) -> void:
 
 	_apply_highlight(hovered_unit, _get_desired_highlight_kind(hovered_unit))
 	_refresh_panel()
-
-func _detect_hovered_unit() -> Node3D:
-	var camera := get_viewport().get_camera_3d()
-	if camera == null:
-		return null
-
-	var mouse_position := get_viewport().get_mouse_position()
-	var ray_origin := camera.project_ray_origin(mouse_position)
-	var ray_end := ray_origin + camera.project_ray_normal(mouse_position) * ray_length
-	var query := PhysicsRayQueryParameters3D.create(
-		ray_origin,
-		ray_end,
-		HOVERABLE_UNIT_COLLISION_MASK
-	)
-	query.collide_with_areas = true
-	query.collide_with_bodies = false
-
-	var result: Dictionary = get_viewport().world_3d.direct_space_state.intersect_ray(query)
-	if result.is_empty():
-		return null
-
-	return _get_unit_from_hover_collider(result.get("collider") as Node)
-
-func _get_unit_from_hover_collider(collider: Node) -> Node3D:
-	var current := collider
-	while current != null:
-		if current.is_in_group("hoverable_unit"):
-			return current.get_parent() as Node3D
-		current = current.get_parent()
-	return null
 
 func _refresh_panel() -> void:
 	name_label.text = _get_unit_label(hovered_unit)
