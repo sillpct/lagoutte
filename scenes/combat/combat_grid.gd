@@ -70,7 +70,7 @@ func set_unit_occupation_radius(unit: Node3D, radius: float) -> void:
 	_occupation_radius_by_unit[unit] = maxf(0.0, radius)
 
 func is_world_position_free(
-	position: Vector3,
+	world_position: Vector3,
 	radius: float = DEFAULT_OCCUPATION_RADIUS,
 	ignore_unit: Node3D = null
 ) -> bool:
@@ -79,7 +79,7 @@ func is_world_position_free(
 		if unit == null or not is_instance_valid(unit) or unit == ignore_unit:
 			continue
 		var minimum_distance := safe_radius + get_unit_occupation_radius(unit)
-		if CombatRules.get_world_distance(position, unit.global_position) < minimum_distance:
+		if CombatRules.get_world_distance(world_position, unit.global_position) < minimum_distance:
 			return false
 	return true
 
@@ -100,13 +100,13 @@ func place_unit_at_world(
 	unit.global_position = world_position
 	return true
 
-func get_units_in_radius(position: Vector3, radius: float) -> Array[Node3D]:
+func get_units_in_radius(world_position: Vector3, radius: float) -> Array[Node3D]:
 	var units_in_radius: Array[Node3D] = []
 	var safe_radius := maxf(0.0, radius)
 	for unit in _placed_units:
 		if unit == null or not is_instance_valid(unit):
 			continue
-		if CombatRules.get_world_distance(position, unit.global_position) <= safe_radius:
+		if CombatRules.get_world_distance(world_position, unit.global_position) <= safe_radius:
 			units_in_radius.append(unit)
 	return units_in_radius
 
