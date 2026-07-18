@@ -26,12 +26,8 @@ func _ready() -> void:
 	if _event_bus != null and not _event_bus.turn_started.is_connected(_on_turn_started):
 		_event_bus.turn_started.connect(_on_turn_started)
 
-	# Placement de test. À extraire plus tard vers un CombatSetup dédié.
-	if not grid.place_unit(unit, START_CELL.x, START_CELL.y):
-		push_warning("Impossible de placer le renégat de secte sur la case de test (8, 5).")
-
 func _on_turn_started(active_unit: Node) -> void:
-	if combat_manager.combat_over:
+	if not combat_manager.is_combat_active():
 		return
 	if active_unit != unit:
 		return
