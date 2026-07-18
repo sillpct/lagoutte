@@ -12,6 +12,7 @@ signal combat_ended(issue: CombatIssue)
 @export var grid: CombatGrid
 @export var units: Array[Node3D] = []
 
+var combat_active := false
 var combat_over := false
 var current_unit_index := 0
 var _resources_by_unit: Dictionary = {}
@@ -23,13 +24,31 @@ func _ready() -> void:
 		push_warning("CombatManager a besoin d'une grille pour retirer proprement les unités mortes.")
 	if units.is_empty():
 		push_warning("CombatManager n'a aucune unité à gérer.")
+
+func start_combat(combat_units: Array[Node3D] = []) -> void:
+	if not combat_units.is_empty():
+		units = combat_units
+	if units.is_empty():
+		push_warning("Impossible de démarrer le combat : aucune unité à gérer.")
 		return
 
+	combat_active = true
+	combat_over = false
 	current_unit_index = 0
+	_resources_by_unit.clear()
 	start_turn(get_current_unit())
 
+func stop_combat() -> void:
+	combat_active = false
+	combat_over = false
+	current_unit_index = 0
+	_resources_by_unit.clear()
+
+func is_combat_active() -> bool:
+	return combat_active and not combat_over
+
 func _unhandled_input(event: InputEvent) -> void:
-	if combat_over:
+	if not is_combat_active():
 		return
 	if get_current_unit() == null:
 		return
@@ -38,7 +57,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func start_turn(unit: Node3D) -> void:
-	if combat_over:
+	if not is_combat_active():
 		return
 	if unit == null:
 		return
@@ -70,7 +89,7 @@ func notify_unit_resources_changed(unit: Node3D) -> void:
 	unit_resources_changed.emit(unit)
 
 func end_turn() -> void:
-	if combat_over:
+	if not is_combat_active():
 		return
 	if units.is_empty():
 		return
@@ -85,20 +104,20 @@ func end_turn() -> void:
 	start_turn(get_current_unit())
 
 func request_player_end_turn() -> void:
-	if combat_over:
+	if not is_combat_active():
 		return
 	if not can_player_end_turn():
 		return
 	end_turn()
 
 func can_player_end_turn() -> bool:
-	if combat_over:
+	if not is_combat_active():
 		return false
 	var unit := get_current_unit()
 	return unit != null and unit.name == "Player"
 
 func get_current_unit() -> Node3D:
-	if combat_over:
+	if not is_combat_active():
 		return null
 	if units.is_empty() or current_unit_index < 0 or current_unit_index >= units.size():
 		return null
