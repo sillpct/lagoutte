@@ -34,6 +34,12 @@ func _ready() -> void:
 	if not combat_manager.combat_ended.is_connected(_on_combat_ended):
 		combat_manager.combat_ended.connect(_on_combat_ended)
 
+	movement_target_world = active_unit.global_position
+	current_mode = PlayerCombatMode.NEUTRAL
+
+func start_combat_control() -> void:
+	if grid == null or combat_manager == null or active_unit == null:
+		return
 	active_unit.set_physics_process(false)
 
 	if not grid.place_unit(active_unit, START_CELL.x, START_CELL.y):
@@ -47,10 +53,16 @@ func _ready() -> void:
 		" | libre : ", grid.is_cell_free(5, 5)
 	)
 
+func stop_combat_control() -> void:
+	if active_unit != null:
+		active_unit.set_physics_process(true)
+	current_mode = PlayerCombatMode.NEUTRAL
+	mode_changed.emit(current_mode)
+
 func _unhandled_input(event: InputEvent) -> void:
 	if grid == null or combat_manager == null or active_unit == null:
 		return
-	if combat_manager.combat_over:
+	if not combat_manager.is_combat_active():
 		return
 
 	if event is InputEventMouseMotion:
@@ -95,7 +107,7 @@ func get_world_position_from_mouse(mouse_position: Vector2) -> Vector3:
 	return ray_origin + ray_direction * distance_to_grid_plane
 
 func _try_move_to_world_target() -> void:
-	if combat_manager.combat_over:
+	if not combat_manager.is_combat_active():
 		return
 	if combat_manager.get_current_unit() != active_unit:
 		print("Déplacement refusé : ce n'est pas le tour de cette unité.")
@@ -138,7 +150,7 @@ func _try_move_to_world_target() -> void:
 	)
 
 func _on_turn_started(unit: Node) -> void:
-	if combat_manager.combat_over:
+	if not combat_manager.is_combat_active():
 		return
 	if unit == active_unit:
 		set_combat_mode(PlayerCombatMode.MOVEMENT)
@@ -146,7 +158,7 @@ func _on_turn_started(unit: Node) -> void:
 		set_combat_mode(PlayerCombatMode.NEUTRAL)
 
 func set_combat_mode(new_mode: PlayerCombatMode) -> void:
-	if combat_manager.combat_over and new_mode != PlayerCombatMode.NEUTRAL:
+	if not combat_manager.is_combat_active() and new_mode != PlayerCombatMode.NEUTRAL:
 		return
 	if new_mode != PlayerCombatMode.NEUTRAL and combat_manager.get_current_unit() != active_unit:
 		return
