@@ -18,7 +18,7 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if grid == null or combat_manager == null or combat_movement == null or active_unit == null or world_mouse_query == null:
 		return
-	if combat_manager.combat_over:
+	if not combat_manager.is_combat_active():
 		return
 
 	if event.is_action_pressed("toggle_attack_mode"):
@@ -39,7 +39,7 @@ func is_attack_mode_active() -> bool:
 	return combat_movement != null and combat_movement.is_attack_mode_active()
 
 func try_player_attack_from_mouse(_mouse_position: Vector2) -> void:
-	if combat_manager.combat_over:
+	if not combat_manager.is_combat_active():
 		return
 
 	var clicked_world_position := world_mouse_query.get_ground_point()
