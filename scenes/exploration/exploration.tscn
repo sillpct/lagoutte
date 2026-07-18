@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://cva4qf4lhn5w7" path="res://scenes/ui/unit_hover_ui.tscn" id="14_unit_hover_ui"]
 [ext_resource type="Script" uid="uid://c1ume82aalxlw" path="res://scenes/combat/combat_range_visual.gd" id="15_combat_range_visual"]
 [ext_resource type="Script" uid="uid://bry66r4gvdahu" path="res://scenes/world/world_mouse_query.gd" id="16_world_mouse_query"]
+[ext_resource type="Script" uid="uid://bp7j7y3aoqjx6" path="res://scenes/combat/combat_session.gd" id="17_combat_session"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_cvbhj"]
 size = Vector3(20, 0.1, 20)
@@ -104,6 +105,16 @@ combat_manager = NodePath("../CombatManager")
 combat_attack = NodePath("../CombatAttack")
 unit = NodePath("../SectRenegade")
 target = NodePath("../Player")
+
+[node name="CombatSession" type="Node" parent="." unique_id=1516977048 node_paths=PackedStringArray("grid", "combat_manager", "combat_movement", "combat_ui", "enemy_brain", "player", "renegade")]
+script = ExtResource("17_combat_session")
+grid = NodePath("../CombatGrid")
+combat_manager = NodePath("../CombatManager")
+combat_movement = NodePath("../CombatMovement")
+combat_ui = NodePath("../CombatUI")
+enemy_brain = NodePath("../EnemyBrain")
+player = NodePath("../Player")
+renegade = NodePath("../SectRenegade")
 
 [node name="CombatUI" parent="." unique_id=1135194789 node_paths=PackedStringArray("combat_manager", "combat_movement") instance=ExtResource("13_combat_ui")]
 combat_manager = NodePath("../CombatManager")
