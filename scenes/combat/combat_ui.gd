@@ -29,6 +29,7 @@ const RESOURCE_EMPTY_COLOR := Color(0.16, 0.17, 0.19)
 var _event_bus = null
 
 func _ready() -> void:
+	hide()
 	if combat_manager == null:
 		push_warning("CombatUI a besoin d'un CombatManager pour afficher l'ordre de tour.")
 		return
@@ -54,6 +55,16 @@ func _ready() -> void:
 	_refresh_end_turn_button()
 	_refresh_action_buttons()
 	_refresh_resource_bars()
+
+func show_combat_ui() -> void:
+	show()
+	refresh_turn_order()
+	_refresh_end_turn_button()
+	_refresh_action_buttons()
+	_refresh_resource_bars()
+
+func hide_combat_ui() -> void:
+	hide()
 
 func refresh_turn_order() -> void:
 	for child in turn_order_bar.get_children():
