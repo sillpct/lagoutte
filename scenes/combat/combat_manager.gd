@@ -28,6 +28,7 @@ func _ready() -> void:
 func start_combat(combat_units: Array[Node3D] = []) -> void:
 	if not combat_units.is_empty():
 		units = combat_units
+	_remove_invalid_units()
 	if units.is_empty():
 		push_warning("Impossible de démarrer le combat : aucune unité à gérer.")
 		return
@@ -43,6 +44,7 @@ func stop_combat() -> void:
 	combat_over = false
 	current_unit_index = 0
 	_resources_by_unit.clear()
+	_remove_invalid_units()
 
 func is_combat_active() -> bool:
 	return combat_active and not combat_over
@@ -214,3 +216,8 @@ func _get_unit_resource(unit: Node3D, resource_name: String) -> int:
 	if not _resources_by_unit.has(unit):
 		return 0
 	return int(_resources_by_unit[unit].get(resource_name, 0))
+
+func _remove_invalid_units() -> void:
+	units = units.filter(func(unit: Node3D) -> bool:
+		return unit != null and is_instance_valid(unit)
+	)
