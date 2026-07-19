@@ -27,6 +27,9 @@ func start_test_combat() -> void:
 		return
 	if combat_manager.is_combat_active():
 		return
+	if not is_instance_valid(renegade):
+		print("Combat de test impossible : aucun ennemi disponible.")
+		return
 
 	combat_movement.start_combat_control()
 	if not grid.place_unit(renegade, TEST_ENEMY_START_CELL.x, TEST_ENEMY_START_CELL.y):
