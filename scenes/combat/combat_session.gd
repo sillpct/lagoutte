@@ -22,13 +22,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func start_test_combat() -> void:
+	if not is_instance_valid(renegade):
+		print("Combat de test impossible : aucun ennemi disponible.")
+		return
 	if not _has_required_references():
 		push_warning("CombatSession ne peut pas démarrer le combat de test : référence manquante.")
 		return
 	if combat_manager.is_combat_active():
-		return
-	if not is_instance_valid(renegade):
-		print("Combat de test impossible : aucun ennemi disponible.")
 		return
 
 	combat_movement.start_combat_control()
