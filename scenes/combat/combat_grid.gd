@@ -7,6 +7,10 @@ extends Node3D
 @export var show_cell_visuals := false
 
 const DEFAULT_OCCUPATION_RADIUS := 0.45
+const PATH_OBSTACLE_COLLISION_MASK := 1
+const PATH_SWEEP_HEIGHT := 0.8
+const PATH_STOP_MARGIN := 0.08
+const MIN_USEFUL_MOVEMENT_DISTANCE := 0.25
 
 var _placed_units: Array[Node3D] = []
 var _occupation_radius_by_unit: Dictionary = {}
@@ -110,6 +114,40 @@ func get_units_in_radius(world_position: Vector3, radius: float) -> Array[Node3D
 			units_in_radius.append(unit)
 	return units_in_radius
 
+func get_reachable_position_along_path(
+	unit: Node3D,
+	origin: Vector3,
+	destination: Vector3
+) -> Vector3:
+	var motion := destination - origin
+	var distance := motion.length()
+	if unit == null or is_zero_approx(distance):
+		return origin
+
+	var sweep_shape := SphereShape3D.new()
+	sweep_shape.radius = get_unit_occupation_radius(unit)
+
+	var query := PhysicsShapeQueryParameters3D.new()
+	query.shape = sweep_shape
+	query.transform = Transform3D(Basis(), _get_path_sweep_center(origin))
+	query.motion = motion
+	query.collision_mask = PATH_OBSTACLE_COLLISION_MASK
+	query.collide_with_bodies = true
+	query.collide_with_areas = false
+	query.exclude = _get_placed_unit_collision_rids()
+
+	var result := get_viewport().world_3d.direct_space_state.cast_motion(query)
+	if result.is_empty():
+		return destination
+
+	var safe_fraction := clampf(float(result[0]), 0.0, 1.0)
+	if is_equal_approx(safe_fraction, 1.0):
+		return destination
+
+	var margin_fraction := PATH_STOP_MARGIN / distance
+	var reachable_fraction := maxf(0.0, safe_fraction - margin_fraction)
+	return origin + motion * reachable_fraction
+
 func _register_unit(unit: Node3D) -> void:
 	if not _placed_units.has(unit):
 		_placed_units.append(unit)
@@ -117,6 +155,18 @@ func _register_unit(unit: Node3D) -> void:
 func _unregister_unit(unit: Node3D) -> void:
 	_placed_units.erase(unit)
 	_occupation_radius_by_unit.erase(unit)
+
+func _get_path_sweep_center(world_position: Vector3) -> Vector3:
+	return world_position + Vector3.UP * PATH_SWEEP_HEIGHT
+
+func _get_placed_unit_collision_rids() -> Array[RID]:
+	var excluded_rids: Array[RID] = []
+	for unit in _placed_units:
+		if unit == null or not is_instance_valid(unit):
+			continue
+		if unit is CollisionObject3D:
+			excluded_rids.append(unit.get_rid())
+	return excluded_rids
 
 # --- Affichage temporaire ---
 
