@@ -29,15 +29,30 @@ func _physics_process(_delta: float) -> void:
 		move_and_slide()
 		return
 
-	var input_dir := Vector3.ZERO
+	var input_x := 0.0
+	var input_y := 0.0
 	if Input.is_action_pressed("ui_up"):
-		input_dir.z -= 1
+		input_y += 1.0
 	if Input.is_action_pressed("ui_down"):
-		input_dir.z += 1
+		input_y -= 1.0
 	if Input.is_action_pressed("ui_left"):
-		input_dir.x -= 1
+		input_x -= 1.0
 	if Input.is_action_pressed("ui_right"):
-		input_dir.x += 1
+		input_x += 1.0
+
+	var input_dir := Vector3.ZERO
+	var camera := get_viewport().get_camera_3d()
+	if camera != null:
+		var camera_forward := -camera.global_transform.basis.z
+		camera_forward.y = 0.0
+		camera_forward = camera_forward.normalized()
+		var camera_right := camera.global_transform.basis.x
+		camera_right.y = 0.0
+		camera_right = camera_right.normalized()
+		input_dir = (camera_forward * input_y) + (camera_right * input_x)
+	else:
+		input_dir = Vector3(input_x, 0.0, -input_y)
+
 	input_dir = input_dir.normalized()
 	velocity.x = input_dir.x * move_speed
 	velocity.z = input_dir.z * move_speed
