@@ -124,8 +124,11 @@ func _try_move_to_world_target() -> void:
 	if distance_to_target > float(movement_budget):
 		destination = CombatRules.get_world_step_toward(origin, destination, float(movement_budget))
 
+	destination = grid.get_reachable_position_along_path(active_unit, origin, destination)
+
 	var distance_traveled := CombatRules.get_world_distance(origin, destination)
-	if is_zero_approx(distance_traveled):
+	if distance_traveled < CombatGrid.MIN_USEFUL_MOVEMENT_DISTANCE:
+		print("Déplacement trop court : refusé.")
 		return
 
 	var cost := ceili(clampf(distance_traveled, 0.0, float(movement_budget)))
