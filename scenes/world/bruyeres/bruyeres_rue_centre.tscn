@@ -1,0 +1,11 @@
+[gd_scene format=3]
+
+[ext_resource type="NavigationMesh" path="res://scenes/world/bruyeres/navigation/bruyeres_rue_kit_navmesh.tres" id="1_yko25"]
+[ext_resource type="PackedScene" path="res://scenes/world/bruyeres/Bruyeres_Rue_Kit.tscn" id="2_po4vy"]
+
+[node name="BruyeresRueCentre" type="Node3D" unique_id=103790785]
+
+[node name="NavigationRegion" type="NavigationRegion3D" parent="." unique_id=461501618]
+navigation_mesh = ExtResource("1_yko25")
+
+[node name="BruyeresRueKit" type="Node3D" parent="NavigationRegion" unique_id=639380504 instance=ExtResource("2_po4vy")]
