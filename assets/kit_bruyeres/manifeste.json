@@ -1,0 +1,613 @@
+{
+  "module": {
+    "largeur": 2.0,
+    "hauteur": 3.0,
+    "epaisseur": 0.3
+  },
+  "materiau": {
+    "nom": "PierreBruyeres",
+    "hex_cible": "#D2CEC3"
+  },
+  "pieces": [
+    {
+      "nom": "ANG_biseau_15",
+      "famille": "angle",
+      "note": "cale de mur, mange 15 deg au carrefour",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max": [
+        0.5,
+        3.0,
+        0.3
+      ],
+      "dimensions": [
+        0.5,
+        3.0,
+        0.3
+      ],
+      "triangles": 12,
+      "etanche": true,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "ANG_biseau_30",
+      "famille": "angle",
+      "note": "cale de mur, mange 30 deg au carrefour",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max": [
+        0.5,
+        3.0,
+        0.3
+      ],
+      "dimensions": [
+        0.5,
+        3.0,
+        0.3
+      ],
+      "triangles": 12,
+      "etanche": true,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "ANG_exterieur",
+      "famille": "angle",
+      "note": "poteau d'angle sortant a 90 deg",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max": [
+        0.3,
+        3.0,
+        0.3
+      ],
+      "dimensions": [
+        0.3,
+        3.0,
+        0.3
+      ],
+      "triangles": 12,
+      "etanche": true,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "ARC_contrefort",
+      "famille": "arche",
+      "note": "contrefort entre deux facades",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max": [
+        0.6,
+        3.0,
+        0.4
+      ],
+      "dimensions": [
+        0.6,
+        3.0,
+        0.4
+      ],
+      "triangles": 12,
+      "etanche": true,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "ARC_rue",
+      "famille": "arche",
+      "note": "arc enjambant une rue de 4 m, pose a 3 m de haut",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max": [
+        4.0,
+        1.0,
+        1.2
+      ],
+      "dimensions": [
+        4.0,
+        1.0,
+        1.2
+      ],
+      "triangles": 40,
+      "etanche": true,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "FAC_arcade",
+      "famille": "facade",
+      "note": "arcade 1.60, passage navmesh 0.70 m",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max": [
+        2.0,
+        3.0,
+        0.3
+      ],
+      "dimensions": [
+        2.0,
+        3.0,
+        0.3
+      ],
+      "triangles": 48,
+      "etanche": true,
+      "collision_boites": 3,
+      "passage_navmesh_m": 0.7
+    },
+    {
+      "nom": "FAC_fenetre",
+      "famille": "facade",
+      "note": "fenetre 1.10 x 1.20, allege a 0.90",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max": [
+        2.0,
+        3.0,
+        0.3
+      ],
+      "dimensions": [
+        2.0,
+        3.0,
+        0.3
+      ],
+      "triangles": 32,
+      "etanche": true,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "FAC_fenetre_balcon",
+      "famille": "facade",
+      "note": "fenetre + balcon saillant de 0.70",
+      "min": [
+        0.0,
+        0.0,
+        -0.72
+      ],
+      "max": [
+        2.0,
+        3.0,
+        0.3
+      ],
+      "dimensions": [
+        2.0,
+        3.0,
+        1.02
+      ],
+      "triangles": 80,
+      "etanche": false,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "FAC_fenetre_haute",
+      "famille": "facade",
+      "note": "fenetre 0.80 x 0.80, dernier etage",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max": [
+        2.0,
+        3.0,
+        0.3
+      ],
+      "dimensions": [
+        2.0,
+        3.0,
+        0.3
+      ],
+      "triangles": 32,
+      "etanche": true,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "FAC_fenetre_jumelle",
+      "famille": "facade",
+      "note": "deux fenetres etroites, rythme serre",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max": [
+        2.0,
+        3.0,
+        0.3
+      ],
+      "dimensions": [
+        2.0,
+        3.0,
+        0.3
+      ],
+      "triangles": 48,
+      "etanche": true,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "FAC_mur_plein",
+      "famille": "facade",
+      "note": "remplissage par defaut, mur aveugle",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max": [
+        2.0,
+        3.0,
+        0.3
+      ],
+      "dimensions": [
+        2.0,
+        3.0,
+        0.3
+      ],
+      "triangles": 12,
+      "etanche": true,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "FAC_porte",
+      "famille": "facade",
+      "note": "porte 1.40 x 2.10, une seule par maison, passage navmesh 0.50 m",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max": [
+        2.0,
+        3.0,
+        0.3
+      ],
+      "dimensions": [
+        2.0,
+        3.0,
+        0.3
+      ],
+      "triangles": 28,
+      "etanche": true,
+      "collision_boites": 3,
+      "passage_navmesh_m": 0.5
+    },
+    {
+      "nom": "FAC_porte_cintree",
+      "famille": "facade",
+      "note": "porte cintree 1.40, passage navmesh 0.50 m",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max": [
+        2.0,
+        3.0,
+        0.3
+      ],
+      "dimensions": [
+        2.0,
+        3.0,
+        0.3
+      ],
+      "triangles": 48,
+      "etanche": true,
+      "collision_boites": 3,
+      "passage_navmesh_m": 0.5
+    },
+    {
+      "nom": "HAB_muret",
+      "famille": "habillage",
+      "note": "muret bas 2 m",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max": [
+        2.0,
+        0.9,
+        0.3
+      ],
+      "dimensions": [
+        2.0,
+        0.9,
+        0.3
+      ],
+      "triangles": 12,
+      "etanche": true,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "HAB_seuil",
+      "famille": "habillage",
+      "note": "seuil de porte debordant sur la rue",
+      "min": [
+        0.0,
+        0.0,
+        -0.45
+      ],
+      "max": [
+        1.4,
+        0.12,
+        0.05
+      ],
+      "dimensions": [
+        1.4,
+        0.12,
+        0.5
+      ],
+      "triangles": 12,
+      "etanche": true,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "SOL_biseau_15",
+      "famille": "sol",
+      "note": "dalle en coin, mange 15 deg au carrefour",
+      "min": [
+        0.0,
+        -0.2,
+        0.0
+      ],
+      "max": [
+        2.0,
+        0.0,
+        0.536
+      ],
+      "dimensions": [
+        2.0,
+        0.2,
+        0.536
+      ],
+      "triangles": 8,
+      "etanche": true,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "SOL_caniveau",
+      "famille": "sol",
+      "note": "grille d'avaloir, ou l'eau descend",
+      "min": [
+        0.0,
+        -0.2,
+        0.0
+      ],
+      "max": [
+        0.6,
+        0.0,
+        0.6
+      ],
+      "dimensions": [
+        0.6,
+        0.2,
+        0.6
+      ],
+      "triangles": 48,
+      "etanche": false,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "SOL_dalle",
+      "famille": "sol",
+      "note": "dalle de rue 2 x 2",
+      "min": [
+        0.0,
+        -0.2,
+        0.0
+      ],
+      "max": [
+        2.0,
+        0.0,
+        2.0
+      ],
+      "dimensions": [
+        2.0,
+        0.2,
+        2.0
+      ],
+      "triangles": 12,
+      "etanche": true,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "SOL_dalle_rigole",
+      "famille": "sol",
+      "note": "dalle avec rigole droite, largeur 0.30",
+      "min": [
+        0.0,
+        -0.2,
+        0.0
+      ],
+      "max": [
+        2.0,
+        0.0,
+        2.0
+      ],
+      "dimensions": [
+        2.0,
+        0.2,
+        2.0
+      ],
+      "triangles": 36,
+      "etanche": false,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "SOL_marche",
+      "famille": "sol",
+      "note": "marche, hauteur 0.17",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max": [
+        2.0,
+        0.17,
+        0.35
+      ],
+      "dimensions": [
+        2.0,
+        0.17,
+        0.35
+      ],
+      "triangles": 12,
+      "etanche": true,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "SOL_rigole_jonction",
+      "famille": "sol",
+      "note": "jonction de rigoles en T",
+      "min": [
+        0.0,
+        -0.2,
+        0.0
+      ],
+      "max": [
+        2.0,
+        0.0,
+        2.0
+      ],
+      "dimensions": [
+        2.0,
+        0.2,
+        2.0
+      ],
+      "triangles": 48,
+      "etanche": false,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "TOI_angle_parapet",
+      "famille": "toit",
+      "note": "parapet en retour d'angle",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max": [
+        2.0,
+        0.7,
+        2.0
+      ],
+      "dimensions": [
+        2.0,
+        0.7,
+        2.0
+      ],
+      "triangles": 24,
+      "etanche": false,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "TOI_corniche",
+      "famille": "toit",
+      "note": "corniche saillante de 0.15, couronnement d'etage",
+      "min": [
+        0.0,
+        0.0,
+        -0.15
+      ],
+      "max": [
+        2.0,
+        0.25,
+        0.3
+      ],
+      "dimensions": [
+        2.0,
+        0.25,
+        0.45
+      ],
+      "triangles": 12,
+      "etanche": true,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "TOI_parapet",
+      "famille": "toit",
+      "note": "parapet de terrasse",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max": [
+        2.0,
+        0.7,
+        0.25
+      ],
+      "dimensions": [
+        2.0,
+        0.7,
+        0.25
+      ],
+      "triangles": 12,
+      "etanche": true,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "TOI_terrasse",
+      "famille": "toit",
+      "note": "dalle de toit plat 2 x 2",
+      "min": [
+        0.0,
+        -0.2,
+        0.0
+      ],
+      "max": [
+        2.0,
+        0.0,
+        2.0
+      ],
+      "dimensions": [
+        2.0,
+        0.2,
+        2.0
+      ],
+      "triangles": 12,
+      "etanche": true,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    }
+  ]
+}
