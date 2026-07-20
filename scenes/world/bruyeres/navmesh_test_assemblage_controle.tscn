@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/ASSEMBLAGE_controle.glb" id="1_assemblage"]
+[ext_resource type="NavigationMesh" path="res://scenes/world/bruyeres/navigation/assemblage_controle_navmesh.tres" id="2_navmesh"]
+
+[node name="BruyeresNavmeshTest" type="Node3D"]
+
+[node name="NavigationRegion" type="NavigationRegion3D" parent="."]
+navigation_mesh = ExtResource("2_navmesh")
+
+[node name="ASSEMBLAGE_controle" parent="NavigationRegion" instance=ExtResource("1_assemblage")]
