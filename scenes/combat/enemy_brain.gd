@@ -121,9 +121,11 @@ func _move_toward_target() -> void:
 		)
 		used_partial_fallback = true
 
+	destination = grid.get_reachable_position_along_path(unit, origin, destination)
+
 	distance_traveled = CombatRules.get_world_distance(origin, destination)
-	if is_zero_approx(distance_traveled):
-		print("Renégat de secte : aucun déplacement valide.")
+	if distance_traveled < CombatGrid.MIN_USEFUL_MOVEMENT_DISTANCE:
+		print("Renégat de secte : déplacement trop court, refusé.")
 		return
 
 	var cost := ceili(clampf(distance_traveled, 0.0, float(agility_available)))
