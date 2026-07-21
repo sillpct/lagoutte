@@ -32,6 +32,10 @@ func _ready() -> void:
 
 	if combat_movement != null and not combat_movement.mode_changed.is_connected(_on_combat_mode_changed):
 		combat_movement.mode_changed.connect(_on_combat_mode_changed)
+	if combat_movement != null and not combat_movement.path_movement_started.is_connected(_on_path_movement_started):
+		combat_movement.path_movement_started.connect(_on_path_movement_started)
+	if combat_movement != null and not combat_movement.path_movement_finished.is_connected(_on_path_movement_finished):
+		combat_movement.path_movement_finished.connect(_on_path_movement_finished)
 	if combat_manager != null and not combat_manager.unit_resources_changed.is_connected(_on_unit_resources_changed):
 		combat_manager.unit_resources_changed.connect(_on_unit_resources_changed)
 
@@ -75,6 +79,12 @@ func _recenter_on_position(center: Vector3) -> void:
 	global_position = Vector3(center.x, ground_y + GROUND_OFFSET, center.z)
 
 func _on_combat_mode_changed(_new_mode: int) -> void:
+	refresh()
+
+func _on_path_movement_started() -> void:
+	hide_range()
+
+func _on_path_movement_finished() -> void:
 	refresh()
 
 func _on_unit_resources_changed(unit: Node3D) -> void:
