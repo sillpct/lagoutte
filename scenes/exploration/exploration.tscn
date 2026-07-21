@@ -18,6 +18,7 @@
 [ext_resource type="Script" uid="uid://bp7j7y3aoqjx6" path="res://scenes/combat/combat_session.gd" id="17_combat_session"]
 [ext_resource type="PackedScene" path="res://scenes/world/bruyeres/bruyeres_rue_centre.tscn" id="18_bruyeres_greybox"]
 [ext_resource type="Script" uid="uid://cm73phdeal4ar" path="res://scenes/world/path_service.gd" id="19_path_service"]
+[ext_resource type="Script" uid="uid://bqdt2n8f5nk2j" path="res://scenes/world/unit_path_mover.gd" id="20_unit_path_mover"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_cvbhj"]
 size = Vector3(20, 0.1, 20)
@@ -62,10 +63,14 @@ ground_y = 0.06
 [node name="PathService" type="Node" parent="." unique_id=1442252667 node_paths=PackedStringArray("navigation_region")]
 script = ExtResource("19_path_service")
 navigation_region = NodePath("../BruyeresRueCentre/NavigationRegion")
-run_debug_path_test = true
-debug_path_from = Vector3(0, 0.5, 2)
-debug_path_to = Vector3(3, 0.5, 48)
-debug_truncate_length = 8.0
+
+[node name="UnitPathMover" type="Node" parent="." unique_id=1538345749 node_paths=PackedStringArray("path_service", "debug_unit")]
+script = ExtResource("20_unit_path_mover")
+path_service = NodePath("../PathService")
+enable_debug_move = true
+debug_unit = NodePath("../Player")
+debug_destination = Vector3(3, 0.5, 48)
+debug_speed = 3.0
 
 [node name="Player" parent="." unique_id=295733018 instance=ExtResource("1_toxw2")]
 
