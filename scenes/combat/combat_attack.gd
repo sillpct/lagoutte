@@ -20,6 +20,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if not combat_manager.is_combat_active():
 		return
+	if combat_manager.is_action_locked():
+		return
 
 	if event.is_action_pressed("toggle_attack_mode"):
 		combat_movement.toggle_attack_mode()
