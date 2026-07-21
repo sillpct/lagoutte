@@ -118,11 +118,13 @@ combat_movement = NodePath("../CombatMovement")
 active_unit = NodePath("../Player")
 world_mouse_query = NodePath("../WorldMouseQuery")
 
-[node name="EnemyBrain" type="Node" parent="." unique_id=1982347245 node_paths=PackedStringArray("grid", "combat_manager", "combat_attack", "unit", "target")]
+[node name="EnemyBrain" type="Node" parent="." unique_id=1982347245 node_paths=PackedStringArray("grid", "combat_manager", "combat_attack", "path_service", "unit_path_mover", "unit", "target")]
 script = ExtResource("12_enemy_brain")
 grid = NodePath("../CombatGrid")
 combat_manager = NodePath("../CombatManager")
 combat_attack = NodePath("../CombatAttack")
+path_service = NodePath("../PathService")
+unit_path_mover = NodePath("../UnitPathMover")
 unit = NodePath("../SectRenegade")
 target = NodePath("../Player")
 
