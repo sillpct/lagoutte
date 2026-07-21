@@ -8,7 +8,6 @@ const TEST_ENEMY_START_CELL := Vector2i(8, 5)
 @export var combat_movement: CombatMovement
 @export var combat_ui: CombatUI
 @export var combat_range_visual: CombatRangeVisual
-@export var enemy_brain: EnemyBrain
 @export var player: Node3D
 @export var renegade: Node3D
 
@@ -58,7 +57,6 @@ func _has_required_references() -> bool:
 		and combat_movement != null
 		and combat_ui != null
 		and combat_range_visual != null
-		and enemy_brain != null
 		and player != null
 		and renegade != null
 	)
