@@ -14,6 +14,7 @@ signal combat_ended(issue: CombatIssue)
 
 var combat_active := false
 var combat_over := false
+var action_locked := false
 var current_unit_index := 0
 var _resources_by_unit: Dictionary = {}
 var _event_bus = null
@@ -35,6 +36,7 @@ func start_combat(combat_units: Array[Node3D] = []) -> void:
 
 	combat_active = true
 	combat_over = false
+	action_locked = false
 	current_unit_index = 0
 	_resources_by_unit.clear()
 	start_turn(get_current_unit())
@@ -42,12 +44,19 @@ func start_combat(combat_units: Array[Node3D] = []) -> void:
 func stop_combat() -> void:
 	combat_active = false
 	combat_over = false
+	action_locked = false
 	current_unit_index = 0
 	_resources_by_unit.clear()
 	_remove_invalid_units()
 
 func is_combat_active() -> bool:
 	return combat_active and not combat_over
+
+func set_action_locked(locked: bool) -> void:
+	action_locked = locked
+
+func is_action_locked() -> bool:
+	return action_locked
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_combat_active():
@@ -93,6 +102,8 @@ func notify_unit_resources_changed(unit: Node3D) -> void:
 func end_turn() -> void:
 	if not is_combat_active():
 		return
+	if action_locked:
+		return
 	if units.is_empty():
 		return
 
@@ -108,12 +119,16 @@ func end_turn() -> void:
 func request_player_end_turn() -> void:
 	if not is_combat_active():
 		return
+	if action_locked:
+		return
 	if not can_player_end_turn():
 		return
 	end_turn()
 
 func can_player_end_turn() -> bool:
 	if not is_combat_active():
+		return false
+	if action_locked:
 		return false
 	var unit := get_current_unit()
 	return unit != null and unit.name == "Player"
