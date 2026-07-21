@@ -8,6 +8,8 @@ enum PlayerCombatMode {
 }
 
 signal mode_changed(new_mode: int)
+signal path_movement_started
+signal path_movement_finished
 
 const START_CELL := Vector2i(5, 5)
 const INVALID_WORLD_POSITION := Vector3(INF, INF, INF)
@@ -16,14 +18,17 @@ const INVALID_WORLD_POSITION := Vector3(INF, INF, INF)
 @export var combat_manager: CombatManager
 @export var active_unit: Node3D
 @export var combat_attack: Node
+@export var path_service: PathService
+@export var unit_path_mover: UnitPathMover
+@export var movement_speed := 4.0
 
 var movement_target_world := Vector3.ZERO
 var current_mode := PlayerCombatMode.NEUTRAL
 var _event_bus = null
 
 func _ready() -> void:
-	if grid == null or combat_manager == null or active_unit == null:
-		push_warning("CombatMovement a besoin d'une grille, d'un manager de combat et d'une unité active.")
+	if grid == null or combat_manager == null or active_unit == null or path_service == null or unit_path_mover == null:
+		push_warning("CombatMovement a besoin d'une grille, d'un manager de combat, d'une unité active, d'un PathService et d'un UnitPathMover.")
 		return
 
 	_event_bus = get_node_or_null("/root/EventBus")
@@ -63,6 +68,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if grid == null or combat_manager == null or active_unit == null:
 		return
 	if not combat_manager.is_combat_active():
+		return
+	if combat_manager.is_action_locked():
 		return
 
 	if event is InputEventMouseMotion:
@@ -109,8 +116,15 @@ func get_world_position_from_mouse(mouse_position: Vector2) -> Vector3:
 func _try_move_to_world_target() -> void:
 	if not combat_manager.is_combat_active():
 		return
+	if combat_manager.is_action_locked():
+		return
 	if combat_manager.get_current_unit() != active_unit:
 		print("Déplacement refusé : ce n'est pas le tour de cette unité.")
+		return
+	if path_service == null or unit_path_mover == null:
+		print("Déplacement refusé : service de chemin manquant.")
+		return
+	if unit_path_mover.is_moving:
 		return
 
 	var movement_budget := combat_manager.get_agility_current(active_unit)
@@ -119,14 +133,13 @@ func _try_move_to_world_target() -> void:
 		return
 
 	var origin := active_unit.global_position
-	var destination := movement_target_world
-	var distance_to_target := CombatRules.get_world_distance(origin, destination)
-	if distance_to_target > float(movement_budget):
-		destination = CombatRules.get_world_step_toward(origin, destination, float(movement_budget))
+	var path := path_service.get_world_path(origin, movement_target_world)
+	var truncated_path := path_service.truncate_path_to_length(path, float(movement_budget))
+	if truncated_path.size() < 2:
+		print("Déplacement trop court : refusé.")
+		return
 
-	destination = grid.get_reachable_position_along_path(active_unit, origin, destination)
-
-	var distance_traveled := CombatRules.get_world_distance(origin, destination)
+	var distance_traveled := path_service.get_path_length(truncated_path)
 	if distance_traveled < CombatGrid.MIN_USEFUL_MOVEMENT_DISTANCE:
 		print("Déplacement trop court : refusé.")
 		return
@@ -136,13 +149,36 @@ func _try_move_to_world_target() -> void:
 		print("Déplacement refusé : Agilité insuffisante.")
 		return
 
-	if not grid.place_unit_at_world(active_unit, destination):
+	var final_path_point := truncated_path[truncated_path.size() - 1]
+	var final_position := Vector3(final_path_point.x, active_unit.global_position.y, final_path_point.z)
+	if not grid.is_world_position_free(
+		final_position,
+		grid.get_unit_occupation_radius(active_unit),
+		active_unit
+	):
+		print("Déplacement refusé : placement impossible.")
+		return
+
+	combat_manager.set_action_locked(true)
+	path_movement_started.emit()
+	var moved := await unit_path_mover.move_along_path(active_unit, truncated_path, movement_speed)
+	combat_manager.set_action_locked(false)
+	if not moved:
+		path_movement_finished.emit()
+		print("Déplacement refusé : déplacement impossible.")
+		return
+
+	if not grid.place_unit_at_world(active_unit, active_unit.global_position):
+		path_movement_finished.emit()
 		print("Déplacement refusé : placement impossible.")
 		return
 
 	if not combat_manager.spend_agility(active_unit, cost):
+		path_movement_finished.emit()
 		print("Déplacement refusé : Agilité insuffisante.")
 		return
+
+	path_movement_finished.emit()
 
 	movement_target_world = active_unit.global_position
 	print(
@@ -162,6 +198,8 @@ func _on_turn_started(unit: Node) -> void:
 
 func set_combat_mode(new_mode: PlayerCombatMode) -> void:
 	if not combat_manager.is_combat_active() and new_mode != PlayerCombatMode.NEUTRAL:
+		return
+	if combat_manager.is_action_locked() and new_mode != PlayerCombatMode.NEUTRAL:
 		return
 	if new_mode != PlayerCombatMode.NEUTRAL and combat_manager.get_current_unit() != active_unit:
 		return
