@@ -1,7 +1,6 @@
 class_name EnemyBrain
 extends Node
 
-const START_CELL := Vector2i(8, 5)
 const TURN_START_PAUSE := 0.5
 const AFTER_MOVE_PAUSE := 0.45
 const BEFORE_END_TURN_PAUSE := 0.45
