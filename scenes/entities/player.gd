@@ -19,7 +19,6 @@ func _ready() -> void:
 	pv = Stat.new()
 	pv.max_value = incarnation.pv_max
 	pv.reset_to_full()
-	print("PV : ", pv.current_value, " / ", pv.max_value)
 
 func _physics_process(_delta: float) -> void:
 
@@ -175,7 +174,6 @@ func apply_choice_effect(choice) -> void:
 		GameState.set_flag(choice["set_flag"])
 	if choice.has("damage"):
 		pv.reduce(int(choice["damage"]))
-		print("PV : ", pv.current_value, " / ", pv.max_value)
 
 func clear_choices(choices_container) -> void:
 
