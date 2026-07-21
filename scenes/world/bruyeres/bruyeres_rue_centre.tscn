@@ -1,11 +1,1544 @@
 [gd_scene format=3]
 
-[ext_resource type="NavigationMesh" path="res://scenes/world/bruyeres/navigation/bruyeres_rue_kit_navmesh.tres" id="1_yko25"]
-[ext_resource type="PackedScene" path="res://scenes/world/bruyeres/Bruyeres_Rue_Kit.tscn" id="2_po4vy"]
+[ext_resource type="NavigationMesh" path="res://scenes/world/bruyeres/navigation/bruyeres_rue_centre_navmesh.tres" id="14_rxecg"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/FAC_arcade.glb" id="kit_0"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/FAC_fenetre.glb" id="kit_1"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/FAC_fenetre_balcon.glb" id="kit_2"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/FAC_fenetre_haute.glb" id="kit_3"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/FAC_fenetre_jumelle.glb" id="kit_4"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/FAC_mur_plein.glb" id="kit_5"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/FAC_porte.glb" id="kit_6"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/FAC_porte_cintree.glb" id="kit_7"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/SOL_caniveau.glb" id="kit_8"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/SOL_dalle.glb" id="kit_9"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/SOL_dalle_rigole.glb" id="kit_10"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/TOI_corniche.glb" id="kit_11"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/TOI_terrasse.glb" id="kit_12"]
 
-[node name="BruyeresRueCentre" type="Node3D" unique_id=103790785]
+[sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
+sky_top_color = Color(0.86, 0.88, 0.92, 1)
+sky_horizon_color = Color(0.94, 0.94, 0.95, 1)
+sky_curve = 0.25
+ground_bottom_color = Color(0.85, 0.85, 0.86, 1)
+ground_horizon_color = Color(0.94, 0.94, 0.95, 1)
+energy_multiplier = 1.3
 
-[node name="NavigationRegion" type="NavigationRegion3D" parent="." unique_id=461501618]
-navigation_mesh = ExtResource("1_yko25")
+[sub_resource type="Sky" id="Sky"]
+sky_material = SubResource("SkyMat")
 
-[node name="BruyeresRueKit" type="Node3D" parent="NavigationRegion" unique_id=639380504 instance=ExtResource("2_po4vy")]
+[sub_resource type="Environment" id="Env"]
+background_mode = 2
+sky = SubResource("Sky")
+ambient_light_source = 3
+ambient_light_energy = 1.1
+tonemap_mode = 2
+tonemap_white = 1.2
+glow_enabled = true
+glow_intensity = 0.5
+glow_bloom = 0.1
+fog_enabled = true
+fog_light_color = Color(0.9, 0.91, 0.93, 1)
+fog_density = 0.012
+fog_sky_affect = 0.4
+
+[sub_resource type="BoxShape3D" id="col_L1"]
+size = Vector3(6, 9, 10)
+
+[sub_resource type="BoxShape3D" id="col_L2"]
+size = Vector3(6, 12, 12)
+
+[sub_resource type="BoxShape3D" id="col_L3"]
+size = Vector3(6, 9, 10)
+
+[sub_resource type="BoxShape3D" id="col_L4"]
+size = Vector3(6, 6, 6)
+
+[sub_resource type="BoxShape3D" id="col_L5"]
+size = Vector3(6, 9, 12)
+
+[sub_resource type="BoxShape3D" id="col_R1"]
+size = Vector3(6, 9, 12)
+
+[sub_resource type="BoxShape3D" id="col_R2"]
+size = Vector3(6, 6, 12)
+
+[sub_resource type="BoxShape3D" id="col_R3"]
+size = Vector3(6, 12, 16)
+
+[sub_resource type="BoxShape3D" id="col_R4"]
+size = Vector3(6, 9, 10)
+
+[sub_resource type="BoxShape3D" id="col_sol_serre"]
+size = Vector3(4, 0.2, 38)
+
+[sub_resource type="BoxShape3D" id="col_sol_transition"]
+size = Vector3(6, 0.2, 2)
+
+[sub_resource type="BoxShape3D" id="col_sol_ouvert"]
+size = Vector3(8, 0.2, 10)
+
+[node name="BruyeresRueCentre" type="Node3D" unique_id=214196701]
+
+[node name="Environnement" type="WorldEnvironment" parent="." unique_id=746748439]
+environment = SubResource("Env")
+
+[node name="SoleilVoile" type="DirectionalLight3D" parent="." unique_id=868267204]
+transform = Transform3D(0.798, -0.4515, 0.4, 0, 0.6637, 0.75, -0.602, -0.5985, 0.53, 0, 20, 20)
+light_color = Color(1, 0.97, 0.92, 1)
+light_energy = 0.9
+light_angular_distance = 2.0
+shadow_enabled = true
+
+[node name="Sols" type="Node3D" parent="." unique_id=1716644136]
+
+[node name="SOL_dalle_rigole_001" type="Node3D" parent="Sols" unique_id=1710008156 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 0)
+
+[node name="SOL_dalle_001" type="Node3D" parent="Sols" unique_id=466004242 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+
+[node name="SOL_dalle_rigole_002" type="Node3D" parent="Sols" unique_id=1883452370 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 2)
+
+[node name="SOL_dalle_002" type="Node3D" parent="Sols" unique_id=1699766684 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 2)
+
+[node name="SOL_dalle_rigole_003" type="Node3D" parent="Sols" unique_id=703259894 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 4)
+
+[node name="SOL_dalle_003" type="Node3D" parent="Sols" unique_id=353047804 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 4)
+
+[node name="SOL_dalle_rigole_004" type="Node3D" parent="Sols" unique_id=767847387 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 6)
+
+[node name="SOL_dalle_004" type="Node3D" parent="Sols" unique_id=1393218850 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 6)
+
+[node name="SOL_dalle_rigole_005" type="Node3D" parent="Sols" unique_id=1884301319 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 8)
+
+[node name="SOL_dalle_005" type="Node3D" parent="Sols" unique_id=1762407825 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 8)
+
+[node name="SOL_caniveau_001" type="Node3D" parent="Sols" unique_id=2123083684 instance=ExtResource("kit_8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0, 8.7)
+
+[node name="SOL_dalle_rigole_006" type="Node3D" parent="Sols" unique_id=1519348249 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 10)
+
+[node name="SOL_dalle_006" type="Node3D" parent="Sols" unique_id=1114336987 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 10)
+
+[node name="SOL_dalle_rigole_007" type="Node3D" parent="Sols" unique_id=1590042168 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 12)
+
+[node name="SOL_dalle_007" type="Node3D" parent="Sols" unique_id=1535633805 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 12)
+
+[node name="SOL_dalle_rigole_008" type="Node3D" parent="Sols" unique_id=1524004236 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 14)
+
+[node name="SOL_dalle_008" type="Node3D" parent="Sols" unique_id=2035097723 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 14)
+
+[node name="SOL_dalle_rigole_009" type="Node3D" parent="Sols" unique_id=1884867824 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 16)
+
+[node name="SOL_dalle_009" type="Node3D" parent="Sols" unique_id=1400170577 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 16)
+
+[node name="SOL_dalle_rigole_010" type="Node3D" parent="Sols" unique_id=1714901202 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 18)
+
+[node name="SOL_dalle_010" type="Node3D" parent="Sols" unique_id=608596583 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 18)
+
+[node name="SOL_caniveau_002" type="Node3D" parent="Sols" unique_id=373657397 instance=ExtResource("kit_8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0, 18.7)
+
+[node name="SOL_dalle_rigole_011" type="Node3D" parent="Sols" unique_id=1928653471 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 20)
+
+[node name="SOL_dalle_011" type="Node3D" parent="Sols" unique_id=1397414071 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 20)
+
+[node name="SOL_dalle_rigole_012" type="Node3D" parent="Sols" unique_id=995585054 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 22)
+
+[node name="SOL_dalle_012" type="Node3D" parent="Sols" unique_id=572089654 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 22)
+
+[node name="SOL_dalle_rigole_013" type="Node3D" parent="Sols" unique_id=45395101 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 24)
+
+[node name="SOL_dalle_013" type="Node3D" parent="Sols" unique_id=71857778 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 24)
+
+[node name="SOL_dalle_rigole_014" type="Node3D" parent="Sols" unique_id=122440853 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 26)
+
+[node name="SOL_dalle_014" type="Node3D" parent="Sols" unique_id=111323318 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 26)
+
+[node name="SOL_dalle_rigole_015" type="Node3D" parent="Sols" unique_id=1274950257 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 28)
+
+[node name="SOL_dalle_015" type="Node3D" parent="Sols" unique_id=1883977836 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 28)
+
+[node name="SOL_caniveau_003" type="Node3D" parent="Sols" unique_id=1933621919 instance=ExtResource("kit_8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0, 28.7)
+
+[node name="SOL_dalle_rigole_016" type="Node3D" parent="Sols" unique_id=1548490936 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 30)
+
+[node name="SOL_dalle_016" type="Node3D" parent="Sols" unique_id=1086302345 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 30)
+
+[node name="SOL_dalle_rigole_017" type="Node3D" parent="Sols" unique_id=623955955 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 32)
+
+[node name="SOL_dalle_017" type="Node3D" parent="Sols" unique_id=1324988365 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 32)
+
+[node name="SOL_dalle_rigole_018" type="Node3D" parent="Sols" unique_id=406939655 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 34)
+
+[node name="SOL_dalle_018" type="Node3D" parent="Sols" unique_id=1458115699 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 34)
+
+[node name="SOL_dalle_rigole_019" type="Node3D" parent="Sols" unique_id=392225059 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 36)
+
+[node name="SOL_dalle_019" type="Node3D" parent="Sols" unique_id=1833608742 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 36)
+
+[node name="SOL_dalle_rigole_020" type="Node3D" parent="Sols" unique_id=1541064694 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 38)
+
+[node name="SOL_dalle_020" type="Node3D" parent="Sols" unique_id=1133332278 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 38)
+
+[node name="SOL_dalle_021" type="Node3D" parent="Sols" unique_id=728353237 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 38)
+
+[node name="SOL_caniveau_004" type="Node3D" parent="Sols" unique_id=1855521308 instance=ExtResource("kit_8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0, 38.7)
+
+[node name="SOL_dalle_rigole_021" type="Node3D" parent="Sols" unique_id=551705199 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 40)
+
+[node name="SOL_dalle_022" type="Node3D" parent="Sols" unique_id=1588229259 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 40)
+
+[node name="SOL_dalle_023" type="Node3D" parent="Sols" unique_id=1133143786 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 40)
+
+[node name="SOL_dalle_024" type="Node3D" parent="Sols" unique_id=791370528 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 40)
+
+[node name="SOL_dalle_rigole_022" type="Node3D" parent="Sols" unique_id=138678865 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 42)
+
+[node name="SOL_dalle_025" type="Node3D" parent="Sols" unique_id=892748791 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 42)
+
+[node name="SOL_dalle_026" type="Node3D" parent="Sols" unique_id=1271082312 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 42)
+
+[node name="SOL_dalle_027" type="Node3D" parent="Sols" unique_id=1552938884 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 42)
+
+[node name="SOL_dalle_rigole_023" type="Node3D" parent="Sols" unique_id=1611380219 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 44)
+
+[node name="SOL_dalle_028" type="Node3D" parent="Sols" unique_id=1278534996 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 44)
+
+[node name="SOL_dalle_029" type="Node3D" parent="Sols" unique_id=889818215 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 44)
+
+[node name="SOL_dalle_030" type="Node3D" parent="Sols" unique_id=168806895 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 44)
+
+[node name="SOL_dalle_rigole_024" type="Node3D" parent="Sols" unique_id=882965346 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 46)
+
+[node name="SOL_dalle_031" type="Node3D" parent="Sols" unique_id=910449307 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 46)
+
+[node name="SOL_dalle_032" type="Node3D" parent="Sols" unique_id=639998541 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 46)
+
+[node name="SOL_dalle_033" type="Node3D" parent="Sols" unique_id=1948575103 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 46)
+
+[node name="SOL_dalle_rigole_025" type="Node3D" parent="Sols" unique_id=1789574172 instance=ExtResource("kit_10")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 2, 0, 48)
+
+[node name="SOL_dalle_034" type="Node3D" parent="Sols" unique_id=195716017 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 48)
+
+[node name="SOL_dalle_035" type="Node3D" parent="Sols" unique_id=132170856 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 48)
+
+[node name="SOL_dalle_036" type="Node3D" parent="Sols" unique_id=57741652 instance=ExtResource("kit_9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 48)
+
+[node name="SOL_caniveau_005" type="Node3D" parent="Sols" unique_id=848602249 instance=ExtResource("kit_8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0, 48.7)
+
+[node name="Facades" type="Node3D" parent="." unique_id=64797992]
+
+[node name="FAC_mur_plein_001" type="Node3D" parent="Facades" unique_id=337494688 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 0, 0)
+
+[node name="FAC_fenetre_001" type="Node3D" parent="Facades" unique_id=56386715 instance=ExtResource("kit_1")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 3, 0)
+
+[node name="FAC_fenetre_haute_001" type="Node3D" parent="Facades" unique_id=2135207325 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 6, 0)
+
+[node name="FAC_mur_plein_002" type="Node3D" parent="Facades" unique_id=1171182348 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 0, 2)
+
+[node name="FAC_mur_plein_003" type="Node3D" parent="Facades" unique_id=1420478793 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 3, 2)
+
+[node name="FAC_mur_plein_004" type="Node3D" parent="Facades" unique_id=241873563 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 6, 2)
+
+[node name="FAC_porte_001" type="Node3D" parent="Facades" unique_id=282388312 instance=ExtResource("kit_6")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 0, 4)
+
+[node name="FAC_fenetre_002" type="Node3D" parent="Facades" unique_id=1772901724 instance=ExtResource("kit_1")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 3, 4)
+
+[node name="FAC_fenetre_haute_002" type="Node3D" parent="Facades" unique_id=808418761 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 6, 4)
+
+[node name="FAC_mur_plein_005" type="Node3D" parent="Facades" unique_id=612912136 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 0, 6)
+
+[node name="FAC_mur_plein_006" type="Node3D" parent="Facades" unique_id=2112314784 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 3, 6)
+
+[node name="FAC_mur_plein_007" type="Node3D" parent="Facades" unique_id=902805385 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 6, 6)
+
+[node name="FAC_mur_plein_008" type="Node3D" parent="Facades" unique_id=1664580627 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 0, 8)
+
+[node name="FAC_fenetre_003" type="Node3D" parent="Facades" unique_id=275911155 instance=ExtResource("kit_1")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 3, 8)
+
+[node name="FAC_fenetre_haute_003" type="Node3D" parent="Facades" unique_id=1473936733 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 6, 8)
+
+[node name="FAC_porte_cintree_001" type="Node3D" parent="Facades" unique_id=1933476250 instance=ExtResource("kit_7")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 0, 10)
+
+[node name="FAC_mur_plein_009" type="Node3D" parent="Facades" unique_id=324014014 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 3, 10)
+
+[node name="FAC_mur_plein_010" type="Node3D" parent="Facades" unique_id=1251900300 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 6, 10)
+
+[node name="FAC_mur_plein_011" type="Node3D" parent="Facades" unique_id=387608330 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 9, 10)
+
+[node name="FAC_mur_plein_012" type="Node3D" parent="Facades" unique_id=1753536702 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 0, 12)
+
+[node name="FAC_fenetre_balcon_001" type="Node3D" parent="Facades" unique_id=1557321505 instance=ExtResource("kit_2")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 3, 12)
+
+[node name="FAC_fenetre_jumelle_001" type="Node3D" parent="Facades" unique_id=1942607651 instance=ExtResource("kit_4")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 6, 12)
+
+[node name="FAC_fenetre_haute_004" type="Node3D" parent="Facades" unique_id=512025555 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 9, 12)
+
+[node name="FAC_arcade_001" type="Node3D" parent="Facades" unique_id=584608410 instance=ExtResource("kit_0")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 0, 14)
+
+[node name="FAC_mur_plein_013" type="Node3D" parent="Facades" unique_id=12191179 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 3, 14)
+
+[node name="FAC_mur_plein_014" type="Node3D" parent="Facades" unique_id=197749474 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 6, 14)
+
+[node name="FAC_mur_plein_015" type="Node3D" parent="Facades" unique_id=1696534240 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 9, 14)
+
+[node name="FAC_arcade_002" type="Node3D" parent="Facades" unique_id=1446234363 instance=ExtResource("kit_0")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 0, 16)
+
+[node name="FAC_fenetre_004" type="Node3D" parent="Facades" unique_id=800396482 instance=ExtResource("kit_1")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 3, 16)
+
+[node name="FAC_fenetre_005" type="Node3D" parent="Facades" unique_id=814070958 instance=ExtResource("kit_1")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 6, 16)
+
+[node name="FAC_fenetre_haute_005" type="Node3D" parent="Facades" unique_id=1362043815 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 9, 16)
+
+[node name="FAC_mur_plein_016" type="Node3D" parent="Facades" unique_id=1451781256 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 0, 18)
+
+[node name="FAC_mur_plein_017" type="Node3D" parent="Facades" unique_id=2119215864 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 3, 18)
+
+[node name="FAC_mur_plein_018" type="Node3D" parent="Facades" unique_id=421567676 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 6, 18)
+
+[node name="FAC_mur_plein_019" type="Node3D" parent="Facades" unique_id=71506187 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 9, 18)
+
+[node name="FAC_mur_plein_020" type="Node3D" parent="Facades" unique_id=1767612778 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 0, 20)
+
+[node name="FAC_fenetre_jumelle_002" type="Node3D" parent="Facades" unique_id=1153131734 instance=ExtResource("kit_4")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 3, 20)
+
+[node name="FAC_fenetre_jumelle_003" type="Node3D" parent="Facades" unique_id=325789077 instance=ExtResource("kit_4")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 6, 20)
+
+[node name="FAC_fenetre_haute_006" type="Node3D" parent="Facades" unique_id=218466774 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 9, 20)
+
+[node name="FAC_mur_plein_021" type="Node3D" parent="Facades" unique_id=1216586403 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 0, 22)
+
+[node name="FAC_fenetre_006" type="Node3D" parent="Facades" unique_id=72750550 instance=ExtResource("kit_1")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 3, 22)
+
+[node name="FAC_fenetre_haute_007" type="Node3D" parent="Facades" unique_id=1808291458 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 6, 22)
+
+[node name="FAC_mur_plein_022" type="Node3D" parent="Facades" unique_id=1157097202 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 0, 24)
+
+[node name="FAC_mur_plein_023" type="Node3D" parent="Facades" unique_id=1110408434 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 3, 24)
+
+[node name="FAC_mur_plein_024" type="Node3D" parent="Facades" unique_id=238222768 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 6, 24)
+
+[node name="FAC_mur_plein_025" type="Node3D" parent="Facades" unique_id=52707930 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 0, 26)
+
+[node name="FAC_fenetre_007" type="Node3D" parent="Facades" unique_id=1462374097 instance=ExtResource("kit_1")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 3, 26)
+
+[node name="FAC_fenetre_haute_008" type="Node3D" parent="Facades" unique_id=19695548 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 6, 26)
+
+[node name="FAC_mur_plein_026" type="Node3D" parent="Facades" unique_id=652728953 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 0, 28)
+
+[node name="FAC_mur_plein_027" type="Node3D" parent="Facades" unique_id=786830292 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 3, 28)
+
+[node name="FAC_mur_plein_028" type="Node3D" parent="Facades" unique_id=807004227 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 6, 28)
+
+[node name="FAC_porte_002" type="Node3D" parent="Facades" unique_id=925740781 instance=ExtResource("kit_6")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 0, 30)
+
+[node name="FAC_fenetre_008" type="Node3D" parent="Facades" unique_id=1376446479 instance=ExtResource("kit_1")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 3, 30)
+
+[node name="FAC_fenetre_haute_009" type="Node3D" parent="Facades" unique_id=1686597002 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 6, 30)
+
+[node name="FAC_porte_003" type="Node3D" parent="Facades" unique_id=105302172 instance=ExtResource("kit_6")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 0, 32)
+
+[node name="FAC_mur_plein_029" type="Node3D" parent="Facades" unique_id=1997835674 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 3, 32)
+
+[node name="FAC_mur_plein_030" type="Node3D" parent="Facades" unique_id=800689344 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 0, 34)
+
+[node name="FAC_mur_plein_031" type="Node3D" parent="Facades" unique_id=1933636367 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 3, 34)
+
+[node name="FAC_mur_plein_032" type="Node3D" parent="Facades" unique_id=701895814 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 0, 36)
+
+[node name="FAC_fenetre_haute_010" type="Node3D" parent="Facades" unique_id=2015661859 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 3, 36)
+
+[node name="FAC_mur_plein_033" type="Node3D" parent="Facades" unique_id=1231089082 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 0, 38)
+
+[node name="FAC_mur_plein_034" type="Node3D" parent="Facades" unique_id=1542817633 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 3, 38)
+
+[node name="FAC_mur_plein_035" type="Node3D" parent="Facades" unique_id=692634243 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 6, 38)
+
+[node name="FAC_porte_004" type="Node3D" parent="Facades" unique_id=423713710 instance=ExtResource("kit_6")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 0, 40)
+
+[node name="FAC_fenetre_jumelle_004" type="Node3D" parent="Facades" unique_id=1291852324 instance=ExtResource("kit_4")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 3, 40)
+
+[node name="FAC_fenetre_haute_011" type="Node3D" parent="Facades" unique_id=1398675517 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 6, 40)
+
+[node name="FAC_mur_plein_036" type="Node3D" parent="Facades" unique_id=686908585 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 0, 42)
+
+[node name="FAC_mur_plein_037" type="Node3D" parent="Facades" unique_id=654855926 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 3, 42)
+
+[node name="FAC_mur_plein_038" type="Node3D" parent="Facades" unique_id=1329544611 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 6, 42)
+
+[node name="FAC_mur_plein_039" type="Node3D" parent="Facades" unique_id=1303649110 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 0, 44)
+
+[node name="FAC_fenetre_balcon_002" type="Node3D" parent="Facades" unique_id=1677675800 instance=ExtResource("kit_2")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 3, 44)
+
+[node name="FAC_fenetre_haute_012" type="Node3D" parent="Facades" unique_id=1738717870 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 6, 44)
+
+[node name="FAC_arcade_003" type="Node3D" parent="Facades" unique_id=1829723852 instance=ExtResource("kit_0")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 0, 46)
+
+[node name="FAC_mur_plein_040" type="Node3D" parent="Facades" unique_id=263828522 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 3, 46)
+
+[node name="FAC_mur_plein_041" type="Node3D" parent="Facades" unique_id=1504242529 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 6, 46)
+
+[node name="FAC_mur_plein_042" type="Node3D" parent="Facades" unique_id=2025951277 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 0, 48)
+
+[node name="FAC_fenetre_jumelle_005" type="Node3D" parent="Facades" unique_id=144535644 instance=ExtResource("kit_4")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 3, 48)
+
+[node name="FAC_fenetre_haute_013" type="Node3D" parent="Facades" unique_id=362143753 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 6, 48)
+
+[node name="FAC_mur_plein_043" type="Node3D" parent="Facades" unique_id=108486987 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 0, 2)
+
+[node name="FAC_mur_plein_044" type="Node3D" parent="Facades" unique_id=562032852 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 3, 2)
+
+[node name="FAC_mur_plein_045" type="Node3D" parent="Facades" unique_id=1313671847 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 6, 2)
+
+[node name="FAC_mur_plein_046" type="Node3D" parent="Facades" unique_id=978474427 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 0, 4)
+
+[node name="FAC_fenetre_jumelle_006" type="Node3D" parent="Facades" unique_id=1120497007 instance=ExtResource("kit_4")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 3, 4)
+
+[node name="FAC_fenetre_haute_014" type="Node3D" parent="Facades" unique_id=1492041355 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 6, 4)
+
+[node name="FAC_mur_plein_047" type="Node3D" parent="Facades" unique_id=838637823 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 0, 6)
+
+[node name="FAC_mur_plein_048" type="Node3D" parent="Facades" unique_id=1693152904 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 3, 6)
+
+[node name="FAC_mur_plein_049" type="Node3D" parent="Facades" unique_id=1999487414 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 6, 6)
+
+[node name="FAC_porte_cintree_002" type="Node3D" parent="Facades" unique_id=508727952 instance=ExtResource("kit_7")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 0, 8)
+
+[node name="FAC_fenetre_009" type="Node3D" parent="Facades" unique_id=821897686 instance=ExtResource("kit_1")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 3, 8)
+
+[node name="FAC_fenetre_haute_015" type="Node3D" parent="Facades" unique_id=305337095 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 6, 8)
+
+[node name="FAC_mur_plein_050" type="Node3D" parent="Facades" unique_id=1969409422 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 0, 10)
+
+[node name="FAC_mur_plein_051" type="Node3D" parent="Facades" unique_id=1348576854 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 3, 10)
+
+[node name="FAC_mur_plein_052" type="Node3D" parent="Facades" unique_id=1738515811 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 6, 10)
+
+[node name="FAC_mur_plein_053" type="Node3D" parent="Facades" unique_id=1224227019 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 0, 12)
+
+[node name="FAC_fenetre_jumelle_007" type="Node3D" parent="Facades" unique_id=250129823 instance=ExtResource("kit_4")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 3, 12)
+
+[node name="FAC_fenetre_haute_016" type="Node3D" parent="Facades" unique_id=600525517 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 6, 12)
+
+[node name="FAC_mur_plein_054" type="Node3D" parent="Facades" unique_id=440399485 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 0, 14)
+
+[node name="FAC_fenetre_haute_017" type="Node3D" parent="Facades" unique_id=236304026 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 3, 14)
+
+[node name="FAC_porte_005" type="Node3D" parent="Facades" unique_id=1047375274 instance=ExtResource("kit_6")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 0, 16)
+
+[node name="FAC_mur_plein_055" type="Node3D" parent="Facades" unique_id=1230988817 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 3, 16)
+
+[node name="FAC_mur_plein_056" type="Node3D" parent="Facades" unique_id=1515392109 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 0, 18)
+
+[node name="FAC_mur_plein_057" type="Node3D" parent="Facades" unique_id=1167632728 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 3, 18)
+
+[node name="FAC_mur_plein_058" type="Node3D" parent="Facades" unique_id=2047996690 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 0, 20)
+
+[node name="FAC_fenetre_haute_018" type="Node3D" parent="Facades" unique_id=1350401793 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 3, 20)
+
+[node name="FAC_mur_plein_059" type="Node3D" parent="Facades" unique_id=2007166421 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 0, 22)
+
+[node name="FAC_mur_plein_060" type="Node3D" parent="Facades" unique_id=144906822 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 3, 22)
+
+[node name="FAC_mur_plein_061" type="Node3D" parent="Facades" unique_id=1545956374 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 0, 24)
+
+[node name="FAC_mur_plein_062" type="Node3D" parent="Facades" unique_id=2000245360 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 3, 24)
+
+[node name="FAC_mur_plein_063" type="Node3D" parent="Facades" unique_id=1883525517 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 0, 26)
+
+[node name="FAC_fenetre_jumelle_008" type="Node3D" parent="Facades" unique_id=1281469650 instance=ExtResource("kit_4")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 3, 26)
+
+[node name="FAC_fenetre_jumelle_009" type="Node3D" parent="Facades" unique_id=356688624 instance=ExtResource("kit_4")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 6, 26)
+
+[node name="FAC_fenetre_haute_019" type="Node3D" parent="Facades" unique_id=387081094 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 9, 26)
+
+[node name="FAC_mur_plein_064" type="Node3D" parent="Facades" unique_id=2100854118 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 0, 28)
+
+[node name="FAC_mur_plein_065" type="Node3D" parent="Facades" unique_id=224590512 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 3, 28)
+
+[node name="FAC_mur_plein_066" type="Node3D" parent="Facades" unique_id=1996011014 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 6, 28)
+
+[node name="FAC_mur_plein_067" type="Node3D" parent="Facades" unique_id=526147467 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 9, 28)
+
+[node name="FAC_arcade_004" type="Node3D" parent="Facades" unique_id=902471918 instance=ExtResource("kit_0")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 0, 30)
+
+[node name="FAC_fenetre_010" type="Node3D" parent="Facades" unique_id=869700319 instance=ExtResource("kit_1")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 3, 30)
+
+[node name="FAC_fenetre_011" type="Node3D" parent="Facades" unique_id=499478368 instance=ExtResource("kit_1")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 6, 30)
+
+[node name="FAC_fenetre_haute_020" type="Node3D" parent="Facades" unique_id=29729398 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 9, 30)
+
+[node name="FAC_arcade_005" type="Node3D" parent="Facades" unique_id=1672152737 instance=ExtResource("kit_0")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 0, 32)
+
+[node name="FAC_mur_plein_068" type="Node3D" parent="Facades" unique_id=1224924495 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 3, 32)
+
+[node name="FAC_mur_plein_069" type="Node3D" parent="Facades" unique_id=1188685830 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 6, 32)
+
+[node name="FAC_mur_plein_070" type="Node3D" parent="Facades" unique_id=1108790058 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 9, 32)
+
+[node name="FAC_mur_plein_071" type="Node3D" parent="Facades" unique_id=355925961 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 0, 34)
+
+[node name="FAC_fenetre_jumelle_010" type="Node3D" parent="Facades" unique_id=628421327 instance=ExtResource("kit_4")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 3, 34)
+
+[node name="FAC_fenetre_jumelle_011" type="Node3D" parent="Facades" unique_id=77892651 instance=ExtResource("kit_4")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 6, 34)
+
+[node name="FAC_fenetre_haute_021" type="Node3D" parent="Facades" unique_id=248739130 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 9, 34)
+
+[node name="FAC_mur_plein_072" type="Node3D" parent="Facades" unique_id=2009552066 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 0, 36)
+
+[node name="FAC_mur_plein_073" type="Node3D" parent="Facades" unique_id=1495976754 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 3, 36)
+
+[node name="FAC_mur_plein_074" type="Node3D" parent="Facades" unique_id=928808522 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 6, 36)
+
+[node name="FAC_mur_plein_075" type="Node3D" parent="Facades" unique_id=1314229551 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 9, 36)
+
+[node name="FAC_porte_006" type="Node3D" parent="Facades" unique_id=77259608 instance=ExtResource("kit_6")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 0, 38)
+
+[node name="FAC_fenetre_012" type="Node3D" parent="Facades" unique_id=2044452436 instance=ExtResource("kit_1")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 3, 38)
+
+[node name="FAC_fenetre_013" type="Node3D" parent="Facades" unique_id=289323947 instance=ExtResource("kit_1")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 6, 38)
+
+[node name="FAC_fenetre_haute_022" type="Node3D" parent="Facades" unique_id=1679946964 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 9, 38)
+
+[node name="FAC_mur_plein_076" type="Node3D" parent="Facades" unique_id=2029210603 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 0, 40)
+
+[node name="FAC_mur_plein_077" type="Node3D" parent="Facades" unique_id=1015245699 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 3, 40)
+
+[node name="FAC_mur_plein_078" type="Node3D" parent="Facades" unique_id=977672477 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 6, 40)
+
+[node name="FAC_mur_plein_079" type="Node3D" parent="Facades" unique_id=340841454 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 9, 40)
+
+[node name="FAC_mur_plein_080" type="Node3D" parent="Facades" unique_id=1409572588 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 4, 0, 42)
+
+[node name="FAC_fenetre_014" type="Node3D" parent="Facades" unique_id=131510005 instance=ExtResource("kit_1")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 4, 3, 42)
+
+[node name="FAC_fenetre_haute_023" type="Node3D" parent="Facades" unique_id=545806333 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 4, 6, 42)
+
+[node name="FAC_mur_plein_081" type="Node3D" parent="Facades" unique_id=716872300 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 4, 0, 44)
+
+[node name="FAC_mur_plein_082" type="Node3D" parent="Facades" unique_id=797445696 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 4, 3, 44)
+
+[node name="FAC_mur_plein_083" type="Node3D" parent="Facades" unique_id=901180037 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 4, 6, 44)
+
+[node name="FAC_porte_007" type="Node3D" parent="Facades" unique_id=1377169655 instance=ExtResource("kit_6")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 4, 0, 46)
+
+[node name="FAC_fenetre_015" type="Node3D" parent="Facades" unique_id=124813095 instance=ExtResource("kit_1")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 4, 3, 46)
+
+[node name="FAC_fenetre_haute_024" type="Node3D" parent="Facades" unique_id=887569935 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 4, 6, 46)
+
+[node name="FAC_mur_plein_084" type="Node3D" parent="Facades" unique_id=2000953818 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 4, 0, 48)
+
+[node name="FAC_mur_plein_085" type="Node3D" parent="Facades" unique_id=1787635559 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 4, 3, 48)
+
+[node name="FAC_mur_plein_086" type="Node3D" parent="Facades" unique_id=899204318 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 4, 6, 48)
+
+[node name="FAC_mur_plein_087" type="Node3D" parent="Facades" unique_id=586019859 instance=ExtResource("kit_5")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 4, 0, 50)
+
+[node name="FAC_fenetre_016" type="Node3D" parent="Facades" unique_id=1258763398 instance=ExtResource("kit_1")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 4, 3, 50)
+
+[node name="FAC_fenetre_haute_025" type="Node3D" parent="Facades" unique_id=1345656387 instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 4, 6, 50)
+
+[node name="FAC_mur_plein_088" type="Node3D" parent="Facades" unique_id=933849474 instance=ExtResource("kit_5")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, -2, 0, 38)
+
+[node name="FAC_mur_plein_089" type="Node3D" parent="Facades" unique_id=1455597329 instance=ExtResource("kit_5")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, -2, 3, 38)
+
+[node name="FAC_mur_plein_090" type="Node3D" parent="Facades" unique_id=122459281 instance=ExtResource("kit_5")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 4, 0, 40)
+
+[node name="FAC_mur_plein_091" type="Node3D" parent="Facades" unique_id=1190796695 instance=ExtResource("kit_5")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 4, 3, 40)
+
+[node name="FAC_mur_plein_092" type="Node3D" parent="Facades" unique_id=1690052607 instance=ExtResource("kit_5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 0)
+
+[node name="FAC_mur_plein_093" type="Node3D" parent="Facades" unique_id=1209504357 instance=ExtResource("kit_5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 0)
+
+[node name="FAC_mur_plein_094" type="Node3D" parent="Facades" unique_id=1636078381 instance=ExtResource("kit_5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
+
+[node name="FAC_mur_plein_095" type="Node3D" parent="Facades" unique_id=1052843512 instance=ExtResource("kit_5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 3, 0)
+
+[node name="FAC_mur_plein_096" type="Node3D" parent="Facades" unique_id=185743965 instance=ExtResource("kit_5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 3, 0)
+
+[node name="FAC_mur_plein_097" type="Node3D" parent="Facades" unique_id=465011592 instance=ExtResource("kit_5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 3, 0)
+
+[node name="FAC_mur_plein_098" type="Node3D" parent="Facades" unique_id=13731909 instance=ExtResource("kit_5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 6, 0)
+
+[node name="FAC_mur_plein_099" type="Node3D" parent="Facades" unique_id=191383285 instance=ExtResource("kit_5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 6, 0)
+
+[node name="FAC_mur_plein_100" type="Node3D" parent="Facades" unique_id=2033608770 instance=ExtResource("kit_5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 6, 0)
+
+[node name="FAC_mur_plein_101" type="Node3D" parent="Facades" unique_id=1618204017 instance=ExtResource("kit_5")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, -4, 0, 50)
+
+[node name="FAC_mur_plein_102" type="Node3D" parent="Facades" unique_id=613385978 instance=ExtResource("kit_5")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, -6, 0, 50)
+
+[node name="FAC_mur_plein_103" type="Node3D" parent="Facades" unique_id=180149597 instance=ExtResource("kit_5")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, -8, 0, 50)
+
+[node name="FAC_mur_plein_104" type="Node3D" parent="Facades" unique_id=783985418 instance=ExtResource("kit_5")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, -4, 3, 50)
+
+[node name="FAC_mur_plein_105" type="Node3D" parent="Facades" unique_id=1475624166 instance=ExtResource("kit_5")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, -6, 3, 50)
+
+[node name="FAC_mur_plein_106" type="Node3D" parent="Facades" unique_id=932420162 instance=ExtResource("kit_5")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, -8, 3, 50)
+
+[node name="FAC_mur_plein_107" type="Node3D" parent="Facades" unique_id=1337444043 instance=ExtResource("kit_5")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, -4, 6, 50)
+
+[node name="FAC_mur_plein_108" type="Node3D" parent="Facades" unique_id=1475726048 instance=ExtResource("kit_5")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, -6, 6, 50)
+
+[node name="FAC_mur_plein_109" type="Node3D" parent="Facades" unique_id=807129618 instance=ExtResource("kit_5")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, -8, 6, 50)
+
+[node name="FAC_mur_plein_110" type="Node3D" parent="Facades" unique_id=93122796 instance=ExtResource("kit_5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+
+[node name="FAC_mur_plein_111" type="Node3D" parent="Facades" unique_id=170648854 instance=ExtResource("kit_5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+
+[node name="FAC_mur_plein_112" type="Node3D" parent="Facades" unique_id=1537092920 instance=ExtResource("kit_5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
+
+[node name="FAC_mur_plein_113" type="Node3D" parent="Facades" unique_id=546582788 instance=ExtResource("kit_5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 3, 0)
+
+[node name="FAC_mur_plein_114" type="Node3D" parent="Facades" unique_id=293302639 instance=ExtResource("kit_5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 3, 0)
+
+[node name="FAC_mur_plein_115" type="Node3D" parent="Facades" unique_id=1467386913 instance=ExtResource("kit_5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 3, 0)
+
+[node name="FAC_mur_plein_116" type="Node3D" parent="Facades" unique_id=1863635948 instance=ExtResource("kit_5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 6, 0)
+
+[node name="FAC_mur_plein_117" type="Node3D" parent="Facades" unique_id=2141960589 instance=ExtResource("kit_5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 6, 0)
+
+[node name="FAC_mur_plein_118" type="Node3D" parent="Facades" unique_id=1909524773 instance=ExtResource("kit_5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 6, 0)
+
+[node name="FAC_mur_plein_119" type="Node3D" parent="Facades" unique_id=835126444 instance=ExtResource("kit_5")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 10, 0, 50)
+
+[node name="FAC_mur_plein_120" type="Node3D" parent="Facades" unique_id=24809723 instance=ExtResource("kit_5")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 8, 0, 50)
+
+[node name="FAC_mur_plein_121" type="Node3D" parent="Facades" unique_id=1058619672 instance=ExtResource("kit_5")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 6, 0, 50)
+
+[node name="FAC_mur_plein_122" type="Node3D" parent="Facades" unique_id=677134137 instance=ExtResource("kit_5")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 10, 3, 50)
+
+[node name="FAC_mur_plein_123" type="Node3D" parent="Facades" unique_id=1694518646 instance=ExtResource("kit_5")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 8, 3, 50)
+
+[node name="FAC_mur_plein_124" type="Node3D" parent="Facades" unique_id=2067138581 instance=ExtResource("kit_5")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 6, 3, 50)
+
+[node name="FAC_mur_plein_125" type="Node3D" parent="Facades" unique_id=1228510423 instance=ExtResource("kit_5")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 10, 6, 50)
+
+[node name="FAC_mur_plein_126" type="Node3D" parent="Facades" unique_id=1937418714 instance=ExtResource("kit_5")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 8, 6, 50)
+
+[node name="FAC_mur_plein_127" type="Node3D" parent="Facades" unique_id=1764269783 instance=ExtResource("kit_5")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 6, 6, 50)
+
+[node name="Couronnements" type="Node3D" parent="." unique_id=1110402057]
+
+[node name="TOI_corniche_001" type="Node3D" parent="Couronnements" unique_id=381727385 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 9, 0)
+
+[node name="TOI_corniche_002" type="Node3D" parent="Couronnements" unique_id=918741827 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 9, 2)
+
+[node name="TOI_corniche_003" type="Node3D" parent="Couronnements" unique_id=883218480 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 9, 4)
+
+[node name="TOI_corniche_004" type="Node3D" parent="Couronnements" unique_id=740956197 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 9, 6)
+
+[node name="TOI_corniche_005" type="Node3D" parent="Couronnements" unique_id=10220539 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 9, 8)
+
+[node name="TOI_terrasse_001" type="Node3D" parent="Couronnements" unique_id=1037463974 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 9, 0)
+
+[node name="TOI_terrasse_002" type="Node3D" parent="Couronnements" unique_id=1728132682 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 9, 0)
+
+[node name="TOI_terrasse_003" type="Node3D" parent="Couronnements" unique_id=1326588743 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 9, 0)
+
+[node name="TOI_terrasse_004" type="Node3D" parent="Couronnements" unique_id=1309256711 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 9, 2)
+
+[node name="TOI_terrasse_005" type="Node3D" parent="Couronnements" unique_id=1123263286 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 9, 2)
+
+[node name="TOI_terrasse_006" type="Node3D" parent="Couronnements" unique_id=1049052293 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 9, 2)
+
+[node name="TOI_terrasse_007" type="Node3D" parent="Couronnements" unique_id=2111915150 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 9, 4)
+
+[node name="TOI_terrasse_008" type="Node3D" parent="Couronnements" unique_id=1265150292 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 9, 4)
+
+[node name="TOI_terrasse_009" type="Node3D" parent="Couronnements" unique_id=1436585900 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 9, 4)
+
+[node name="TOI_terrasse_010" type="Node3D" parent="Couronnements" unique_id=1718197698 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 9, 6)
+
+[node name="TOI_terrasse_011" type="Node3D" parent="Couronnements" unique_id=1271862791 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 9, 6)
+
+[node name="TOI_terrasse_012" type="Node3D" parent="Couronnements" unique_id=845833233 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 9, 6)
+
+[node name="TOI_terrasse_013" type="Node3D" parent="Couronnements" unique_id=384464589 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 9, 8)
+
+[node name="TOI_terrasse_014" type="Node3D" parent="Couronnements" unique_id=683620498 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 9, 8)
+
+[node name="TOI_terrasse_015" type="Node3D" parent="Couronnements" unique_id=1473626464 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 9, 8)
+
+[node name="TOI_corniche_006" type="Node3D" parent="Couronnements" unique_id=1061069691 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 12, 10)
+
+[node name="TOI_corniche_007" type="Node3D" parent="Couronnements" unique_id=458684773 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 12, 12)
+
+[node name="TOI_corniche_008" type="Node3D" parent="Couronnements" unique_id=382979700 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 12, 14)
+
+[node name="TOI_corniche_009" type="Node3D" parent="Couronnements" unique_id=1048173475 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 12, 16)
+
+[node name="TOI_corniche_010" type="Node3D" parent="Couronnements" unique_id=315548696 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 12, 18)
+
+[node name="TOI_corniche_011" type="Node3D" parent="Couronnements" unique_id=1404631140 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 12, 20)
+
+[node name="TOI_terrasse_016" type="Node3D" parent="Couronnements" unique_id=269546674 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 12, 10)
+
+[node name="TOI_terrasse_017" type="Node3D" parent="Couronnements" unique_id=1268839606 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 12, 10)
+
+[node name="TOI_terrasse_018" type="Node3D" parent="Couronnements" unique_id=584478279 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 12, 10)
+
+[node name="TOI_terrasse_019" type="Node3D" parent="Couronnements" unique_id=501471459 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 12, 12)
+
+[node name="TOI_terrasse_020" type="Node3D" parent="Couronnements" unique_id=1503112395 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 12, 12)
+
+[node name="TOI_terrasse_021" type="Node3D" parent="Couronnements" unique_id=2061136074 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 12, 12)
+
+[node name="TOI_terrasse_022" type="Node3D" parent="Couronnements" unique_id=808440694 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 12, 14)
+
+[node name="TOI_terrasse_023" type="Node3D" parent="Couronnements" unique_id=2003420006 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 12, 14)
+
+[node name="TOI_terrasse_024" type="Node3D" parent="Couronnements" unique_id=1200710417 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 12, 14)
+
+[node name="TOI_terrasse_025" type="Node3D" parent="Couronnements" unique_id=1566757733 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 12, 16)
+
+[node name="TOI_terrasse_026" type="Node3D" parent="Couronnements" unique_id=1465192904 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 12, 16)
+
+[node name="TOI_terrasse_027" type="Node3D" parent="Couronnements" unique_id=325808572 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 12, 16)
+
+[node name="TOI_terrasse_028" type="Node3D" parent="Couronnements" unique_id=49823436 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 12, 18)
+
+[node name="TOI_terrasse_029" type="Node3D" parent="Couronnements" unique_id=909195832 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 12, 18)
+
+[node name="TOI_terrasse_030" type="Node3D" parent="Couronnements" unique_id=13088505 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 12, 18)
+
+[node name="TOI_terrasse_031" type="Node3D" parent="Couronnements" unique_id=1269520033 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 12, 20)
+
+[node name="TOI_terrasse_032" type="Node3D" parent="Couronnements" unique_id=483082911 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 12, 20)
+
+[node name="TOI_terrasse_033" type="Node3D" parent="Couronnements" unique_id=345023548 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 12, 20)
+
+[node name="TOI_corniche_012" type="Node3D" parent="Couronnements" unique_id=587783998 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 9, 22)
+
+[node name="TOI_corniche_013" type="Node3D" parent="Couronnements" unique_id=173146298 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 9, 24)
+
+[node name="TOI_corniche_014" type="Node3D" parent="Couronnements" unique_id=1729478305 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 9, 26)
+
+[node name="TOI_corniche_015" type="Node3D" parent="Couronnements" unique_id=1500879952 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 9, 28)
+
+[node name="TOI_corniche_016" type="Node3D" parent="Couronnements" unique_id=928029277 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 9, 30)
+
+[node name="TOI_terrasse_034" type="Node3D" parent="Couronnements" unique_id=182768148 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 9, 22)
+
+[node name="TOI_terrasse_035" type="Node3D" parent="Couronnements" unique_id=561872440 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 9, 22)
+
+[node name="TOI_terrasse_036" type="Node3D" parent="Couronnements" unique_id=2083050478 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 9, 22)
+
+[node name="TOI_terrasse_037" type="Node3D" parent="Couronnements" unique_id=847963432 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 9, 24)
+
+[node name="TOI_terrasse_038" type="Node3D" parent="Couronnements" unique_id=1296875936 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 9, 24)
+
+[node name="TOI_terrasse_039" type="Node3D" parent="Couronnements" unique_id=1796411740 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 9, 24)
+
+[node name="TOI_terrasse_040" type="Node3D" parent="Couronnements" unique_id=1513450712 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 9, 26)
+
+[node name="TOI_terrasse_041" type="Node3D" parent="Couronnements" unique_id=1593926118 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 9, 26)
+
+[node name="TOI_terrasse_042" type="Node3D" parent="Couronnements" unique_id=1534721491 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 9, 26)
+
+[node name="TOI_terrasse_043" type="Node3D" parent="Couronnements" unique_id=505515493 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 9, 28)
+
+[node name="TOI_terrasse_044" type="Node3D" parent="Couronnements" unique_id=688841381 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 9, 28)
+
+[node name="TOI_terrasse_045" type="Node3D" parent="Couronnements" unique_id=970334018 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 9, 28)
+
+[node name="TOI_terrasse_046" type="Node3D" parent="Couronnements" unique_id=1183707721 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 9, 30)
+
+[node name="TOI_terrasse_047" type="Node3D" parent="Couronnements" unique_id=552709481 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 9, 30)
+
+[node name="TOI_terrasse_048" type="Node3D" parent="Couronnements" unique_id=1787773205 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 9, 30)
+
+[node name="TOI_corniche_017" type="Node3D" parent="Couronnements" unique_id=2084541788 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 6, 32)
+
+[node name="TOI_corniche_018" type="Node3D" parent="Couronnements" unique_id=1623304446 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 6, 34)
+
+[node name="TOI_corniche_019" type="Node3D" parent="Couronnements" unique_id=561761390 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -2, 6, 36)
+
+[node name="TOI_terrasse_049" type="Node3D" parent="Couronnements" unique_id=346955363 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 6, 32)
+
+[node name="TOI_terrasse_050" type="Node3D" parent="Couronnements" unique_id=1168892894 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 6, 32)
+
+[node name="TOI_terrasse_051" type="Node3D" parent="Couronnements" unique_id=461756495 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 6, 32)
+
+[node name="TOI_terrasse_052" type="Node3D" parent="Couronnements" unique_id=1695392433 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 6, 34)
+
+[node name="TOI_terrasse_053" type="Node3D" parent="Couronnements" unique_id=1335780860 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 6, 34)
+
+[node name="TOI_terrasse_054" type="Node3D" parent="Couronnements" unique_id=1135989347 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 6, 34)
+
+[node name="TOI_terrasse_055" type="Node3D" parent="Couronnements" unique_id=1812238446 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 6, 36)
+
+[node name="TOI_terrasse_056" type="Node3D" parent="Couronnements" unique_id=1770784751 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 6, 36)
+
+[node name="TOI_terrasse_057" type="Node3D" parent="Couronnements" unique_id=195126299 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 6, 36)
+
+[node name="TOI_corniche_020" type="Node3D" parent="Couronnements" unique_id=1755293354 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 9, 38)
+
+[node name="TOI_corniche_021" type="Node3D" parent="Couronnements" unique_id=9376102 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 9, 40)
+
+[node name="TOI_corniche_022" type="Node3D" parent="Couronnements" unique_id=1661457678 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 9, 42)
+
+[node name="TOI_corniche_023" type="Node3D" parent="Couronnements" unique_id=1614358755 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 9, 44)
+
+[node name="TOI_corniche_024" type="Node3D" parent="Couronnements" unique_id=316613615 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 9, 46)
+
+[node name="TOI_corniche_025" type="Node3D" parent="Couronnements" unique_id=2036075708 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, -4, 9, 48)
+
+[node name="TOI_terrasse_058" type="Node3D" parent="Couronnements" unique_id=2131910210 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 9, 38)
+
+[node name="TOI_terrasse_059" type="Node3D" parent="Couronnements" unique_id=995716400 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 9, 38)
+
+[node name="TOI_terrasse_060" type="Node3D" parent="Couronnements" unique_id=363256834 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 9, 38)
+
+[node name="TOI_terrasse_061" type="Node3D" parent="Couronnements" unique_id=1763835995 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 9, 40)
+
+[node name="TOI_terrasse_062" type="Node3D" parent="Couronnements" unique_id=1106661603 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 9, 40)
+
+[node name="TOI_terrasse_063" type="Node3D" parent="Couronnements" unique_id=1143898777 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 9, 40)
+
+[node name="TOI_terrasse_064" type="Node3D" parent="Couronnements" unique_id=773877062 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 9, 42)
+
+[node name="TOI_terrasse_065" type="Node3D" parent="Couronnements" unique_id=1958214191 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 9, 42)
+
+[node name="TOI_terrasse_066" type="Node3D" parent="Couronnements" unique_id=1066266440 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 9, 42)
+
+[node name="TOI_terrasse_067" type="Node3D" parent="Couronnements" unique_id=502009467 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 9, 44)
+
+[node name="TOI_terrasse_068" type="Node3D" parent="Couronnements" unique_id=1919090261 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 9, 44)
+
+[node name="TOI_terrasse_069" type="Node3D" parent="Couronnements" unique_id=1256354250 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 9, 44)
+
+[node name="TOI_terrasse_070" type="Node3D" parent="Couronnements" unique_id=1763188185 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 9, 46)
+
+[node name="TOI_terrasse_071" type="Node3D" parent="Couronnements" unique_id=1243460129 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 9, 46)
+
+[node name="TOI_terrasse_072" type="Node3D" parent="Couronnements" unique_id=1150937325 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 9, 46)
+
+[node name="TOI_terrasse_073" type="Node3D" parent="Couronnements" unique_id=278335621 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 9, 48)
+
+[node name="TOI_terrasse_074" type="Node3D" parent="Couronnements" unique_id=181020620 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 9, 48)
+
+[node name="TOI_terrasse_075" type="Node3D" parent="Couronnements" unique_id=1344419293 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 9, 48)
+
+[node name="TOI_corniche_026" type="Node3D" parent="Couronnements" unique_id=2130933958 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 9, 2)
+
+[node name="TOI_corniche_027" type="Node3D" parent="Couronnements" unique_id=1590471466 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 9, 4)
+
+[node name="TOI_corniche_028" type="Node3D" parent="Couronnements" unique_id=1630439489 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 9, 6)
+
+[node name="TOI_corniche_029" type="Node3D" parent="Couronnements" unique_id=141323391 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 9, 8)
+
+[node name="TOI_corniche_030" type="Node3D" parent="Couronnements" unique_id=49948872 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 9, 10)
+
+[node name="TOI_corniche_031" type="Node3D" parent="Couronnements" unique_id=1777957484 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 9, 12)
+
+[node name="TOI_terrasse_076" type="Node3D" parent="Couronnements" unique_id=1762974888 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 9, 0)
+
+[node name="TOI_terrasse_077" type="Node3D" parent="Couronnements" unique_id=1223708082 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 9, 0)
+
+[node name="TOI_terrasse_078" type="Node3D" parent="Couronnements" unique_id=1818254257 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 9, 0)
+
+[node name="TOI_terrasse_079" type="Node3D" parent="Couronnements" unique_id=1051580877 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 9, 2)
+
+[node name="TOI_terrasse_080" type="Node3D" parent="Couronnements" unique_id=1190700840 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 9, 2)
+
+[node name="TOI_terrasse_081" type="Node3D" parent="Couronnements" unique_id=1438316672 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 9, 2)
+
+[node name="TOI_terrasse_082" type="Node3D" parent="Couronnements" unique_id=1583552479 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 9, 4)
+
+[node name="TOI_terrasse_083" type="Node3D" parent="Couronnements" unique_id=1267424121 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 9, 4)
+
+[node name="TOI_terrasse_084" type="Node3D" parent="Couronnements" unique_id=467017070 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 9, 4)
+
+[node name="TOI_terrasse_085" type="Node3D" parent="Couronnements" unique_id=1467589275 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 9, 6)
+
+[node name="TOI_terrasse_086" type="Node3D" parent="Couronnements" unique_id=998969290 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 9, 6)
+
+[node name="TOI_terrasse_087" type="Node3D" parent="Couronnements" unique_id=1310444553 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 9, 6)
+
+[node name="TOI_terrasse_088" type="Node3D" parent="Couronnements" unique_id=664752656 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 9, 8)
+
+[node name="TOI_terrasse_089" type="Node3D" parent="Couronnements" unique_id=1227201991 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 9, 8)
+
+[node name="TOI_terrasse_090" type="Node3D" parent="Couronnements" unique_id=685882840 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 9, 8)
+
+[node name="TOI_terrasse_091" type="Node3D" parent="Couronnements" unique_id=1003247196 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 9, 10)
+
+[node name="TOI_terrasse_092" type="Node3D" parent="Couronnements" unique_id=484396971 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 9, 10)
+
+[node name="TOI_terrasse_093" type="Node3D" parent="Couronnements" unique_id=488087818 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 9, 10)
+
+[node name="TOI_corniche_032" type="Node3D" parent="Couronnements" unique_id=80620148 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 6, 14)
+
+[node name="TOI_corniche_033" type="Node3D" parent="Couronnements" unique_id=1613235702 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 6, 16)
+
+[node name="TOI_corniche_034" type="Node3D" parent="Couronnements" unique_id=673592715 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 6, 18)
+
+[node name="TOI_corniche_035" type="Node3D" parent="Couronnements" unique_id=1433001281 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 6, 20)
+
+[node name="TOI_corniche_036" type="Node3D" parent="Couronnements" unique_id=856065226 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 6, 22)
+
+[node name="TOI_corniche_037" type="Node3D" parent="Couronnements" unique_id=1441815710 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 6, 24)
+
+[node name="TOI_terrasse_094" type="Node3D" parent="Couronnements" unique_id=668611430 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 6, 12)
+
+[node name="TOI_terrasse_095" type="Node3D" parent="Couronnements" unique_id=41107876 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 6, 12)
+
+[node name="TOI_terrasse_096" type="Node3D" parent="Couronnements" unique_id=739397783 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 6, 12)
+
+[node name="TOI_terrasse_097" type="Node3D" parent="Couronnements" unique_id=218047902 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 6, 14)
+
+[node name="TOI_terrasse_098" type="Node3D" parent="Couronnements" unique_id=902193959 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 6, 14)
+
+[node name="TOI_terrasse_099" type="Node3D" parent="Couronnements" unique_id=756556956 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 6, 14)
+
+[node name="TOI_terrasse_100" type="Node3D" parent="Couronnements" unique_id=234110094 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 6, 16)
+
+[node name="TOI_terrasse_101" type="Node3D" parent="Couronnements" unique_id=580432261 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 6, 16)
+
+[node name="TOI_terrasse_102" type="Node3D" parent="Couronnements" unique_id=861559535 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 6, 16)
+
+[node name="TOI_terrasse_103" type="Node3D" parent="Couronnements" unique_id=1829425788 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 6, 18)
+
+[node name="TOI_terrasse_104" type="Node3D" parent="Couronnements" unique_id=571602591 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 6, 18)
+
+[node name="TOI_terrasse_105" type="Node3D" parent="Couronnements" unique_id=446995781 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 6, 18)
+
+[node name="TOI_terrasse_106" type="Node3D" parent="Couronnements" unique_id=1209975677 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 6, 20)
+
+[node name="TOI_terrasse_107" type="Node3D" parent="Couronnements" unique_id=1218682471 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 6, 20)
+
+[node name="TOI_terrasse_108" type="Node3D" parent="Couronnements" unique_id=720659148 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 6, 20)
+
+[node name="TOI_terrasse_109" type="Node3D" parent="Couronnements" unique_id=387993250 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 6, 22)
+
+[node name="TOI_terrasse_110" type="Node3D" parent="Couronnements" unique_id=96980211 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 6, 22)
+
+[node name="TOI_terrasse_111" type="Node3D" parent="Couronnements" unique_id=1223741285 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 6, 22)
+
+[node name="TOI_corniche_038" type="Node3D" parent="Couronnements" unique_id=371842155 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 12, 26)
+
+[node name="TOI_corniche_039" type="Node3D" parent="Couronnements" unique_id=146884060 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 12, 28)
+
+[node name="TOI_corniche_040" type="Node3D" parent="Couronnements" unique_id=1387106482 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 12, 30)
+
+[node name="TOI_corniche_041" type="Node3D" parent="Couronnements" unique_id=1914764457 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 12, 32)
+
+[node name="TOI_corniche_042" type="Node3D" parent="Couronnements" unique_id=775885756 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 12, 34)
+
+[node name="TOI_corniche_043" type="Node3D" parent="Couronnements" unique_id=446147114 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 12, 36)
+
+[node name="TOI_corniche_044" type="Node3D" parent="Couronnements" unique_id=584385437 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 12, 38)
+
+[node name="TOI_corniche_045" type="Node3D" parent="Couronnements" unique_id=635729606 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 2, 12, 40)
+
+[node name="TOI_terrasse_112" type="Node3D" parent="Couronnements" unique_id=1395665776 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 12, 24)
+
+[node name="TOI_terrasse_113" type="Node3D" parent="Couronnements" unique_id=211164305 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 12, 24)
+
+[node name="TOI_terrasse_114" type="Node3D" parent="Couronnements" unique_id=325480941 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 12, 24)
+
+[node name="TOI_terrasse_115" type="Node3D" parent="Couronnements" unique_id=835206610 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 12, 26)
+
+[node name="TOI_terrasse_116" type="Node3D" parent="Couronnements" unique_id=1317619736 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 12, 26)
+
+[node name="TOI_terrasse_117" type="Node3D" parent="Couronnements" unique_id=132917735 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 12, 26)
+
+[node name="TOI_terrasse_118" type="Node3D" parent="Couronnements" unique_id=1279512122 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 12, 28)
+
+[node name="TOI_terrasse_119" type="Node3D" parent="Couronnements" unique_id=625242494 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 12, 28)
+
+[node name="TOI_terrasse_120" type="Node3D" parent="Couronnements" unique_id=402444349 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 12, 28)
+
+[node name="TOI_terrasse_121" type="Node3D" parent="Couronnements" unique_id=1333680689 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 12, 30)
+
+[node name="TOI_terrasse_122" type="Node3D" parent="Couronnements" unique_id=1528301224 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 12, 30)
+
+[node name="TOI_terrasse_123" type="Node3D" parent="Couronnements" unique_id=415914443 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 12, 30)
+
+[node name="TOI_terrasse_124" type="Node3D" parent="Couronnements" unique_id=1731187677 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 12, 32)
+
+[node name="TOI_terrasse_125" type="Node3D" parent="Couronnements" unique_id=1184881979 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 12, 32)
+
+[node name="TOI_terrasse_126" type="Node3D" parent="Couronnements" unique_id=447930530 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 12, 32)
+
+[node name="TOI_terrasse_127" type="Node3D" parent="Couronnements" unique_id=1362153980 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 12, 34)
+
+[node name="TOI_terrasse_128" type="Node3D" parent="Couronnements" unique_id=796179548 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 12, 34)
+
+[node name="TOI_terrasse_129" type="Node3D" parent="Couronnements" unique_id=1363270078 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 12, 34)
+
+[node name="TOI_terrasse_130" type="Node3D" parent="Couronnements" unique_id=899860073 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 12, 36)
+
+[node name="TOI_terrasse_131" type="Node3D" parent="Couronnements" unique_id=83104217 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 12, 36)
+
+[node name="TOI_terrasse_132" type="Node3D" parent="Couronnements" unique_id=919822381 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 12, 36)
+
+[node name="TOI_terrasse_133" type="Node3D" parent="Couronnements" unique_id=1877776084 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 12, 38)
+
+[node name="TOI_terrasse_134" type="Node3D" parent="Couronnements" unique_id=2024660481 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 12, 38)
+
+[node name="TOI_terrasse_135" type="Node3D" parent="Couronnements" unique_id=972240928 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 12, 38)
+
+[node name="TOI_corniche_046" type="Node3D" parent="Couronnements" unique_id=2137485481 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 4, 9, 42)
+
+[node name="TOI_corniche_047" type="Node3D" parent="Couronnements" unique_id=511197145 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 4, 9, 44)
+
+[node name="TOI_corniche_048" type="Node3D" parent="Couronnements" unique_id=1275738854 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 4, 9, 46)
+
+[node name="TOI_corniche_049" type="Node3D" parent="Couronnements" unique_id=1979045398 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 4, 9, 48)
+
+[node name="TOI_corniche_050" type="Node3D" parent="Couronnements" unique_id=987270076 instance=ExtResource("kit_11")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, 4, 9, 50)
+
+[node name="TOI_terrasse_136" type="Node3D" parent="Couronnements" unique_id=774699214 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 9, 40)
+
+[node name="TOI_terrasse_137" type="Node3D" parent="Couronnements" unique_id=328023033 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 9, 40)
+
+[node name="TOI_terrasse_138" type="Node3D" parent="Couronnements" unique_id=1347388917 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 9, 40)
+
+[node name="TOI_terrasse_139" type="Node3D" parent="Couronnements" unique_id=965385479 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 9, 42)
+
+[node name="TOI_terrasse_140" type="Node3D" parent="Couronnements" unique_id=1970798894 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 9, 42)
+
+[node name="TOI_terrasse_141" type="Node3D" parent="Couronnements" unique_id=1972544975 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 9, 42)
+
+[node name="TOI_terrasse_142" type="Node3D" parent="Couronnements" unique_id=1016542098 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 9, 44)
+
+[node name="TOI_terrasse_143" type="Node3D" parent="Couronnements" unique_id=781098436 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 9, 44)
+
+[node name="TOI_terrasse_144" type="Node3D" parent="Couronnements" unique_id=871851803 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 9, 44)
+
+[node name="TOI_terrasse_145" type="Node3D" parent="Couronnements" unique_id=1462244340 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 9, 46)
+
+[node name="TOI_terrasse_146" type="Node3D" parent="Couronnements" unique_id=1270086433 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 9, 46)
+
+[node name="TOI_terrasse_147" type="Node3D" parent="Couronnements" unique_id=1431629667 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 9, 46)
+
+[node name="TOI_terrasse_148" type="Node3D" parent="Couronnements" unique_id=1007915694 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 9, 48)
+
+[node name="TOI_terrasse_149" type="Node3D" parent="Couronnements" unique_id=565570259 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 9, 48)
+
+[node name="TOI_terrasse_150" type="Node3D" parent="Couronnements" unique_id=2127486092 instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 9, 48)
+
+[node name="TOI_corniche_051" type="Node3D" parent="Couronnements" unique_id=1750795809 instance=ExtResource("kit_11")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, -2, 6, 38)
+
+[node name="TOI_corniche_052" type="Node3D" parent="Couronnements" unique_id=23572177 instance=ExtResource("kit_11")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 4, 6, 40)
+
+[node name="Angles" type="Node3D" parent="." unique_id=1380877620]
+
+[node name="Arches" type="Node3D" parent="." unique_id=303650896]
+
+[node name="Habillage" type="Node3D" parent="." unique_id=891986633]
+
+[node name="Collisions" type="StaticBody3D" parent="." unique_id=1687712933]
+
+[node name="col_L1" type="CollisionShape3D" parent="Collisions" unique_id=1673165166]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4.5, 5)
+shape = SubResource("col_L1")
+
+[node name="col_L2" type="CollisionShape3D" parent="Collisions" unique_id=1779450603]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 6, 16)
+shape = SubResource("col_L2")
+
+[node name="col_L3" type="CollisionShape3D" parent="Collisions" unique_id=616355927]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4.5, 27)
+shape = SubResource("col_L3")
+
+[node name="col_L4" type="CollisionShape3D" parent="Collisions" unique_id=1673811663]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 3, 35)
+shape = SubResource("col_L4")
+
+[node name="col_L5" type="CollisionShape3D" parent="Collisions" unique_id=1862406280]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 4.5, 44)
+shape = SubResource("col_L5")
+
+[node name="col_R1" type="CollisionShape3D" parent="Collisions" unique_id=1831865868]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 4.5, 6)
+shape = SubResource("col_R1")
+
+[node name="col_R2" type="CollisionShape3D" parent="Collisions" unique_id=1770929935]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 3, 18)
+shape = SubResource("col_R2")
+
+[node name="col_R3" type="CollisionShape3D" parent="Collisions" unique_id=1169549015]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 6, 32)
+shape = SubResource("col_R3")
+
+[node name="col_R4" type="CollisionShape3D" parent="Collisions" unique_id=581986564]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 4.5, 45)
+shape = SubResource("col_R4")
+
+[node name="col_sol_serre" type="CollisionShape3D" parent="Collisions" unique_id=851947740]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 19)
+shape = SubResource("col_sol_serre")
+
+[node name="col_sol_transition" type="CollisionShape3D" parent="Collisions" unique_id=2142428734]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -0.1, 39)
+shape = SubResource("col_sol_transition")
+
+[node name="col_sol_ouvert" type="CollisionShape3D" parent="Collisions" unique_id=1884427741]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 45)
+shape = SubResource("col_sol_ouvert")
+
+[node name="NavigationRegion" type="NavigationRegion3D" parent="." unique_id=78698733]
+navigation_mesh = ExtResource("14_rxecg")
