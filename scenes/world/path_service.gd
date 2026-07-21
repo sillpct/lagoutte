@@ -3,17 +3,6 @@ extends Node
 
 @export var navigation_region: NavigationRegion3D
 
-@export var run_debug_path_test := false
-@export var debug_path_from := Vector3.ZERO
-@export var debug_path_to := Vector3.ZERO
-@export var debug_truncate_length := 5.0
-
-func _ready() -> void:
-	if run_debug_path_test:
-		for i in range(10):
-			await get_tree().physics_frame
-		_print_debug_path_test()
-
 func get_world_path(from_position: Vector3, to_position: Vector3) -> PackedVector3Array:
 	if navigation_region == null:
 		push_warning("PathService : aucun NavigationRegion3D assigné.")
@@ -59,25 +48,3 @@ func truncate_path_to_length(path: PackedVector3Array, max_length: float) -> Pac
 		return truncated
 
 	return truncated
-
-func _print_debug_path_test() -> void:
-	var path := get_world_path(debug_path_from, debug_path_to)
-	var truncated_path := truncate_path_to_length(path, debug_truncate_length)
-
-	print(
-		"PathService test — de ",
-		debug_path_from,
-		" à ",
-		debug_path_to,
-		" : chemin = ",
-		path.size(),
-		" points, longueur = ",
-		get_path_length(path),
-		" m, tronqué à ",
-		debug_truncate_length,
-		" m = ",
-		truncated_path.size(),
-		" points"
-	)
-	print("PathService chemin : ", path)
-	print("PathService tronqué : ", truncated_path)
