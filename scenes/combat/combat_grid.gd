@@ -41,9 +41,6 @@ func get_occupant(col: int, row: int) -> Node3D:
 			return unit
 	return null
 
-func is_cell_free(col: int, row: int) -> bool:
-	return is_valid_cell(col, row) and get_occupant(col, row) == null
-
 func place_unit(unit: Node3D, col: int, row: int) -> bool:
 	if not is_valid_cell(col, row):
 		return false
