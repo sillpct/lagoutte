@@ -85,12 +85,14 @@ script = ExtResource("8_combat_manager")
 grid = NodePath("../CombatGrid")
 units = [NodePath("../Player"), NodePath("../SectRenegade")]
 
-[node name="CombatMovement" type="Node" parent="." unique_id=171960228 node_paths=PackedStringArray("grid", "combat_manager", "active_unit", "combat_attack")]
+[node name="CombatMovement" type="Node" parent="." unique_id=171960228 node_paths=PackedStringArray("grid", "combat_manager", "active_unit", "combat_attack", "path_service", "unit_path_mover")]
 script = ExtResource("7_combat_movement")
 grid = NodePath("../CombatGrid")
 combat_manager = NodePath("../CombatManager")
 active_unit = NodePath("../Player")
 combat_attack = NodePath("../CombatAttack")
+path_service = NodePath("../PathService")
+unit_path_mover = NodePath("../UnitPathMover")
 
 [node name="SectRenegade" type="Node3D" parent="." unique_id=1232763424]
 script = ExtResource("10_sect_renegade")
