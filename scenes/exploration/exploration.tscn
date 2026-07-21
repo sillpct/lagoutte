@@ -16,7 +16,7 @@
 [ext_resource type="Script" uid="uid://c1ume82aalxlw" path="res://scenes/combat/combat_range_visual.gd" id="15_combat_range_visual"]
 [ext_resource type="Script" uid="uid://bry66r4gvdahu" path="res://scenes/world/world_mouse_query.gd" id="16_world_mouse_query"]
 [ext_resource type="Script" uid="uid://bp7j7y3aoqjx6" path="res://scenes/combat/combat_session.gd" id="17_combat_session"]
-[ext_resource type="PackedScene" path="res://scenes/world/Bruyeres_Rue_Centre_greybox.tscn" id="18_bruyeres_greybox"]
+[ext_resource type="PackedScene" path="res://scenes/world/bruyeres/bruyeres_rue_centre.tscn" id="18_bruyeres_greybox"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_cvbhj"]
 size = Vector3(20, 0.1, 20)
@@ -49,7 +49,7 @@ size = 20.0
 visible = false
 mesh = SubResource("BoxMesh_cvbhj")
 
-[node name="BruyeresRueCentreGreybox" parent="." unique_id=1098005461 instance=ExtResource("18_bruyeres_greybox")]
+[node name="BruyeresRueCentre" parent="." unique_id=1098005461 instance=ExtResource("18_bruyeres_greybox")]
 
 [node name="CombatGrid" parent="." unique_id=951227565 instance=ExtResource("2_combat_grid")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0.06, -4.5)
