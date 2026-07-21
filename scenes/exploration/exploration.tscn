@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" path="res://scenes/world/bruyeres/bruyeres_rue_centre.tscn" id="18_bruyeres_greybox"]
 [ext_resource type="Script" uid="uid://cm73phdeal4ar" path="res://scenes/world/path_service.gd" id="19_path_service"]
 [ext_resource type="Script" uid="uid://bqdt2n8f5nk2j" path="res://scenes/world/unit_path_mover.gd" id="20_unit_path_mover"]
+[ext_resource type="Script" uid="uid://cc5h3w4jdourj" path="res://scenes/exploration/exploration_click_mover.gd" id="21_exploration_click_mover"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_cvbhj"]
 size = Vector3(20, 0.1, 20)
@@ -64,13 +65,16 @@ ground_y = 0.06
 script = ExtResource("19_path_service")
 navigation_region = NodePath("../BruyeresRueCentre/NavigationRegion")
 
-[node name="UnitPathMover" type="Node" parent="." unique_id=1538345749 node_paths=PackedStringArray("path_service", "debug_unit")]
+[node name="UnitPathMover" type="Node" parent="." unique_id=1538345749]
 script = ExtResource("20_unit_path_mover")
+
+[node name="ExplorationClickMover" type="Node" parent="." unique_id=1614600573 node_paths=PackedStringArray("combat_manager", "world_mouse_query", "path_service", "unit_path_mover", "player")]
+script = ExtResource("21_exploration_click_mover")
+combat_manager = NodePath("../CombatManager")
+world_mouse_query = NodePath("../WorldMouseQuery")
 path_service = NodePath("../PathService")
-enable_debug_move = true
-debug_unit = NodePath("../Player")
-debug_destination = Vector3(3, 0.5, 48)
-debug_speed = 3.0
+unit_path_mover = NodePath("../UnitPathMover")
+player = NodePath("../Player")
 
 [node name="Player" parent="." unique_id=295733018 instance=ExtResource("1_toxw2")]
 
