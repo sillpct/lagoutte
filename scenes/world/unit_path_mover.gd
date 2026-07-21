@@ -1,22 +1,8 @@
 class_name UnitPathMover
 extends Node
 
-@export var path_service: PathService
-
-@export var enable_debug_move := false
-@export var debug_unit: Node3D
-@export var debug_destination := Vector3.ZERO
-@export var debug_speed := 3.0
-@export var debug_action := "test_path_move"
-
 var is_moving := false
-
-func _unhandled_input(event: InputEvent) -> void:
-	if not enable_debug_move:
-		return
-	if event.is_action_pressed(debug_action):
-		get_viewport().set_input_as_handled()
-		_start_debug_move()
+var _cancel_requested := false
 
 func move_along_path(unit: Node3D, path: PackedVector3Array, speed: float) -> bool:
 	if is_moving:
@@ -31,14 +17,18 @@ func move_along_path(unit: Node3D, path: PackedVector3Array, speed: float) -> bo
 		return false
 
 	is_moving = true
+	_cancel_requested = false
 
 	for i in range(1, path.size()):
+		if _cancel_requested:
+			return _finish_move(false)
 		if unit == null or not is_instance_valid(unit):
-			is_moving = false
-			return false
+			return _finish_move(false)
 
 		var target_position := Vector3(path[i].x, unit.global_position.y, path[i].z)
 		while is_instance_valid(unit):
+			if _cancel_requested:
+				return _finish_move(false)
 			var current_position := unit.global_position
 			target_position.y = current_position.y
 			var distance := current_position.distance_to(target_position)
@@ -54,37 +44,17 @@ func move_along_path(unit: Node3D, path: PackedVector3Array, speed: float) -> bo
 			await get_tree().physics_frame
 
 	if unit == null or not is_instance_valid(unit):
-		is_moving = false
-		return false
+		return _finish_move(false)
 
 	var final_path_point := path[path.size() - 1]
 	unit.global_position = Vector3(final_path_point.x, unit.global_position.y, final_path_point.z)
-	is_moving = false
-	return true
+	return _finish_move(true)
 
-func _start_debug_move() -> void:
-	if path_service == null:
-		push_warning("UnitPathMover : aucun PathService assigné pour le test.")
-		return
-	if debug_unit == null or not is_instance_valid(debug_unit):
-		push_warning("UnitPathMover : aucune unité de test assignée.")
-		return
+func cancel_current_move() -> void:
 	if is_moving:
-		print("UnitPathMover test : déplacement déjà en cours.")
-		return
+		_cancel_requested = true
 
-	var path := path_service.get_world_path(debug_unit.global_position, debug_destination)
-	print(
-		"UnitPathMover test — chemin = ",
-		path.size(),
-		" points, longueur = ",
-		path_service.get_path_length(path),
-		" m"
-	)
-
-	var was_physics_processing := debug_unit.is_physics_processing()
-	debug_unit.set_physics_process(false)
-	var moved := await move_along_path(debug_unit, path, debug_speed)
-	if is_instance_valid(debug_unit):
-		debug_unit.set_physics_process(was_physics_processing)
-	print("UnitPathMover test — déplacement terminé : ", moved)
+func _finish_move(success: bool) -> bool:
+	is_moving = false
+	_cancel_requested = false
+	return success
