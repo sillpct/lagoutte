@@ -53,10 +53,6 @@ func start_combat_control() -> void:
 
 	movement_target_world = active_unit.global_position
 	set_combat_mode(PlayerCombatMode.MOVEMENT)
-	print(
-		"Case (5, 5) — occupant : ", grid.get_occupant(5, 5),
-		" | libre : ", grid.is_cell_free(5, 5)
-	)
 
 func stop_combat_control() -> void:
 	if active_unit != null:
