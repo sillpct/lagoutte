@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://bry66r4gvdahu" path="res://scenes/world/world_mouse_query.gd" id="16_world_mouse_query"]
 [ext_resource type="Script" uid="uid://bp7j7y3aoqjx6" path="res://scenes/combat/combat_session.gd" id="17_combat_session"]
 [ext_resource type="PackedScene" path="res://scenes/world/bruyeres/bruyeres_rue_centre.tscn" id="18_bruyeres_greybox"]
+[ext_resource type="Script" uid="uid://cm73phdeal4ar" path="res://scenes/world/path_service.gd" id="19_path_service"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_cvbhj"]
 size = Vector3(20, 0.1, 20)
@@ -57,6 +58,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0.06, -4.5)
 [node name="WorldMouseQuery" type="Node" parent="." unique_id=511842449]
 script = ExtResource("16_world_mouse_query")
 ground_y = 0.06
+
+[node name="PathService" type="Node" parent="." unique_id=1442252667 node_paths=PackedStringArray("navigation_region")]
+script = ExtResource("19_path_service")
+navigation_region = NodePath("../BruyeresRueCentre/NavigationRegion")
+run_debug_path_test = true
+debug_path_from = Vector3(0, 0.5, 2)
+debug_path_to = Vector3(3, 0.5, 48)
+debug_truncate_length = 8.0
 
 [node name="Player" parent="." unique_id=295733018 instance=ExtResource("1_toxw2")]
 
