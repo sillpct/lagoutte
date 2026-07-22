@@ -1,7 +1,5 @@
 extends CharacterBody3D
 
-@export var move_speed: float = 5.0
-
 @export var incarnation: IncarnationData
 
 var pv: Stat
@@ -19,43 +17,6 @@ func _ready() -> void:
 	pv = Stat.new()
 	pv.max_value = incarnation.pv_max
 	pv.reset_to_full()
-
-func _physics_process(_delta: float) -> void:
-
-	if waiting_for_choice:
-		velocity.x = 0.0
-		velocity.z = 0.0
-		move_and_slide()
-		return
-
-	var input_x := 0.0
-	var input_y := 0.0
-	if Input.is_action_pressed("ui_up"):
-		input_y += 1.0
-	if Input.is_action_pressed("ui_down"):
-		input_y -= 1.0
-	if Input.is_action_pressed("ui_left"):
-		input_x -= 1.0
-	if Input.is_action_pressed("ui_right"):
-		input_x += 1.0
-
-	var input_dir := Vector3.ZERO
-	var camera := get_viewport().get_camera_3d()
-	if camera != null:
-		var camera_forward := -camera.global_transform.basis.z
-		camera_forward.y = 0.0
-		camera_forward = camera_forward.normalized()
-		var camera_right := camera.global_transform.basis.x
-		camera_right.y = 0.0
-		camera_right = camera_right.normalized()
-		input_dir = (camera_forward * input_y) + (camera_right * input_x)
-	else:
-		input_dir = Vector3(input_x, 0.0, -input_y)
-
-	input_dir = input_dir.normalized()
-	velocity.x = input_dir.x * move_speed
-	velocity.z = input_dir.z * move_speed
-	move_and_slide()
 
 func _input(event: InputEvent) -> void:
 
