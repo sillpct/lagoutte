@@ -2,6 +2,7 @@ class_name ExplorationClickMover
 extends Node
 
 @export var combat_manager: CombatManager
+@export var scripted_sequence_manager: ScriptedSequenceManager
 @export var world_mouse_query: WorldMouseQuery
 @export var path_service: PathService
 @export var unit_path_mover: UnitPathMover
@@ -22,6 +23,8 @@ func _ready() -> void:
 		push_warning("ExplorationClickMover a besoin du combat manager, WorldMouseQuery, PathService, UnitPathMover et du joueur.")
 
 func _unhandled_input(event: InputEvent) -> void:
+	if _is_sequence_running():
+		return
 	if _is_combat_running():
 		return
 
@@ -66,6 +69,9 @@ func _start_click_move(request_id: int, destination: Vector3) -> void:
 
 func _is_combat_running() -> bool:
 	return combat_manager != null and combat_manager.is_combat_active()
+
+func _is_sequence_running() -> bool:
+	return scripted_sequence_manager != null and scripted_sequence_manager.is_sequence_active()
 
 func _has_required_references() -> bool:
 	return (
