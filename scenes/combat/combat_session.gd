@@ -5,6 +5,7 @@ const TEST_ENEMY_START_CELL := Vector2i(8, 5)
 
 @export var grid: CombatGrid
 @export var combat_manager: CombatManager
+@export var scripted_sequence_manager: ScriptedSequenceManager
 @export var combat_movement: CombatMovement
 @export var combat_ui: CombatUI
 @export var combat_range_visual: CombatRangeVisual
@@ -16,6 +17,8 @@ func _ready() -> void:
 		combat_manager.combat_ended.connect(_on_combat_ended)
 
 func _unhandled_input(event: InputEvent) -> void:
+	if scripted_sequence_manager != null and scripted_sequence_manager.is_sequence_active():
+		return
 	if event.is_action_pressed("start_test_combat"):
 		start_test_combat()
 		get_viewport().set_input_as_handled()
