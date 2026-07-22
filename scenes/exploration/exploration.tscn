@@ -20,6 +20,9 @@
 [ext_resource type="Script" uid="uid://cm73phdeal4ar" path="res://scenes/world/path_service.gd" id="19_path_service"]
 [ext_resource type="Script" uid="uid://bqdt2n8f5nk2j" path="res://scenes/world/unit_path_mover.gd" id="20_unit_path_mover"]
 [ext_resource type="Script" uid="uid://cc5h3w4jdourj" path="res://scenes/exploration/exploration_click_mover.gd" id="21_exploration_click_mover"]
+[ext_resource type="Script" path="res://scenes/echo/echo_manager.gd" id="22_echo_manager"]
+[ext_resource type="PackedScene" path="res://scenes/ui/echo_ui.tscn" id="23_echo_ui"]
+[ext_resource type="PackedScene" path="res://scenes/echo/echo_object.tscn" id="24_echo_object"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_cvbhj"]
 size = Vector3(20, 0.1, 20)
@@ -142,6 +145,11 @@ combat_range_visual = NodePath("../CombatRangeVisual")
 player = NodePath("../Player")
 renegade = NodePath("../SectRenegade")
 
+[node name="EchoManager" type="Node" parent="." groups=["echo_manager"] node_paths=PackedStringArray("combat_manager", "echo_ui")]
+script = ExtResource("22_echo_manager")
+combat_manager = NodePath("../CombatManager")
+echo_ui = NodePath("../EchoUI")
+
 [node name="CombatUI" parent="." unique_id=1135194789 node_paths=PackedStringArray("combat_manager", "combat_movement") instance=ExtResource("13_combat_ui")]
 combat_manager = NodePath("../CombatManager")
 combat_movement = NodePath("../CombatMovement")
@@ -151,6 +159,8 @@ combat_manager = NodePath("../CombatManager")
 world_mouse_query = NodePath("../WorldMouseQuery")
 combat_movement = NodePath("../CombatMovement")
 combat_attack = NodePath("../CombatAttack")
+
+[node name="EchoUI" parent="." instance=ExtResource("23_echo_ui")]
 
 [node name="SunLight" type="DirectionalLight3D" parent="." unique_id=893214508]
 transform = Transform3D(0.70710677, -0.61237246, 0.35355335, 0, 0.49999997, 0.86602545, -0.70710677, -0.61237246, 0.35355335, 0, 0, 0)
@@ -164,5 +174,11 @@ shape = SubResource("BoxShape3D_pbc0k")
 
 [node name="Visual" type="MeshInstance3D" parent="TestInteractable" unique_id=1527398324]
 mesh = SubResource("BoxMesh_pbc0k")
+
+[node name="EchoTestBruyeres" parent="." instance=ExtResource("24_echo_object")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 6)
+echo_id = "bruyeres_echo_test_pierre_bleue"
+lucidite_required = 20
+echo_text = "Le pavé garde la fraîcheur d'un pas que tu n'as pas encore fait."
 
 [node name="DialogueUI" parent="." unique_id=194146753 instance=ExtResource("3_vlahv")]
