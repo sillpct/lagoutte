@@ -23,6 +23,7 @@
 [ext_resource type="Script" path="res://scenes/echo/echo_manager.gd" id="22_echo_manager"]
 [ext_resource type="PackedScene" path="res://scenes/ui/echo_ui.tscn" id="23_echo_ui"]
 [ext_resource type="PackedScene" path="res://scenes/echo/echo_object.tscn" id="24_echo_object"]
+[ext_resource type="PackedScene" path="res://scenes/echo/echo_zone.tscn" id="25_echo_zone"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_cvbhj"]
 size = Vector3(20, 0.1, 20)
@@ -145,10 +146,11 @@ combat_range_visual = NodePath("../CombatRangeVisual")
 player = NodePath("../Player")
 renegade = NodePath("../SectRenegade")
 
-[node name="EchoManager" type="Node" parent="." groups=["echo_manager"] node_paths=PackedStringArray("combat_manager", "echo_ui")]
+[node name="EchoManager" type="Node" parent="." groups=["echo_manager"] node_paths=PackedStringArray("combat_manager", "echo_ui", "unit_path_mover")]
 script = ExtResource("22_echo_manager")
 combat_manager = NodePath("../CombatManager")
 echo_ui = NodePath("../EchoUI")
+unit_path_mover = NodePath("../UnitPathMover")
 
 [node name="CombatUI" parent="." unique_id=1135194789 node_paths=PackedStringArray("combat_manager", "combat_movement") instance=ExtResource("13_combat_ui")]
 combat_manager = NodePath("../CombatManager")
@@ -180,5 +182,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 6)
 echo_id = "bruyeres_echo_test_pierre_bleue"
 lucidite_required = 20
 echo_text = "Le pavé garde la fraîcheur d'un pas que tu n'as pas encore fait."
+
+[node name="EchoZoneTestEntree" parent="." instance=ExtResource("25_echo_zone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11)
+echo_id = "bruyeres_echo_lieu_entree_test"
+echo_text = "La rue inspire avec toi, puis retient son souffle."
+
+[node name="EchoZoneTestFond" parent="." instance=ExtResource("25_echo_zone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 24)
+echo_id = "bruyeres_echo_lieu_fond_test"
+echo_text = "Plus loin, les façades murmurent un nom que personne ne prononce."
 
 [node name="DialogueUI" parent="." unique_id=194146753 instance=ExtResource("3_vlahv")]
