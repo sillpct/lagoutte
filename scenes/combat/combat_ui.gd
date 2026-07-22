@@ -11,6 +11,7 @@ const RESOURCE_ACTIVE_COLOR := Color(0.95, 0.82, 0.25)
 const RESOURCE_EMPTY_COLOR := Color(0.16, 0.17, 0.19)
 
 @export var combat_manager: CombatManager
+@export var scripted_sequence_manager: ScriptedSequenceManager
 @export var combat_movement: CombatMovement
 
 @onready var turn_order_bar: HBoxContainer = $Root/MarginContainer/TurnOrderBar
@@ -151,9 +152,11 @@ func _refresh_end_turn_button() -> void:
 	if combat_manager == null:
 		end_turn_button.disabled = true
 		return
-	end_turn_button.disabled = combat_manager.combat_over or not combat_manager.can_player_end_turn()
+	end_turn_button.disabled = _is_sequence_running() or combat_manager.combat_over or not combat_manager.can_player_end_turn()
 
 func _on_end_turn_button_pressed() -> void:
+	if _is_sequence_running():
+		return
 	if combat_manager == null or combat_manager.combat_over:
 		return
 	combat_manager.request_player_end_turn()
@@ -179,9 +182,13 @@ func _can_player_use_actions() -> bool:
 	return (
 		combat_manager != null
 		and combat_movement != null
+		and not _is_sequence_running()
 		and not combat_manager.combat_over
 		and combat_manager.can_player_end_turn()
 	)
+
+func _is_sequence_running() -> bool:
+	return scripted_sequence_manager != null and scripted_sequence_manager.is_sequence_active()
 
 func _on_movement_button_pressed() -> void:
 	if not _can_player_use_actions() or not combat_manager.can_unit_move(combat_movement.active_unit):
