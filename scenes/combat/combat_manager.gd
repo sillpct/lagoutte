@@ -10,6 +10,7 @@ signal unit_resources_changed(unit: Node3D)
 signal combat_ended(issue: CombatIssue)
 
 @export var grid: CombatGrid
+@export var scripted_sequence_manager: ScriptedSequenceManager
 @export var units: Array[Node3D] = []
 
 var combat_active := false
@@ -60,6 +61,8 @@ func is_action_locked() -> bool:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_combat_active():
+		return
+	if scripted_sequence_manager != null and scripted_sequence_manager.is_sequence_active():
 		return
 	if get_current_unit() == null:
 		return
@@ -119,6 +122,8 @@ func end_turn() -> void:
 func request_player_end_turn() -> void:
 	if not is_combat_active():
 		return
+	if scripted_sequence_manager != null and scripted_sequence_manager.is_sequence_active():
+		return
 	if action_locked:
 		return
 	if not can_player_end_turn():
@@ -127,6 +132,8 @@ func request_player_end_turn() -> void:
 
 func can_player_end_turn() -> bool:
 	if not is_combat_active():
+		return false
+	if scripted_sequence_manager != null and scripted_sequence_manager.is_sequence_active():
 		return false
 	if action_locked:
 		return false
