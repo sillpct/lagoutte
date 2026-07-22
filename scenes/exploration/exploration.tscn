@@ -20,10 +20,10 @@
 [ext_resource type="Script" uid="uid://cm73phdeal4ar" path="res://scenes/world/path_service.gd" id="19_path_service"]
 [ext_resource type="Script" uid="uid://bqdt2n8f5nk2j" path="res://scenes/world/unit_path_mover.gd" id="20_unit_path_mover"]
 [ext_resource type="Script" uid="uid://cc5h3w4jdourj" path="res://scenes/exploration/exploration_click_mover.gd" id="21_exploration_click_mover"]
-[ext_resource type="Script" path="res://scenes/echo/echo_manager.gd" id="22_echo_manager"]
-[ext_resource type="PackedScene" path="res://scenes/ui/echo_ui.tscn" id="23_echo_ui"]
-[ext_resource type="PackedScene" path="res://scenes/echo/echo_object.tscn" id="24_echo_object"]
-[ext_resource type="PackedScene" path="res://scenes/echo/echo_zone.tscn" id="25_echo_zone"]
+[ext_resource type="Script" uid="uid://cows51l7rxrra" path="res://scenes/echo/echo_manager.gd" id="22_echo_manager"]
+[ext_resource type="PackedScene" uid="uid://d033mxudok2am" path="res://scenes/ui/echo_ui.tscn" id="23_echo_ui"]
+[ext_resource type="PackedScene" uid="uid://b2w48ikcer46r" path="res://scenes/echo/echo_object.tscn" id="24_echo_object"]
+[ext_resource type="PackedScene" uid="uid://cdj8f5lq2266b" path="res://scenes/echo/echo_zone.tscn" id="25_echo_zone"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_cvbhj"]
 size = Vector3(20, 0.1, 20)
@@ -146,7 +146,7 @@ combat_range_visual = NodePath("../CombatRangeVisual")
 player = NodePath("../Player")
 renegade = NodePath("../SectRenegade")
 
-[node name="EchoManager" type="Node" parent="." groups=["echo_manager"] node_paths=PackedStringArray("combat_manager", "echo_ui", "unit_path_mover")]
+[node name="EchoManager" type="Node" parent="." unique_id=1801939410 node_paths=PackedStringArray("combat_manager", "echo_ui", "unit_path_mover") groups=["echo_manager"]]
 script = ExtResource("22_echo_manager")
 combat_manager = NodePath("../CombatManager")
 echo_ui = NodePath("../EchoUI")
@@ -162,7 +162,7 @@ world_mouse_query = NodePath("../WorldMouseQuery")
 combat_movement = NodePath("../CombatMovement")
 combat_attack = NodePath("../CombatAttack")
 
-[node name="EchoUI" parent="." instance=ExtResource("23_echo_ui")]
+[node name="EchoUI" parent="." unique_id=2091871202 instance=ExtResource("23_echo_ui")]
 
 [node name="SunLight" type="DirectionalLight3D" parent="." unique_id=893214508]
 transform = Transform3D(0.70710677, -0.61237246, 0.35355335, 0, 0.49999997, 0.86602545, -0.70710677, -0.61237246, 0.35355335, 0, 0, 0)
@@ -177,18 +177,17 @@ shape = SubResource("BoxShape3D_pbc0k")
 [node name="Visual" type="MeshInstance3D" parent="TestInteractable" unique_id=1527398324]
 mesh = SubResource("BoxMesh_pbc0k")
 
-[node name="EchoTestBruyeres" parent="." instance=ExtResource("24_echo_object")]
+[node name="EchoTestBruyeres" parent="." unique_id=619917361 instance=ExtResource("24_echo_object")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 6)
 echo_id = "bruyeres_echo_test_pierre_bleue"
-lucidite_required = 20
 echo_text = "Le pavé garde la fraîcheur d'un pas que tu n'as pas encore fait."
 
-[node name="EchoZoneTestEntree" parent="." instance=ExtResource("25_echo_zone")]
+[node name="EchoZoneTestEntree" parent="." unique_id=1916670996 instance=ExtResource("25_echo_zone")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11)
 echo_id = "bruyeres_echo_lieu_entree_test"
 echo_text = "La rue inspire avec toi, puis retient son souffle."
 
-[node name="EchoZoneTestFond" parent="." instance=ExtResource("25_echo_zone")]
+[node name="EchoZoneTestFond" parent="." unique_id=643935419 instance=ExtResource("25_echo_zone")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 24)
 echo_id = "bruyeres_echo_lieu_fond_test"
 echo_text = "Plus loin, les façades murmurent un nom que personne ne prononce."
