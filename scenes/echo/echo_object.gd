@@ -6,14 +6,14 @@ extends Area3D
 @export_multiline var echo_text: String = ""
 @export var collected_flag: String = ""
 
-func interact(player: Node3D) -> void:
+func interact(player: Node3D) -> bool:
 	var manager: Node = _get_echo_manager()
 	if manager == null:
 		push_warning("EchoObject : aucun EchoManager trouvé dans la scène.")
-		return
+		return false
 
 	var revealed_by_lucidite := can_be_revealed_by(player)
-	manager.collect_echo(self, player, revealed_by_lucidite)
+	return bool(manager.call("collect_echo", self, player, revealed_by_lucidite))
 
 func get_collected_flag() -> String:
 	if not collected_flag.is_empty():
