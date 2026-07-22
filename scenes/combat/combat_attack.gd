@@ -6,6 +6,7 @@ const MELEE_RANGE := 0.6
 
 @export var grid: CombatGrid
 @export var combat_manager: CombatManager
+@export var scripted_sequence_manager: ScriptedSequenceManager
 @export var combat_movement: CombatMovement
 @export var active_unit: Node3D
 @export var world_mouse_query: WorldMouseQuery
@@ -19,6 +20,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if grid == null or combat_manager == null or combat_movement == null or active_unit == null or world_mouse_query == null:
 		return
 	if not combat_manager.is_combat_active():
+		return
+	if scripted_sequence_manager != null and scripted_sequence_manager.is_sequence_active():
 		return
 	if combat_manager.is_action_locked():
 		return
@@ -42,6 +45,8 @@ func is_attack_mode_active() -> bool:
 
 func try_player_attack_from_mouse(_mouse_position: Vector2) -> void:
 	if not combat_manager.is_combat_active():
+		return
+	if scripted_sequence_manager != null and scripted_sequence_manager.is_sequence_active():
 		return
 
 	var clicked_world_position := world_mouse_query.get_ground_point()
