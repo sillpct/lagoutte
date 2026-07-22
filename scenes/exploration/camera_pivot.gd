@@ -1,6 +1,7 @@
 extends Node3D
 
 @export var target: Node3D
+@export var scripted_sequence_manager: ScriptedSequenceManager
 
 @export var follow_speed: float = 8.0
 
@@ -30,10 +31,14 @@ func _process(delta: float) -> void:
 			target.global_position,
 			follow_speed * delta
 		)
+	if _is_sequence_running():
+		return
 	_update_keyboard_rotation(delta)
 	_update_keyboard_pan(delta)
 
 func _unhandled_input(event: InputEvent) -> void:
+	if _is_sequence_running():
+		return
 
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT:
@@ -90,3 +95,6 @@ func _update_keyboard_pan(delta: float) -> void:
 	forward.y = 0.0
 	forward = forward.normalized()
 	global_position += forward * pan_input * keyboard_pan_speed * delta
+
+func _is_sequence_running() -> bool:
+	return scripted_sequence_manager != null and scripted_sequence_manager.is_sequence_active()
