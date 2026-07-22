@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://cdj8f5lq2266b"]
+
+[ext_resource type="Script" path="res://scenes/echo/echo_zone.gd" id="1_echo_zone"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_echo_zone"]
+size = Vector3(4, 2, 4)
+
+[node name="EchoZone" type="Area3D"]
+script = ExtResource("1_echo_zone")
+echo_id = "echo_zone_test"
+echo_text = "L'air se souvient avant toi."
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_echo_zone")
