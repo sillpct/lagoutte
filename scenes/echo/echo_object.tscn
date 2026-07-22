@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://b2w48ikcer46r"]
+
+[ext_resource type="Script" path="res://scenes/echo/echo_object.gd" id="1_echo_object"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_echo_interaction"]
+size = Vector3(1.4, 1.6, 1.4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_echo_placeholder"]
+size = Vector3(0.6, 0.6, 0.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_echo_placeholder"]
+albedo_color = Color(0.08, 0.24, 0.38, 1)
+roughness = 0.85
+
+[node name="EchoObject" type="Area3D" groups=["interactable"]]
+script = ExtResource("1_echo_object")
+echo_id = "echo_test_bruyeres"
+lucidite_required = 20
+echo_text = "Un froid bleu remonte de la pierre, comme si une main ancienne venait de la quitter."
+
+[node name="InteractionCollision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_echo_interaction")
+
+[node name="Visual" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+mesh = SubResource("BoxMesh_echo_placeholder")
+surface_material_override/0 = SubResource("StandardMaterial3D_echo_placeholder")
