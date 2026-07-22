@@ -46,6 +46,9 @@ func check_interaction() -> void:
 		return
 	for area in $InteractionArea.get_overlapping_areas():
 		if area.is_in_group("interactable"):
+			if area.has_method("interact"):
+				area.interact(self)
+				return
 			current_interactable = area
 			current_dialogue_index = 0
 			waiting_for_choice = false
