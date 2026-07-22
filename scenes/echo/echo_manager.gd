@@ -2,6 +2,7 @@ class_name EchoManager
 extends Node
 
 @export var combat_manager: CombatManager
+@export var scripted_sequence_manager: ScriptedSequenceManager
 @export var echo_ui: Node
 @export var unit_path_mover: UnitPathMover
 @export var silence_duration := 2.0
@@ -22,6 +23,11 @@ func collect_echo(echo_object: Node, _player: Node3D, _revealed_by_lucidite: boo
 		return false
 	if GameState.has_flag(flag):
 		return false
+
+	if scripted_sequence_manager != null and scripted_sequence_manager.is_sequence_active():
+		_queue_pending_echo(echo_object, _player)
+		_schedule_pending_retry(0.5)
+		return true
 
 	if _is_in_cooldown():
 		_queue_pending_echo(echo_object, _player)
@@ -69,6 +75,9 @@ func _process_pending_echoes() -> void:
 	if _pending_echoes.is_empty():
 		return
 	if combat_manager != null and combat_manager.is_combat_active():
+		_schedule_pending_retry(0.5)
+		return
+	if scripted_sequence_manager != null and scripted_sequence_manager.is_sequence_active():
 		_schedule_pending_retry(0.5)
 		return
 	if _is_in_cooldown():
