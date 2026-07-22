@@ -16,6 +16,7 @@ const INVALID_WORLD_POSITION := Vector3(INF, INF, INF)
 
 @export var grid: CombatGrid
 @export var combat_manager: CombatManager
+@export var scripted_sequence_manager: ScriptedSequenceManager
 @export var active_unit: Node3D
 @export var combat_attack: Node
 @export var path_service: PathService
@@ -65,6 +66,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if not combat_manager.is_combat_active():
 		return
+	if scripted_sequence_manager != null and scripted_sequence_manager.is_sequence_active():
+		return
 	if combat_manager.is_action_locked():
 		return
 
@@ -111,6 +114,8 @@ func get_world_position_from_mouse(mouse_position: Vector2) -> Vector3:
 
 func _try_move_to_world_target() -> void:
 	if not combat_manager.is_combat_active():
+		return
+	if scripted_sequence_manager != null and scripted_sequence_manager.is_sequence_active():
 		return
 	if combat_manager.is_action_locked():
 		return
@@ -194,6 +199,8 @@ func _on_turn_started(unit: Node) -> void:
 
 func set_combat_mode(new_mode: PlayerCombatMode) -> void:
 	if not combat_manager.is_combat_active() and new_mode != PlayerCombatMode.NEUTRAL:
+		return
+	if scripted_sequence_manager != null and scripted_sequence_manager.is_sequence_active() and new_mode != PlayerCombatMode.NEUTRAL:
 		return
 	if combat_manager.is_action_locked() and new_mode != PlayerCombatMode.NEUTRAL:
 		return
