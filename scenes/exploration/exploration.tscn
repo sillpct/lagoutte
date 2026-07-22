@@ -74,9 +74,10 @@ navigation_region = NodePath("../BruyeresRueCentre/NavigationRegion")
 [node name="UnitPathMover" type="Node" parent="." unique_id=1538345749]
 script = ExtResource("20_unit_path_mover")
 
-[node name="ScriptedSequenceManager" type="Node" parent="." node_paths=PackedStringArray("unit_path_mover")]
+[node name="ScriptedSequenceManager" type="Node" parent="." node_paths=PackedStringArray("unit_path_mover", "camera_pivot")]
 script = ExtResource("26_scripted_sequence_manager")
 unit_path_mover = NodePath("../UnitPathMover")
+camera_pivot = NodePath("../CameraPivot")
 
 [node name="ExplorationClickMover" type="Node" parent="." unique_id=1614600573 node_paths=PackedStringArray("combat_manager", "scripted_sequence_manager", "world_mouse_query", "path_service", "unit_path_mover", "player")]
 script = ExtResource("21_exploration_click_mover")
