@@ -5,7 +5,11 @@ signal sequence_started
 signal sequence_finished
 
 @export var unit_path_mover: UnitPathMover
+@export var camera_pivot: Node
 @export var test_sequence_duration := 2.0
+@export var test_camera_position := Vector3(6.0, 8.0, 6.0)
+@export var test_camera_rotation_y := 0.0
+@export var test_camera_zoom_size := 12.0
 
 var _sequence_active := false
 var _sequence_id := 0
@@ -21,6 +25,8 @@ func start_sequence() -> bool:
 	_sequence_id += 1
 	if unit_path_mover != null:
 		unit_path_mover.cancel_current_move()
+	if camera_pivot != null and camera_pivot.has_method("begin_scripted_camera"):
+		camera_pivot.begin_scripted_camera()
 	sequence_started.emit()
 	return true
 
@@ -30,6 +36,8 @@ func finish_sequence() -> void:
 
 	_sequence_active = false
 	_sequence_id += 1
+	if camera_pivot != null and camera_pivot.has_method("end_scripted_camera_restore"):
+		camera_pivot.end_scripted_camera_restore()
 	sequence_finished.emit()
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -46,6 +54,9 @@ func _unhandled_input(event: InputEvent) -> void:
 func start_test_sequence() -> void:
 	if not start_sequence():
 		return
+
+	if camera_pivot != null and camera_pivot.has_method("set_scripted_view"):
+		camera_pivot.set_scripted_view(test_camera_position, test_camera_rotation_y, test_camera_zoom_size)
 
 	var started_sequence_id := _sequence_id
 	await get_tree().create_timer(test_sequence_duration).timeout
