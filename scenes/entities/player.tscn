@@ -13,7 +13,7 @@ size = Vector3(1, 1.6, 1)
 [sub_resource type="SphereShape3D" id="SphereShape3D_ucweq"]
 radius = 2.0
 
-[node name="Player" type="CharacterBody3D" unique_id=295733018]
+[node name="Player" type="CharacterBody3D" unique_id=295733018 groups=["player"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_ucweq")
 incarnation = ExtResource("2_incarnation")
