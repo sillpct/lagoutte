@@ -1,6 +1,7 @@
 extends CharacterBody3D
 
 @export var incarnation: IncarnationData
+@export var scripted_sequence_manager: ScriptedSequenceManager
 
 var pv: Stat
 
@@ -19,6 +20,8 @@ func _ready() -> void:
 	pv.reset_to_full()
 
 func _input(event: InputEvent) -> void:
+	if _is_sequence_running():
+		return
 
 	if waiting_for_choice:
 		handle_choice_input(event)
@@ -130,6 +133,9 @@ func activate_selected_choice(choices_container) -> void:
 
 func confirm_choice(choice: Dictionary) -> void:
 
+	if _is_sequence_running():
+		return
+
 	apply_choice_effect(choice)
 	close_dialogue()
 
@@ -156,3 +162,6 @@ func close_dialogue() -> void:
 	current_interactable = null
 	waiting_for_choice = false
 	selected_choice = 0
+
+func _is_sequence_running() -> bool:
+	return scripted_sequence_manager != null and scripted_sequence_manager.is_sequence_active()
