@@ -14,6 +14,7 @@ extends Node3D
 
 var _is_rotating := false
 var _is_free := false
+var _is_scripted_camera := false
 var _default_basis: Basis
 var _default_camera_size := 20.0
 
@@ -26,18 +27,18 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 
-	if target != null and not _is_free:
+	if target != null and not _is_free and not _is_scripted_camera:
 		global_position = global_position.lerp(
 			target.global_position,
 			follow_speed * delta
 		)
-	if _is_sequence_running():
+	if _is_scripted_camera or _is_sequence_running():
 		return
 	_update_keyboard_rotation(delta)
 	_update_keyboard_pan(delta)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if _is_sequence_running():
+	if _is_scripted_camera or _is_sequence_running():
 		return
 
 	if event is InputEventMouseButton:
@@ -60,11 +61,29 @@ func _unhandled_input(event: InputEvent) -> void:
 func recenter_camera() -> void:
 	_is_rotating = false
 	_is_free = false
+	_is_scripted_camera = false
 	basis = _default_basis
 	if target != null:
 		global_position = target.global_position
 	if _camera != null:
 		_camera.size = _default_camera_size
+
+func begin_scripted_camera() -> void:
+	_is_rotating = false
+	_is_free = true
+	_is_scripted_camera = true
+
+func set_scripted_view(pivot_position: Vector3, rotation_y: float, zoom_size: float) -> void:
+	if not _is_scripted_camera:
+		begin_scripted_camera()
+	global_position = pivot_position
+	rotation.y = rotation_y
+	if _camera != null:
+		_camera.size = clampf(zoom_size, min_zoom_size, max_zoom_size)
+
+func end_scripted_camera_restore() -> void:
+	_is_scripted_camera = false
+	recenter_camera()
 
 func _zoom(size_delta: float) -> void:
 	if _camera == null:
