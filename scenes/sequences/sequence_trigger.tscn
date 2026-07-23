@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://b3xugqts08u2h"]
+
+[ext_resource type="Script" path="res://scenes/sequences/sequence_trigger.gd" id="1_sequence_trigger"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sequence_trigger"]
+size = Vector3(1.4, 2, 1.4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_sequence_trigger"]
+size = Vector3(0.5, 1, 0.5)
+
+[node name="SequenceTrigger" type="Area3D" groups=["interactable"]]
+script = ExtResource("1_sequence_trigger")
+trigger_id = "afflux_window_test"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_sequence_trigger")
+
+[node name="Visual" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_sequence_trigger")
