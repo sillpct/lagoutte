@@ -27,6 +27,7 @@
 [ext_resource type="Script" uid="uid://dn1igr1enjh6n" path="res://scenes/sequences/scripted_sequence_manager.gd" id="26_scripted_sequence_manager"]
 [ext_resource type="PackedScene" path="res://scenes/ui/subtitle_ui.tscn" id="27_subtitle_ui"]
 [ext_resource type="Script" path="res://scenes/sequences/afflux_window_sequence.gd" id="28_afflux_window_sequence"]
+[ext_resource type="PackedScene" path="res://scenes/sequences/sequence_trigger.tscn" id="29_sequence_trigger"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_cvbhj"]
 size = Vector3(20, 0.1, 20)
@@ -205,6 +206,11 @@ mesh = SubResource("BoxMesh_pbc0k")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 6)
 echo_id = "bruyeres_echo_test_pierre_bleue"
 echo_text = "Le pavé garde la fraîcheur d'un pas que tu n'as pas encore fait."
+
+[node name="AffluxTriggerTestBruyeres" parent="." node_paths=PackedStringArray("scripted_sequence_manager") instance=ExtResource("29_sequence_trigger")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 6)
+trigger_id = "afflux_window_bruyeres_test"
+scripted_sequence_manager = NodePath("../ScriptedSequenceManager")
 
 [node name="EchoZoneTestEntree" parent="." unique_id=1916670996 instance=ExtResource("25_echo_zone")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11)
