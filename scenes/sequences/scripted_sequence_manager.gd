@@ -6,6 +6,7 @@ signal sequence_finished
 
 @export var unit_path_mover: UnitPathMover
 @export var camera_pivot: Node
+@export var afflux_sequence: Node
 @export var test_sequence_duration := 2.0
 @export var test_camera_position := Vector3(6.0, 8.0, 6.0)
 @export var test_camera_rotation_y := 0.0
@@ -36,6 +37,8 @@ func finish_sequence() -> void:
 
 	_sequence_active = false
 	_sequence_id += 1
+	if afflux_sequence != null and afflux_sequence.has_method("stop"):
+		afflux_sequence.stop()
 	if camera_pivot != null and camera_pivot.has_method("end_scripted_camera_restore"):
 		camera_pivot.end_scripted_camera_restore()
 	sequence_finished.emit()
@@ -59,6 +62,9 @@ func start_test_sequence() -> void:
 		camera_pivot.set_scripted_view(test_camera_position, test_camera_rotation_y, test_camera_zoom_size)
 
 	var started_sequence_id := _sequence_id
-	await get_tree().create_timer(test_sequence_duration).timeout
+	if afflux_sequence != null and afflux_sequence.has_method("play"):
+		await afflux_sequence.call("play", self)
+	else:
+		await get_tree().create_timer(test_sequence_duration).timeout
 	if _sequence_active and _sequence_id == started_sequence_id:
 		finish_sequence()
