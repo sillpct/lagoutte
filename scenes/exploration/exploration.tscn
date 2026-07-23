@@ -25,6 +25,8 @@
 [ext_resource type="PackedScene" uid="uid://b2w48ikcer46r" path="res://scenes/echo/echo_object.tscn" id="24_echo_object"]
 [ext_resource type="PackedScene" uid="uid://cdj8f5lq2266b" path="res://scenes/echo/echo_zone.tscn" id="25_echo_zone"]
 [ext_resource type="Script" uid="uid://dn1igr1enjh6n" path="res://scenes/sequences/scripted_sequence_manager.gd" id="26_scripted_sequence_manager"]
+[ext_resource type="PackedScene" path="res://scenes/ui/subtitle_ui.tscn" id="27_subtitle_ui"]
+[ext_resource type="Script" path="res://scenes/sequences/afflux_window_sequence.gd" id="28_afflux_window_sequence"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_cvbhj"]
 size = Vector3(20, 0.1, 20)
@@ -74,10 +76,15 @@ navigation_region = NodePath("../BruyeresRueCentre/NavigationRegion")
 [node name="UnitPathMover" type="Node" parent="." unique_id=1538345749]
 script = ExtResource("20_unit_path_mover")
 
-[node name="ScriptedSequenceManager" type="Node" parent="." node_paths=PackedStringArray("unit_path_mover", "camera_pivot")]
+[node name="ScriptedSequenceManager" type="Node" parent="." node_paths=PackedStringArray("unit_path_mover", "camera_pivot", "afflux_sequence")]
 script = ExtResource("26_scripted_sequence_manager")
 unit_path_mover = NodePath("../UnitPathMover")
 camera_pivot = NodePath("../CameraPivot")
+afflux_sequence = NodePath("../AffluxWindowSequence")
+
+[node name="AffluxWindowSequence" type="Node" parent="." node_paths=PackedStringArray("subtitle_ui")]
+script = ExtResource("28_afflux_window_sequence")
+subtitle_ui = NodePath("../SubtitleUI")
 
 [node name="ExplorationClickMover" type="Node" parent="." unique_id=1614600573 node_paths=PackedStringArray("combat_manager", "scripted_sequence_manager", "world_mouse_query", "path_service", "unit_path_mover", "player")]
 script = ExtResource("21_exploration_click_mover")
@@ -178,6 +185,8 @@ combat_movement = NodePath("../CombatMovement")
 combat_attack = NodePath("../CombatAttack")
 
 [node name="EchoUI" parent="." unique_id=2091871202 instance=ExtResource("23_echo_ui")]
+
+[node name="SubtitleUI" parent="." instance=ExtResource("27_subtitle_ui")]
 
 [node name="SunLight" type="DirectionalLight3D" parent="." unique_id=893214508]
 transform = Transform3D(0.70710677, -0.61237246, 0.35355335, 0, 0.49999997, 0.86602545, -0.70710677, -0.61237246, 0.35355335, 0, 0, 0)
