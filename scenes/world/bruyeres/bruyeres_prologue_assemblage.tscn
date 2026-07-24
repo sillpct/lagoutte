@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://bmmeojj70qdyd"]
+
+[ext_resource type="NavigationMesh" path="res://scenes/world/bruyeres/navigation/bruyeres_prologue_navmesh.tres" id="1_navmesh"]
+[ext_resource type="PackedScene" path="res://scenes/world/bruyeres/bruyeres_rue_centre.tscn" id="2_rue"]
+[ext_resource type="PackedScene" path="res://scenes/world/bruyeres/bruyeres_maison_elias.tscn" id="3_maison"]
+
+[node name="BruyeresPrologueAssemblage" type="Node3D"]
+
+[node name="NavigationRegion" type="NavigationRegion3D" parent="."]
+navigation_mesh = ExtResource("1_navmesh")
+
+[node name="RueCentre" parent="NavigationRegion" instance=ExtResource("2_rue")]
+
+[node name="MaisonElias" parent="NavigationRegion" instance=ExtResource("3_maison")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 2.3, 0, 18)

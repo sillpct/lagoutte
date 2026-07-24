@@ -1,0 +1,139 @@
+LIVRAISON BRUYERES  -  version 8  -  2026-07-24
+=========================================================
+
+Contenu : kit modulaire (36 pieces) + rue du centre + appartement d'Elias.
+Le nom de cette archive ne change jamais : livraison_bruyeres.zip
+Le numero de version ci-dessus est le seul moyen fiable de savoir si vous avez
+la derniere. Verifiez-le avant de decompresser.
+
+1. OU DECOMPRESSER
+------------------
+L'archive est un miroir de l'arborescence du projet. Copier le contenu a la
+racine du projet Godot, les dossiers se superposent :
+
+  assets/kit_bruyeres/          -> le kit source (meshes, collisions, manifeste)
+  scenes/world/bruyeres/        -> la scene de zone
+  outils/                       -> generateurs, HORS projet Godot si possible
+
+Regle : une scene .tscn ne va JAMAIS dans assets/. assets/ = sources, scenes/ = scenes.
+
+Fichiers a ouvrir dans Godot :
+  scenes/world/bruyeres/bruyeres_rue_centre.tscn      la rue, 50 m
+  scenes/world/bruyeres/bruyeres_maison_elias.tscn    la maison d'Elias, 2 niveaux
+
+Le fichier outils/controle_emboitement_NE_PAS_IMPORTER.glb n'est PAS du contenu de
+jeu : c'est un maillage unique, sans collision, qui sert uniquement a verifier
+visuellement que les pieces s'emboitent. Ne pas l'importer, ne pas le cuire.
+
+2. CE QUI A CHANGE DEPUIS LA VERSION 7
+--------------------------------------
+!! AVERTISSEMENT : cette version N'A PAS ete validee par une vraie cuisson Godot.
+   Je n'ai pas acces a un binaire Godot. Ma verification est une APPROXIMATION de
+   Recast : elle a manque l'arrondi de agent_max_climb et l'erosion aux jonctions.
+   Protocole convenu : je livre, VOUS cuisez, vous me renvoyez le resultat.
+
+ESCALIER    Refait entierement, avec des marges larges au lieu de reglages fins :
+              - maison portee a 6 x 6 m (R2 fait 6 m de profondeur) pour loger
+                une volee legale. Le LOGEMENT reste 4 x 4, les 2 m de plus sont
+                le palier.
+              - cage elargie a 1.90 m (etait 1.40) -> 1.00 m apres erosion.
+              - pente 36.9 deg (etait 38.7), sous agent_max_slope 45.
+              - la rampe arrive EXACTEMENT au niveau du palier (y=3.00), jonction
+                coplanaire sur 1.90 m de large, pas un contact d'arete.
+              - en bas elle passe SOUS le sol du rez (y=-0.45) : interpenetration.
+              - nouveau collider col_palier : relie la cage au logement sur 1.80 m.
+
+SEUIL R2    col_sol_rez DEBORDE de 1.00 m dans la rue (z=-1.30 en local) : le
+            trou de 30 cm sous le seuil est comble, et les deux sols de rue et de
+            vestibule se RECOUVRENT au lieu de se toucher.
+
+SEUILS      Le verificateur utilise desormais agent_max_climb = 0.25 (valeur
+            EFFECTIVE apres arrondi a cell_height), pas 0.30. Il controle aussi
+            la largeur des jonctions (>= 1.00 m) et la pente (<= 45 deg).
+            manifeste.json : agent_max_climb_m 0.25, min_jonction_m 1.00.
+
+--- (rappel v7) ---
+CORRIGE     La rampe de nav (col_rampe_escalier) est ALLONGEE : elle mord sous le
+            sol du rez (Y<0) et dans la dalle de l'etage (Y>3). Les surfaces
+            cuites se touchent aux deux bouts avec un ecart <= agent_max_climb.
+            En v6 la rampe demarrait ~0.5 m au-dessus du rez : l'etage restait une
+            ile car Recast ne connecte pas au-dela de agent_max_climb (0.30 m).
+
+CONTROLE    La cuisson simulee mesure desormais l'ECART VERTICAL entre surfaces
+            qui se succedent (elle ne verifiait que l'horizontal). Le generateur
+            refuse de livrer si rampe/sol ou rampe/dalle depasse 0.30 m.
+            manifeste.json porte agent_max_climb_m = 0.30.
+
+--- (rappel v6 : regroupement par niveau ; v5 : Elias a l'etage) ---
+NIVEAUX     La maison est regroupee PAR NIVEAU, pour la camera tactique ortho :
+              Node "Niveau_Rez"    : murs rez, sol rez, mobilier rez (vide)
+              Node "Niveau_Etage"  : murs etage, mobilier, ET la dalle Y3
+                                     (plancher de l'etage = plafond du rez)
+              Node "Escalier"      : la volee (visible dans les deux vues)
+              Node "Toit"          : toiture
+            FLOOR CULLING : pour voir le REZ, masquer "Niveau_Etage" (sa dalle
+            est le plafond du rez). Pour voir l'ETAGE, masquer "Toit". Pendant la
+            descente, basculer selon la hauteur d'Elias (logique runtime = cote
+            equipe technique ; les assets sont deja separes pour le permettre).
+
+ESCALIER    Confirme : INT_escalier n'a AUCUNE collision propre dans la scene.
+            La seule collision de l'escalier est col_rampe_escalier (rampe lisse).
+            Ne pas ajouter la collision des marches, sinon Elias marcherait sur la
+            pente en se cognant dans les marches.
+
+--- (rappel v5 : Elias passe a l'etage) ---
+NOUVEAU     scenes/world/bruyeres/bruyeres_maison_elias.tscn
+            Elias vit A L'ETAGE. La maison a 2 niveaux : rez (vestibule + porte
+            sur rue + escalier) et etage (son logement 4x4 m, 4 meubles, fenetres
+            pour regarder la pluie). Il descend une volee pour sortir.
+            Cuisson simulee 2 niveaux OK : chemin logement -> escalier -> rue.
+
+CORRIGE     La porte de R2 dans la rue est OUVERTE : sa facade cote rue est livree
+            en 3 boites (col_R2_facA / facB / lint) au lieu d'une boite pleine.
+            Le navmesh de la rue rejoint celui de l'interieur au seuil.
+
+POSE        La maison se cale sur R2 avec ce transform (porte contre porte) :
+            Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 2.3, 0, 18)
+            Instancier bruyeres_maison_elias sous la rue avec cette transform,
+            OU garder les deux scenes separees si le prologue fait une transition.
+
+REMPLACE    bruyeres_appartement_elias.tscn (v3/v4) -> bruyeres_maison_elias.tscn.
+            Supprimer l'ancien fichier a plat, il n'existe plus.
+
+ESCALIER    Le visuel est en marches (INT_escalier) ; la COLLISION de nav est une
+            rampe lisse (col_rampe_escalier, boite inclinee) pour que le navmesh
+            cuise a travers. Ne pas la supprimer.
+
+INCHANGE    Le kit exterieur, la rue (hors porte R2). Regeneres a l'identique.
+
+3. A FAIRE A L'IMPORT
+---------------------
+a) Laisser Godot importer assets/kit_bruyeres/ (il generera les UID lui-meme :
+   aucun uid n'est ecrit dans la scene, les references sont par chemin).
+b) NE PAS toucher au facteur d'echelle a l'import : 1 unite = 1 metre.
+c) NE PAS generer de collision trimesh sur les meshes visibles. Les colliders
+   sont deja dans la scene, en BoxShape3D.
+d) Ouvrir la scene, cuire le navmesh en STATIC_COLLIDERS. Le StaticBody3D
+   "Collisions" produit la surface. L'appartement est verifie navigable.
+e) Rien a regenerer par ailleurs.
+
+Parametres de navigation (contractuels) :
+  agent_radius = 0.45   cell_size = 0.25   couloir minimum = 1.10 m
+Si ces valeurs changent, toutes les largeurs de passage sont a revalider.
+
+REGLE GENERALE DU KIT (valable partout : appartements, places, ruines) :
+  Tout espace jouable laisse des couloirs continus d'au moins 1.10 m entre tous
+  les obstacles au sol. Meme contrainte que les ouvertures (1.40 m), appliquee au
+  mobilier et a tout ce qui encombre le sol. Le generateur refuse de livrer une
+  scene meublee qui ne passe pas ce test.
+
+4. ATTENTION
+------------
+La porte de R2 (maison d'Elias) est la SEULE porte ouverte cote rue. Toutes les
+autres portes de facade restent BOUCHEES tant qu'il n'y a pas d'interieurs
+derriere. Les deux bouts de rue sont fermes par des murs aveugles pour les tests.
+
+Regle generale du kit (rappel) : tout espace jouable laisse des couloirs continus
+d'au moins 1.10 m entre obstacles. Le generateur refuse de livrer une scene
+meublee qui ne passe pas ce test - c'est vrai pour l'etage d'Elias comme pour la
+suite (places, ruines).

@@ -6,7 +6,10 @@
   },
   "navigation": {
     "agent_radius": 0.45,
-    "cell_size": 0.25
+    "cell_size": 0.25,
+    "min_couloir_m": 1.1,
+    "agent_max_climb_m": 0.25,
+    "min_jonction_m": 1.0
   },
   "materiau": {
     "nom": "PierreBruyeres",
@@ -280,6 +283,204 @@
         0.5
       ],
       "triangles": 12,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "INT_cloison",
+      "famille": "interieur",
+      "note": "cloison 2 x 3 x 0.12",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dimensions": [
+        2.0,
+        3.0,
+        0.12
+      ],
+      "triangles": 12,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "INT_cloison_porte",
+      "famille": "interieur",
+      "note": "cloison a porte 1.40, meme regle navmesh qu'en facade",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dimensions": [
+        2.0,
+        3.0,
+        0.12
+      ],
+      "triangles": 28,
+      "collision_boites": 3,
+      "passage_navmesh_m": 0.5
+    },
+    {
+      "nom": "INT_escalier",
+      "famille": "interieur",
+      "note": "volee d'un etage : 15 marches, rise 0.20 / run 0.267, large 1.90 m",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dimensions": [
+        1.9,
+        3.0,
+        4.0
+      ],
+      "triangles": 180,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "INT_plafond",
+      "famille": "interieur",
+      "note": "dalle de plafond, pose a 3 m -> 2.80 m sous plafond",
+      "min": [
+        0.0,
+        -0.2,
+        0.0
+      ],
+      "dimensions": [
+        2.0,
+        0.2,
+        2.0
+      ],
+      "triangles": 12,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "INT_plancher",
+      "famille": "interieur",
+      "note": "plancher 2 x 2",
+      "min": [
+        0.0,
+        -0.1,
+        0.0
+      ],
+      "dimensions": [
+        2.0,
+        0.1,
+        2.0
+      ],
+      "triangles": 12,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "MOB_bassin",
+      "famille": "mobilier",
+      "note": "bassin de pierre, point d'eau domestique",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dimensions": [
+        0.7,
+        0.7,
+        0.5
+      ],
+      "triangles": 60,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "MOB_chaise",
+      "famille": "mobilier",
+      "note": "chaise",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dimensions": [
+        0.42,
+        0.95,
+        0.42
+      ],
+      "triangles": 72,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "MOB_coffre",
+      "famille": "mobilier",
+      "note": "coffre",
+      "min": [
+        -0.02,
+        0.0,
+        -0.02
+      ],
+      "dimensions": [
+        0.94,
+        0.51,
+        0.54
+      ],
+      "triangles": 24,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "MOB_etagere",
+      "famille": "mobilier",
+      "note": "etagere murale",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dimensions": [
+        0.9,
+        1.6,
+        0.3
+      ],
+      "triangles": 72,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "MOB_lit",
+      "famille": "mobilier",
+      "note": "lit une place",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dimensions": [
+        2.0,
+        0.8,
+        0.9
+      ],
+      "triangles": 36,
+      "collision_boites": 1,
+      "passage_navmesh_m": null
+    },
+    {
+      "nom": "MOB_table",
+      "famille": "mobilier",
+      "note": "table simple",
+      "min": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dimensions": [
+        1.2,
+        0.74,
+        0.7
+      ],
+      "triangles": 60,
       "collision_boites": 1,
       "passage_navmesh_m": null
     },
