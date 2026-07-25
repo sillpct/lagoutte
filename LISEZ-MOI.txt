@@ -1,4 +1,4 @@
-LIVRAISON BRUYERES  -  version 8  -  2026-07-24
+LIVRAISON BRUYERES  -  version 10  -  2026-07-25
 =========================================================
 
 Contenu : kit modulaire (36 pieces) + rue du centre + appartement d'Elias.
@@ -25,12 +25,51 @@ Le fichier outils/controle_emboitement_NE_PAS_IMPORTER.glb n'est PAS du contenu 
 jeu : c'est un maillage unique, sans collision, qui sert uniquement a verifier
 visuellement que les pieces s'emboitent. Ne pas l'importer, ne pas le cuire.
 
-2. CE QUI A CHANGE DEPUIS LA VERSION 7
+2. CE QUI A CHANGE DEPUIS LA VERSION 8
 --------------------------------------
-!! AVERTISSEMENT : cette version N'A PAS ete validee par une vraie cuisson Godot.
-   Je n'ai pas acces a un binaire Godot. Ma verification est une APPROXIMATION de
-   Recast : elle a manque l'arrondi de agent_max_climb et l'erosion aux jonctions.
-   Protocole convenu : je livre, VOUS cuisez, vous me renvoyez le resultat.
+!! Comme la v8 : NON validee par une vraie cuisson Godot (je n'ai pas de binaire
+   Godot). Protocole : je livre, VOUS cuisez, vous renvoyez les mesures.
+
+CORRIGE     PIED DE LA RAMPE. En v9 la rampe plongeait sous la dalle du rez
+            (y=-0.45) : Recast rejetait la portion enterree (degagement 0.35 m au
+            lieu des 1.50 requis), puis l'erosion repoussait le depart -> la rampe
+            ne devenait navigable qu'a 0.34 m, au-dessus de agent_max_climb.
+            Le debord vertical n'aide pas, il enterre. On applique en bas le motif
+            qui marche en haut : arrivee COPLANAIRE + PLEINE LARGEUR.
+              bas  z=1.00  y=0.00  (niveau exact du sol, aucun enterrement)
+              haut z=4.60  y=3.00  (inchange - vous avez valide)
+            Nouveau collider col_pied_escalier : 1.00 m de plat devant la rampe,
+            sur toute la largeur de la cage (1.90 m), dessus a y=0.00 exact.
+            Profondeur repartie : 1.00 plat + 3.60 volee + 1.40 palier = 6.00.
+            Pente 39.8 deg (etait 36.9) - c'est le prix du plat au pied.
+
+GARDE-FOU   Le generateur refuse de livrer si la rampe s'enterre OU flotte
+            (tolerance 0.02 m), et si le plat au pied fait moins de 1.00 m.
+
+--- (v9) SENS DE LA RAMPE - defaut de la v8. Godot lit
+            Basis(...) par LIGNES : le signe que j'utilisais envoyait le +Z local
+            vers (0, -sin, cos), donc la rampe DESCENDAIT quand z augmente. Elle
+            etait haute cote rue et basse cote palier, a l'envers de l'escalier
+            visuel. Signe corrige :
+              bas  z=-0.40  y=-0.45   (sous le sol du rez, interpenetration)
+              haut z= 4.20  y= 3.00   (au niveau exact du palier)
+            Le palier commence en z=4.20 : la rampe y debouche, jonction
+            coplanaire sur 1.90 m de large.
+
+GARDE-FOU   Le generateur refuse desormais de livrer si le point HAUT de la rampe
+            n'est pas du cote du palier. Verifie : en rejouant le signe de la v8,
+            le build s'arrete sur "RAMPE INVERSEE".
+
+EROSION     Modele corrige d'apres vos mesures : Godot erode de
+            ceil(agent_radius / cell_size) * cell_size, pas de agent_radius.
+            cell_size passe a 0.225 -> erosion 0.450 exactement.
+            Toutes les largeurs utiles du manifeste sont recalculees avec cette
+            formule (et non plus avec 2 x 0.45 suppose).
+
+A NOTER     Avec 1.40 m d'ouverture il ne reste que 0.50 m theorique, et vous avez
+            mesure 0.233 m par endroits au seuil de R2. Le kit reste tel quel
+            (valide de votre cote), mais TOUTE NOUVELLE ouverture de passage sera
+            dimensionnee a 1.60 m minimum, pas 1.40.
 
 ESCALIER    Refait entierement, avec des marges larges au lieu de reglages fins :
               - maison portee a 6 x 6 m (R2 fait 6 m de profondeur) pour loger
@@ -118,7 +157,7 @@ d) Ouvrir la scene, cuire le navmesh en STATIC_COLLIDERS. Le StaticBody3D
 e) Rien a regenerer par ailleurs.
 
 Parametres de navigation (contractuels) :
-  agent_radius = 0.45   cell_size = 0.25   couloir minimum = 1.10 m
+  agent_radius = 0.45   cell_size = 0.225   couloir minimum = 1.10 m
 Si ces valeurs changent, toutes les largeurs de passage sont a revalider.
 
 REGLE GENERALE DU KIT (valable partout : appartements, places, ruines) :
