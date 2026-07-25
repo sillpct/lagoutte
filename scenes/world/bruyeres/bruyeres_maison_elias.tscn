@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3]
+[gd_scene load_steps=28 format=3]
 
 [ext_resource type="PackedScene" path="res://assets/kit_bruyeres/FAC_fenetre.glb" id="kit_0"]
 [ext_resource type="PackedScene" path="res://assets/kit_bruyeres/FAC_mur_plein.glb" id="kit_1"]
@@ -65,10 +65,13 @@ size = Vector3(6, 0.1, 7.3)
 size = Vector3(4, 0.1, 6)
 
 [sub_resource type="BoxShape3D" id="col_palier"]
-size = Vector3(2, 0.1, 1.8)
+size = Vector3(2, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="col_pied_escalier"]
+size = Vector3(1.9, 0.1, 1)
 
 [sub_resource type="BoxShape3D" id="col_rampe_escalier"]
-size = Vector3(1.9, 0.12, 5.75)
+size = Vector3(1.9, 0.12, 4.686)
 
 [sub_resource type="BoxShape3D" id="col_mob_lit_0"]
 size = Vector3(2, 0.8, 0.9)
@@ -247,7 +250,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 6, 4)
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 3, 4)
 
 [node name="INT_escalier_001" parent="Escalier" instance=ExtResource("kit_3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4.05, 0, 0.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4.05, 0, 1)
 
 [node name="MOB_lit_001" parent="Niveau_Etage" instance=ExtResource("kit_6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0.05, 3, 3.05)
@@ -297,11 +300,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 2.95, 3)
 shape = SubResource("col_sol_etage")
 
 [node name="col_palier" type="CollisionShape3D" parent="Collisions"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 5, 2.95, 5.1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 5, 2.95, 5.3)
 shape = SubResource("col_palier")
 
+[node name="col_pied_escalier" type="CollisionShape3D" parent="Collisions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 5, -0.05, 0.5)
+shape = SubResource("col_pied_escalier")
+
 [node name="col_rampe_escalier" type="CollisionShape3D" parent="Collisions"]
-transform = Transform3D(1, 0, 0, 0, 0.8, -0.6, 0, 0.6, 0.8, 5, 1.227, 1.936)
+transform = Transform3D(1, 0, 0, 0, 0.768221, 0.640184, 0, -0.640184, 0.768221, 5, 1.45391, 2.83841)
 shape = SubResource("col_rampe_escalier")
 
 [node name="col_mob_lit_0" type="CollisionShape3D" parent="Collisions"]
