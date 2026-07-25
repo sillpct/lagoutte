@@ -6,10 +6,12 @@
   },
   "navigation": {
     "agent_radius": 0.45,
-    "cell_size": 0.25,
+    "cell_size": 0.225,
     "min_couloir_m": 1.1,
     "agent_max_climb_m": 0.25,
-    "min_jonction_m": 1.0
+    "min_jonction_m": 1.0,
+    "erosion_effective_m": 0.45,
+    "formule_erosion": "ceil(agent_radius/cell_size)*cell_size"
   },
   "materiau": {
     "nom": "PierreBruyeres",
@@ -325,7 +327,7 @@
     {
       "nom": "INT_escalier",
       "famille": "interieur",
-      "note": "volee d'un etage : 15 marches, rise 0.20 / run 0.267, large 1.90 m",
+      "note": "volee d'un etage : 15 marches, rise 0.20 / run 0.24, large 1.90 m",
       "min": [
         0.0,
         0.0,
@@ -334,7 +336,7 @@
       "dimensions": [
         1.9,
         3.0,
-        4.0
+        3.6
       ],
       "triangles": 180,
       "collision_boites": 1,
