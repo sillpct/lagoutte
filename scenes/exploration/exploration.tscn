@@ -16,7 +16,7 @@
 [ext_resource type="Script" uid="uid://c1ume82aalxlw" path="res://scenes/combat/combat_range_visual.gd" id="15_combat_range_visual"]
 [ext_resource type="Script" uid="uid://bry66r4gvdahu" path="res://scenes/world/world_mouse_query.gd" id="16_world_mouse_query"]
 [ext_resource type="Script" uid="uid://bp7j7y3aoqjx6" path="res://scenes/combat/combat_session.gd" id="17_combat_session"]
-[ext_resource type="PackedScene" path="res://scenes/world/bruyeres/bruyeres_rue_centre.tscn" id="18_bruyeres_greybox"]
+[ext_resource type="PackedScene" path="res://scenes/world/bruyeres/bruyeres_prologue_assemblage.tscn" id="18_bruyeres_prologue"]
 [ext_resource type="Script" uid="uid://cm73phdeal4ar" path="res://scenes/world/path_service.gd" id="19_path_service"]
 [ext_resource type="Script" uid="uid://bqdt2n8f5nk2j" path="res://scenes/world/unit_path_mover.gd" id="20_unit_path_mover"]
 [ext_resource type="Script" uid="uid://cc5h3w4jdourj" path="res://scenes/exploration/exploration_click_mover.gd" id="21_exploration_click_mover"]
@@ -61,7 +61,7 @@ size = 20.0
 visible = false
 mesh = SubResource("BoxMesh_cvbhj")
 
-[node name="BruyeresRueCentre" parent="." unique_id=1098005461 instance=ExtResource("18_bruyeres_greybox")]
+[node name="BruyeresPrologueAssemblage" parent="." unique_id=1098005461 instance=ExtResource("18_bruyeres_prologue")]
 
 [node name="CombatGrid" parent="." unique_id=951227565 instance=ExtResource("2_combat_grid")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0.06, -4.5)
@@ -72,7 +72,7 @@ ground_y = 0.06
 
 [node name="PathService" type="Node" parent="." unique_id=1442252667 node_paths=PackedStringArray("navigation_region")]
 script = ExtResource("19_path_service")
-navigation_region = NodePath("../BruyeresRueCentre/NavigationRegion")
+navigation_region = NodePath("../BruyeresPrologueAssemblage/NavigationRegion")
 
 [node name="UnitPathMover" type="Node" parent="." unique_id=1538345749]
 script = ExtResource("20_unit_path_mover")
