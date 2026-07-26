@@ -150,8 +150,7 @@ func _try_move_to_world_target() -> void:
 		print("Déplacement refusé : Agilité insuffisante.")
 		return
 
-	var final_path_point := truncated_path[truncated_path.size() - 1]
-	var final_position := Vector3(final_path_point.x, active_unit.global_position.y, final_path_point.z)
+	var final_position := unit_path_mover.get_adjusted_path_destination(active_unit, truncated_path)
 	if not grid.is_world_position_free(
 		final_position,
 		grid.get_unit_occupation_radius(active_unit),
