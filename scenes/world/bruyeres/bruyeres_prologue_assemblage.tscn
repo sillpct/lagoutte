@@ -1,8 +1,9 @@
-[gd_scene format=3 uid="uid://bmmeojj70qdyd"]
+[gd_scene load_steps=5 format=3 uid="uid://bmmeojj70qdyd"]
 
 [ext_resource type="NavigationMesh" path="res://scenes/world/bruyeres/navigation/bruyeres_prologue_navmesh.tres" id="1_navmesh"]
 [ext_resource type="PackedScene" path="res://scenes/world/bruyeres/bruyeres_rue_centre.tscn" id="2_rue"]
 [ext_resource type="PackedScene" path="res://scenes/world/bruyeres/bruyeres_maison_elias.tscn" id="3_maison"]
+[ext_resource type="Script" path="res://scenes/world/bruyeres/floor_visibility_controller.gd" id="4_floor_visibility"]
 
 [node name="BruyeresPrologueAssemblage" type="Node3D"]
 
@@ -12,4 +13,15 @@ navigation_mesh = ExtResource("1_navmesh")
 [node name="RueCentre" parent="NavigationRegion" instance=ExtResource("2_rue")]
 
 [node name="MaisonElias" parent="NavigationRegion" instance=ExtResource("3_maison")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 2.3, 0, 18)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 2.3, 0, 20)
+
+[node name="PlayerSpawn" type="Marker3D" parent="."]
+position = Vector3(4.3, 4, 15)
+
+[node name="FloorVisibilityController" type="Node" parent="." node_paths=PackedStringArray("height_reference", "niveau_rez", "niveau_etage", "escalier", "toit")]
+script = ExtResource("4_floor_visibility")
+height_reference = NodePath("../NavigationRegion/MaisonElias")
+niveau_rez = NodePath("../NavigationRegion/MaisonElias/Niveau_Rez")
+niveau_etage = NodePath("../NavigationRegion/MaisonElias/Niveau_Etage")
+escalier = NodePath("../NavigationRegion/MaisonElias/Escalier")
+toit = NodePath("../NavigationRegion/MaisonElias/Toit")
