@@ -4,3 +4,16 @@
 
 # macOS
 .DS_Store
+outputs/planning-equipe-aout-2026/planning_aout_style_juillet_preview.png
+outputs/planning-equipe-aout-2026/planning_aout_style_juillet_preview.png.import
+outputs/planning-equipe-aout-2026/planning_equipe_aout.xlsx
+outputs/planning-equipe-aout-2026/planning_equipe_aout.xlsx.inspect.ndjson
+outputs/planning-equipe-aout-2026/planning_equipe_aout_style_juillet.xlsx
+outputs/planning-equipe-aout-2026/planning_equipe_aout_style_juillet.xlsx.inspect.ndjson
+outputs/planning-equipe-aout-2026/planning_preview.png
+outputs/planning-equipe-aout-2026/planning_preview.png.import
+outputs/planning-equipe-aout-2026/recap_preview.png
+outputs/planning-equipe-aout-2026/recap_preview.png.import
+tmp_spreadsheet_build/node_modules
+tmp_spreadsheet_build/build_planning_juillet_style.mjs
+tmp_spreadsheet_build/build_planning.mjs
