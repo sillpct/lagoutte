@@ -18,10 +18,13 @@ transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 2.3, 0, 20)
 [node name="PlayerSpawn" type="Marker3D" parent="."]
 position = Vector3(4.3, 4, 15)
 
-[node name="FloorVisibilityController" type="Node" parent="." node_paths=PackedStringArray("height_reference", "niveau_rez", "niveau_etage", "escalier", "toit")]
+[node name="FloorVisibilityController" type="Node" parent="." node_paths=PackedStringArray("height_reference", "niveau_rez", "niveau_etage", "escalier", "toit", "stair_foot", "stair_ramp", "stair_landing")]
 script = ExtResource("4_floor_visibility")
 height_reference = NodePath("../NavigationRegion/MaisonElias")
 niveau_rez = NodePath("../NavigationRegion/MaisonElias/Niveau_Rez")
 niveau_etage = NodePath("../NavigationRegion/MaisonElias/Niveau_Etage")
 escalier = NodePath("../NavigationRegion/MaisonElias/Escalier")
 toit = NodePath("../NavigationRegion/MaisonElias/Toit")
+stair_foot = NodePath("../NavigationRegion/MaisonElias/Collisions/col_pied_escalier")
+stair_ramp = NodePath("../NavigationRegion/MaisonElias/Collisions/col_rampe_escalier")
+stair_landing = NodePath("../NavigationRegion/MaisonElias/Collisions/col_palier")

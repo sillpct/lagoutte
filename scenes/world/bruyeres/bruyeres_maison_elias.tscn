@@ -1,14 +1,19 @@
-[gd_scene load_steps=29 format=3]
+[gd_scene load_steps=57 format=3]
 
-[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/FAC_fenetre.glb" id="kit_0"]
-[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/FAC_mur_plein.glb" id="kit_1"]
-[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/FAC_porte.glb" id="kit_2"]
-[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/INT_escalier.glb" id="kit_3"]
-[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/INT_plancher.glb" id="kit_4"]
-[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/MOB_bassin.glb" id="kit_5"]
-[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/MOB_lit.glb" id="kit_6"]
-[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/MOB_table.glb" id="kit_7"]
-[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/TOI_terrasse.glb" id="kit_8"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/DEC_anneau_or.glb" id="kit_0"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/DEC_filet_eau.glb" id="kit_1"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/FAC_fenetre.glb" id="kit_2"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/FAC_mur_plein.glb" id="kit_3"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/FAC_porte.glb" id="kit_4"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/INT_escalier.glb" id="kit_5"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/INT_plancher.glb" id="kit_6"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/MOB_bassin_long_8m.glb" id="kit_7"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/MOB_chaise.glb" id="kit_8"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/MOB_coffre.glb" id="kit_9"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/MOB_etagere.glb" id="kit_10"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/MOB_lit.glb" id="kit_11"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/MOB_table.glb" id="kit_12"]
+[ext_resource type="PackedScene" path="res://assets/kit_bruyeres/TOI_terrasse.glb" id="kit_13"]
 [ext_resource type="ArrayMesh" path="res://scenes/world/bruyeres/navigation/bruyeres_maison_elias_walkable_mesh.tres" id="nav_walkable"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMat"]
@@ -54,34 +59,103 @@ size = Vector3(8.6, 3, 0.3)
 size = Vector3(8.6, 6, 0.3)
 
 [sub_resource type="BoxShape3D" id="col_pignon_g"]
-size = Vector3(0.3, 6, 6)
+size = Vector3(0.3, 6, 8)
 
 [sub_resource type="BoxShape3D" id="col_pignon_d"]
-size = Vector3(0.3, 6, 6)
+size = Vector3(0.3, 6, 8)
 
 [sub_resource type="BoxShape3D" id="col_sol_rez"]
-size = Vector3(8, 0.1, 7.3)
+size = Vector3(8, 0.1, 9.3)
 
 [sub_resource type="BoxShape3D" id="col_sol_etage"]
-size = Vector3(4, 0.1, 4)
+size = Vector3(6, 0.1, 8)
+
+[sub_resource type="BoxShape3D" id="col_plancher_haut"]
+size = Vector3(2, 0.1, 2.2)
 
 [sub_resource type="BoxShape3D" id="col_palier"]
-size = Vector3(2, 0.1, 2)
+size = Vector3(2, 0.1, 2.2)
 
 [sub_resource type="BoxShape3D" id="col_pied_escalier"]
-size = Vector3(2, 0.1, 2)
+size = Vector3(1.9, 0.1, 2)
+
+[sub_resource type="BoxShape3D" id="col_bassin"]
+size = Vector3(0.6, 0.85, 8)
 
 [sub_resource type="BoxShape3D" id="col_rampe_escalier"]
-size = Vector3(5, 0.12, 1.9)
+size = Vector3(1.9, 0.12, 4.686)
 
 [sub_resource type="BoxShape3D" id="col_mob_lit_0"]
-size = Vector3(2, 0.78, 0.9)
+size = Vector3(2.15, 0.82, 0.95)
 
-[sub_resource type="BoxShape3D" id="col_mob_table_1"]
+[sub_resource type="BoxShape3D" id="col_mob_coffre_1"]
+size = Vector3(0.54, 0.5, 0.94)
+
+[sub_resource type="BoxShape3D" id="col_mob_table_2"]
 size = Vector3(1.1, 0.74, 1.1)
 
-[sub_resource type="BoxShape3D" id="col_mob_bassin_2"]
-size = Vector3(0.76, 0.68, 0.76)
+[sub_resource type="BoxShape3D" id="col_mob_chaise_3"]
+size = Vector3(0.48, 0.88, 0.4565)
+
+[sub_resource type="BoxShape3D" id="col_mob_etagere_4"]
+size = Vector3(0.9, 1.48, 0.3)
+
+[sub_resource type="BoxMesh" id="nav_col_rue_g"]
+size = Vector3(2.6, 3, 0.3)
+
+[sub_resource type="BoxMesh" id="nav_col_rue_d"]
+size = Vector3(4.6, 3, 0.3)
+
+[sub_resource type="BoxMesh" id="nav_col_rue_lint"]
+size = Vector3(1.4, 0.9, 0.3)
+
+[sub_resource type="BoxMesh" id="nav_col_facade_etage"]
+size = Vector3(8.6, 3, 0.3)
+
+[sub_resource type="BoxMesh" id="nav_col_fond"]
+size = Vector3(8.6, 6, 0.3)
+
+[sub_resource type="BoxMesh" id="nav_col_pignon_g"]
+size = Vector3(0.3, 6, 8)
+
+[sub_resource type="BoxMesh" id="nav_col_pignon_d"]
+size = Vector3(0.3, 6, 8)
+
+[sub_resource type="BoxMesh" id="nav_col_sol_rez"]
+size = Vector3(8, 0.1, 9.3)
+
+[sub_resource type="BoxMesh" id="nav_col_sol_etage"]
+size = Vector3(6, 0.1, 8)
+
+[sub_resource type="BoxMesh" id="nav_col_plancher_haut"]
+size = Vector3(2, 0.1, 2.2)
+
+[sub_resource type="BoxMesh" id="nav_col_palier"]
+size = Vector3(2, 0.1, 2.2)
+
+[sub_resource type="BoxMesh" id="nav_col_pied_escalier"]
+size = Vector3(1.9, 0.1, 2)
+
+[sub_resource type="BoxMesh" id="nav_col_bassin"]
+size = Vector3(0.6, 0.85, 8)
+
+[sub_resource type="BoxMesh" id="nav_col_rampe_escalier"]
+size = Vector3(1.9, 0.12, 4.686)
+
+[sub_resource type="BoxMesh" id="nav_col_mob_lit_0"]
+size = Vector3(2.15, 0.82, 0.95)
+
+[sub_resource type="BoxMesh" id="nav_col_mob_coffre_1"]
+size = Vector3(0.54, 0.5, 0.94)
+
+[sub_resource type="BoxMesh" id="nav_col_mob_table_2"]
+size = Vector3(1.1, 0.74, 1.1)
+
+[sub_resource type="BoxMesh" id="nav_col_mob_chaise_3"]
+size = Vector3(0.48, 0.88, 0.4565)
+
+[sub_resource type="BoxMesh" id="nav_col_mob_etagere_4"]
+size = Vector3(0.9, 1.48, 0.3)
 
 [node name="MaisonElias" type="Node3D"]
 
@@ -103,188 +177,266 @@ shadow_enabled = true
 
 [node name="Escalier" type="Node3D" parent="."]
 
-[node name="FAC_fenetre_001" parent="Niveau_Rez" instance=ExtResource("kit_0")]
+[node name="FAC_mur_plein_001" parent="Niveau_Rez" instance=ExtResource("kit_3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 0, -0.3)
 
-[node name="FAC_porte_001" parent="Niveau_Rez" instance=ExtResource("kit_2")]
+[node name="FAC_porte_001" parent="Niveau_Rez" instance=ExtResource("kit_4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 0, -0.3)
 
-[node name="FAC_fenetre_002" parent="Niveau_Rez" instance=ExtResource("kit_0")]
+[node name="FAC_fenetre_001" parent="Niveau_Rez" instance=ExtResource("kit_2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 0, -0.3)
 
-[node name="FAC_fenetre_003" parent="Niveau_Rez" instance=ExtResource("kit_0")]
+[node name="FAC_fenetre_002" parent="Niveau_Rez" instance=ExtResource("kit_2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 6, 0, -0.3)
 
-[node name="FAC_mur_plein_001" parent="Niveau_Rez" instance=ExtResource("kit_1")]
-transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 8, 0, 6.3)
+[node name="FAC_mur_plein_002" parent="Niveau_Rez" instance=ExtResource("kit_3")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 8, 0, 8.3)
 
-[node name="FAC_mur_plein_002" parent="Niveau_Rez" instance=ExtResource("kit_1")]
-transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 6, 0, 6.3)
-
-[node name="FAC_mur_plein_003" parent="Niveau_Rez" instance=ExtResource("kit_1")]
-transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 4, 0, 6.3)
-
-[node name="FAC_mur_plein_004" parent="Niveau_Rez" instance=ExtResource("kit_1")]
-transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 2, 0, 6.3)
-
-[node name="FAC_mur_plein_005" parent="Niveau_Rez" instance=ExtResource("kit_1")]
+[node name="FAC_mur_plein_003" parent="Niveau_Rez" instance=ExtResource("kit_3")]
 transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, -0.3, 0, 2)
 
-[node name="FAC_mur_plein_006" parent="Niveau_Rez" instance=ExtResource("kit_1")]
+[node name="FAC_mur_plein_004" parent="Niveau_Rez" instance=ExtResource("kit_3")]
 transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 8.3, 0, 0)
 
-[node name="FAC_mur_plein_007" parent="Niveau_Rez" instance=ExtResource("kit_1")]
+[node name="FAC_mur_plein_005" parent="Niveau_Rez" instance=ExtResource("kit_3")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 6, 0, 8.3)
+
+[node name="FAC_mur_plein_006" parent="Niveau_Rez" instance=ExtResource("kit_3")]
 transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, -0.3, 0, 4)
 
-[node name="FAC_mur_plein_008" parent="Niveau_Rez" instance=ExtResource("kit_1")]
+[node name="FAC_mur_plein_007" parent="Niveau_Rez" instance=ExtResource("kit_3")]
 transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 8.3, 0, 2)
 
-[node name="FAC_mur_plein_009" parent="Niveau_Rez" instance=ExtResource("kit_1")]
+[node name="FAC_mur_plein_008" parent="Niveau_Rez" instance=ExtResource("kit_3")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 4, 0, 8.3)
+
+[node name="FAC_mur_plein_009" parent="Niveau_Rez" instance=ExtResource("kit_3")]
 transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, -0.3, 0, 6)
 
-[node name="FAC_mur_plein_010" parent="Niveau_Rez" instance=ExtResource("kit_1")]
+[node name="FAC_mur_plein_010" parent="Niveau_Rez" instance=ExtResource("kit_3")]
 transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 8.3, 0, 4)
 
-[node name="FAC_fenetre_004" parent="Niveau_Etage" instance=ExtResource("kit_0")]
+[node name="FAC_mur_plein_011" parent="Niveau_Rez" instance=ExtResource("kit_3")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 2, 0, 8.3)
+
+[node name="FAC_mur_plein_012" parent="Niveau_Rez" instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, -0.3, 0, 8)
+
+[node name="FAC_mur_plein_013" parent="Niveau_Rez" instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 8.3, 0, 6)
+
+[node name="FAC_fenetre_003" parent="Niveau_Etage" instance=ExtResource("kit_2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 3, -0.3)
 
-[node name="FAC_fenetre_005" parent="Niveau_Etage" instance=ExtResource("kit_0")]
+[node name="FAC_fenetre_004" parent="Niveau_Etage" instance=ExtResource("kit_2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 3, -0.3)
 
-[node name="FAC_fenetre_006" parent="Niveau_Etage" instance=ExtResource("kit_0")]
+[node name="FAC_fenetre_005" parent="Niveau_Etage" instance=ExtResource("kit_2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 3, -0.3)
 
-[node name="FAC_fenetre_007" parent="Niveau_Etage" instance=ExtResource("kit_0")]
+[node name="FAC_fenetre_006" parent="Niveau_Etage" instance=ExtResource("kit_2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 6, 3, -0.3)
 
-[node name="FAC_mur_plein_011" parent="Niveau_Etage" instance=ExtResource("kit_1")]
-transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 8, 3, 6.3)
+[node name="FAC_mur_plein_014" parent="Niveau_Etage" instance=ExtResource("kit_3")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 8, 3, 8.3)
 
-[node name="FAC_mur_plein_012" parent="Niveau_Etage" instance=ExtResource("kit_1")]
-transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 6, 3, 6.3)
-
-[node name="FAC_mur_plein_013" parent="Niveau_Etage" instance=ExtResource("kit_1")]
-transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 4, 3, 6.3)
-
-[node name="FAC_mur_plein_014" parent="Niveau_Etage" instance=ExtResource("kit_1")]
-transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 2, 3, 6.3)
-
-[node name="FAC_mur_plein_015" parent="Niveau_Etage" instance=ExtResource("kit_1")]
+[node name="FAC_mur_plein_015" parent="Niveau_Etage" instance=ExtResource("kit_3")]
 transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, -0.3, 3, 2)
 
-[node name="FAC_mur_plein_016" parent="Niveau_Etage" instance=ExtResource("kit_1")]
+[node name="FAC_mur_plein_016" parent="Niveau_Etage" instance=ExtResource("kit_3")]
 transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 8.3, 3, 0)
 
-[node name="FAC_mur_plein_017" parent="Niveau_Etage" instance=ExtResource("kit_1")]
+[node name="FAC_mur_plein_017" parent="Niveau_Etage" instance=ExtResource("kit_3")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 6, 3, 8.3)
+
+[node name="FAC_mur_plein_018" parent="Niveau_Etage" instance=ExtResource("kit_3")]
 transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, -0.3, 3, 4)
 
-[node name="FAC_mur_plein_018" parent="Niveau_Etage" instance=ExtResource("kit_1")]
+[node name="FAC_mur_plein_019" parent="Niveau_Etage" instance=ExtResource("kit_3")]
 transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 8.3, 3, 2)
 
-[node name="FAC_mur_plein_019" parent="Niveau_Etage" instance=ExtResource("kit_1")]
+[node name="FAC_mur_plein_020" parent="Niveau_Etage" instance=ExtResource("kit_3")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 4, 3, 8.3)
+
+[node name="FAC_mur_plein_021" parent="Niveau_Etage" instance=ExtResource("kit_3")]
 transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, -0.3, 3, 6)
 
-[node name="FAC_mur_plein_020" parent="Niveau_Etage" instance=ExtResource("kit_1")]
+[node name="FAC_mur_plein_022" parent="Niveau_Etage" instance=ExtResource("kit_3")]
 transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 8.3, 3, 4)
 
-[node name="INT_plancher_001" parent="Niveau_Rez" instance=ExtResource("kit_4")]
+[node name="FAC_mur_plein_023" parent="Niveau_Etage" instance=ExtResource("kit_3")]
+transform = Transform3D(-1, 0, 1.22465e-16, 0, 1, 0, -1.22465e-16, 0, -1, 2, 3, 8.3)
+
+[node name="FAC_mur_plein_024" parent="Niveau_Etage" instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, 1, 0, 1, 0, -1, 0, 6.12323e-17, -0.3, 3, 8)
+
+[node name="FAC_mur_plein_025" parent="Niveau_Etage" instance=ExtResource("kit_3")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 8.3, 3, 6)
+
+[node name="INT_plancher_001" parent="Niveau_Rez" instance=ExtResource("kit_6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 0, 0)
 
-[node name="TOI_terrasse_001" parent="Toit" instance=ExtResource("kit_8")]
+[node name="TOI_terrasse_001" parent="Toit" instance=ExtResource("kit_13")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 6, 0)
 
-[node name="INT_plancher_002" parent="Niveau_Etage" instance=ExtResource("kit_4")]
+[node name="INT_plancher_002" parent="Niveau_Etage" instance=ExtResource("kit_6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 3, 0)
 
-[node name="INT_plancher_003" parent="Niveau_Rez" instance=ExtResource("kit_4")]
+[node name="INT_plancher_003" parent="Niveau_Rez" instance=ExtResource("kit_6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 0, 2)
 
-[node name="TOI_terrasse_002" parent="Toit" instance=ExtResource("kit_8")]
+[node name="TOI_terrasse_002" parent="Toit" instance=ExtResource("kit_13")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 6, 2)
 
-[node name="INT_plancher_004" parent="Niveau_Etage" instance=ExtResource("kit_4")]
+[node name="INT_plancher_004" parent="Niveau_Etage" instance=ExtResource("kit_6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 3, 2)
 
-[node name="INT_plancher_005" parent="Niveau_Rez" instance=ExtResource("kit_4")]
+[node name="INT_plancher_005" parent="Niveau_Rez" instance=ExtResource("kit_6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 0, 4)
 
-[node name="TOI_terrasse_003" parent="Toit" instance=ExtResource("kit_8")]
+[node name="TOI_terrasse_003" parent="Toit" instance=ExtResource("kit_13")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 6, 4)
 
-[node name="INT_plancher_006" parent="Niveau_Rez" instance=ExtResource("kit_4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 0, 0)
-
-[node name="TOI_terrasse_004" parent="Toit" instance=ExtResource("kit_8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 6, 0)
-
-[node name="INT_plancher_007" parent="Niveau_Etage" instance=ExtResource("kit_4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 3, 0)
-
-[node name="INT_plancher_008" parent="Niveau_Rez" instance=ExtResource("kit_4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 0, 2)
-
-[node name="TOI_terrasse_005" parent="Toit" instance=ExtResource("kit_8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 6, 2)
-
-[node name="INT_plancher_009" parent="Niveau_Etage" instance=ExtResource("kit_4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 3, 2)
-
-[node name="INT_plancher_010" parent="Niveau_Rez" instance=ExtResource("kit_4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 0, 4)
-
-[node name="TOI_terrasse_006" parent="Toit" instance=ExtResource("kit_8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 6, 4)
-
-[node name="INT_plancher_011" parent="Niveau_Rez" instance=ExtResource("kit_4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 0, 0)
-
-[node name="TOI_terrasse_007" parent="Toit" instance=ExtResource("kit_8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 6, 0)
-
-[node name="INT_plancher_012" parent="Niveau_Rez" instance=ExtResource("kit_4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 0, 2)
-
-[node name="TOI_terrasse_008" parent="Toit" instance=ExtResource("kit_8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 6, 2)
-
-[node name="INT_plancher_013" parent="Niveau_Rez" instance=ExtResource("kit_4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 0, 4)
-
-[node name="TOI_terrasse_009" parent="Toit" instance=ExtResource("kit_8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 6, 4)
-
-[node name="INT_plancher_014" parent="Niveau_Rez" instance=ExtResource("kit_4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 6, 0, 0)
-
-[node name="TOI_terrasse_010" parent="Toit" instance=ExtResource("kit_8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 6, 6, 0)
-
-[node name="INT_plancher_015" parent="Niveau_Rez" instance=ExtResource("kit_4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 6, 0, 2)
-
-[node name="TOI_terrasse_011" parent="Toit" instance=ExtResource("kit_8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 6, 6, 2)
-
-[node name="INT_plancher_016" parent="Niveau_Rez" instance=ExtResource("kit_4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 6, 0, 4)
-
-[node name="TOI_terrasse_012" parent="Toit" instance=ExtResource("kit_8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 6, 6, 4)
-
-[node name="INT_plancher_017" parent="Niveau_Etage" instance=ExtResource("kit_4")]
+[node name="INT_plancher_006" parent="Niveau_Etage" instance=ExtResource("kit_6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 3, 4)
 
-[node name="INT_escalier_001" parent="Escalier" instance=ExtResource("kit_3")]
-transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 6, 0, 4.05)
+[node name="INT_plancher_007" parent="Niveau_Rez" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 0, 6)
 
-[node name="MOB_lit_001" parent="Niveau_Etage" instance=ExtResource("kit_6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 1.9, 3, 0.05)
+[node name="TOI_terrasse_004" parent="Toit" instance=ExtResource("kit_13")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 6, 6)
 
-[node name="MOB_table_001" parent="Niveau_Etage" instance=ExtResource("kit_7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2.55, 3, 2.75)
+[node name="INT_plancher_008" parent="Niveau_Etage" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 3, 6)
 
-[node name="MOB_bassin_001" parent="Niveau_Etage" instance=ExtResource("kit_5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0.05, 3, 1.6)
+[node name="INT_plancher_009" parent="Niveau_Rez" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 0, 0)
+
+[node name="TOI_terrasse_005" parent="Toit" instance=ExtResource("kit_13")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 6, 0)
+
+[node name="INT_plancher_010" parent="Niveau_Etage" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 3, 0)
+
+[node name="INT_plancher_011" parent="Niveau_Rez" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 0, 2)
+
+[node name="TOI_terrasse_006" parent="Toit" instance=ExtResource("kit_13")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 6, 2)
+
+[node name="INT_plancher_012" parent="Niveau_Etage" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 3, 2)
+
+[node name="INT_plancher_013" parent="Niveau_Rez" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 0, 4)
+
+[node name="TOI_terrasse_007" parent="Toit" instance=ExtResource("kit_13")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 6, 4)
+
+[node name="INT_plancher_014" parent="Niveau_Etage" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 3, 4)
+
+[node name="INT_plancher_015" parent="Niveau_Rez" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 0, 6)
+
+[node name="TOI_terrasse_008" parent="Toit" instance=ExtResource("kit_13")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 6, 6)
+
+[node name="INT_plancher_016" parent="Niveau_Etage" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 3, 6)
+
+[node name="INT_plancher_017" parent="Niveau_Rez" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 0, 0)
+
+[node name="TOI_terrasse_009" parent="Toit" instance=ExtResource("kit_13")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 6, 0)
+
+[node name="INT_plancher_018" parent="Niveau_Etage" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 3, 0)
+
+[node name="INT_plancher_019" parent="Niveau_Rez" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 0, 2)
+
+[node name="TOI_terrasse_010" parent="Toit" instance=ExtResource("kit_13")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 6, 2)
+
+[node name="INT_plancher_020" parent="Niveau_Etage" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 3, 2)
+
+[node name="INT_plancher_021" parent="Niveau_Rez" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 0, 4)
+
+[node name="TOI_terrasse_011" parent="Toit" instance=ExtResource("kit_13")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 6, 4)
+
+[node name="INT_plancher_022" parent="Niveau_Etage" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 3, 4)
+
+[node name="INT_plancher_023" parent="Niveau_Rez" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 0, 6)
+
+[node name="TOI_terrasse_012" parent="Toit" instance=ExtResource("kit_13")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 6, 6)
+
+[node name="INT_plancher_024" parent="Niveau_Etage" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 3, 6)
+
+[node name="INT_plancher_025" parent="Niveau_Rez" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 6, 0, 0)
+
+[node name="TOI_terrasse_013" parent="Toit" instance=ExtResource("kit_13")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 6, 6, 0)
+
+[node name="INT_plancher_026" parent="Niveau_Etage" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 6, 3, 0)
+
+[node name="INT_plancher_027" parent="Niveau_Rez" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 6, 0, 2)
+
+[node name="TOI_terrasse_014" parent="Toit" instance=ExtResource("kit_13")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 6, 6, 2)
+
+[node name="INT_plancher_028" parent="Niveau_Rez" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 6, 0, 4)
+
+[node name="TOI_terrasse_015" parent="Toit" instance=ExtResource("kit_13")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 6, 6, 4)
+
+[node name="INT_plancher_029" parent="Niveau_Rez" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 6, 0, 6)
+
+[node name="TOI_terrasse_016" parent="Toit" instance=ExtResource("kit_13")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 6, 6, 6)
+
+[node name="INT_plancher_030" parent="Niveau_Etage" instance=ExtResource("kit_6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 6, 3, 6)
+
+[node name="INT_escalier_001" parent="Escalier" instance=ExtResource("kit_5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 6.05, 0, 2.2)
+
+[node name="MOB_bassin_long_8m_001" parent="Niveau_Rez" instance=ExtResource("kit_7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 0, 0)
+
+[node name="DEC_anneau_or_001" parent="Niveau_Rez" instance=ExtResource("kit_0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0.14, 2, 4)
+
+[node name="DEC_filet_eau_001" parent="Niveau_Rez" instance=ExtResource("kit_1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0.14, 0.81, 4)
+
+[node name="MOB_lit_001" parent="Niveau_Etage" instance=ExtResource("kit_11")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 3, 7.05)
+
+[node name="MOB_coffre_001" parent="Niveau_Etage" instance=ExtResource("kit_9")]
+transform = Transform3D(6.12323e-17, 0, -1, 0, 1, 0, 1, 0, 6.12323e-17, 0.54, 3, 4.6)
+
+[node name="MOB_table_001" parent="Niveau_Etage" instance=ExtResource("kit_12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 3.2, 3, 1.2)
+
+[node name="MOB_chaise_001" parent="Niveau_Etage" instance=ExtResource("kit_8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4.45, 3, 1.51)
+
+[node name="MOB_etagere_001" parent="Niveau_Etage" instance=ExtResource("kit_10")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4.2, 3, 7.7)
 
 [node name="Navigation" type="Node3D" parent="." groups=["navigation_source"]]
 
@@ -311,45 +463,61 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 4.5, -0.15)
 shape = SubResource("col_facade_etage")
 
 [node name="col_fond" type="CollisionShape3D" parent="Collisions"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 3, 6.15)
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, 3, 8.15)
 shape = SubResource("col_fond")
 
 [node name="col_pignon_g" type="CollisionShape3D" parent="Collisions"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, -0.15, 3, 3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, -0.15, 3, 4)
 shape = SubResource("col_pignon_g")
 
 [node name="col_pignon_d" type="CollisionShape3D" parent="Collisions"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 8.15, 3, 3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 8.15, 3, 4)
 shape = SubResource("col_pignon_d")
 
 [node name="col_sol_rez" type="CollisionShape3D" parent="Collisions"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, -0.05, 2.35)
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4, -0.05, 3.35)
 shape = SubResource("col_sol_rez")
 
 [node name="col_sol_etage" type="CollisionShape3D" parent="Collisions"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2, 2.95, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 3, 2.95, 4)
 shape = SubResource("col_sol_etage")
 
+[node name="col_plancher_haut" type="CollisionShape3D" parent="Collisions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 7, 2.95, 1.1)
+shape = SubResource("col_plancher_haut")
+
 [node name="col_palier" type="CollisionShape3D" parent="Collisions"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 1, 2.95, 5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 7, 2.95, 6.9)
 shape = SubResource("col_palier")
 
 [node name="col_pied_escalier" type="CollisionShape3D" parent="Collisions"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 7, -0.05, 5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 7, -0.05, 1.2)
 shape = SubResource("col_pied_escalier")
 
+[node name="col_bassin" type="CollisionShape3D" parent="Collisions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0.3, 0.425, 4)
+shape = SubResource("col_bassin")
+
 [node name="col_rampe_escalier" type="CollisionShape3D" parent="Collisions"]
-transform = Transform3D(0.8, 0.6, 0, -0.6, 0.8, 0, 0, 0, 1, 3.964, 1.452, 5)
+transform = Transform3D(1, 0, 0, 0, 0.768221, 0.640184, 0, -0.640184, 0.768221, 7, 1.45391, 4.03841)
 shape = SubResource("col_rampe_escalier")
 
 [node name="col_mob_lit_0" type="CollisionShape3D" parent="Collisions"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 2.9, 3.39, 0.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 1.075, 3.41, 7.525)
 shape = SubResource("col_mob_lit_0")
 
-[node name="col_mob_table_1" type="CollisionShape3D" parent="Collisions"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 3.1, 3.37, 3.3)
-shape = SubResource("col_mob_table_1")
+[node name="col_mob_coffre_1" type="CollisionShape3D" parent="Collisions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0.29, 3.25, 5.05)
+shape = SubResource("col_mob_coffre_1")
 
-[node name="col_mob_bassin_2" type="CollisionShape3D" parent="Collisions"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0.43, 3.34, 1.98)
-shape = SubResource("col_mob_bassin_2")
+[node name="col_mob_table_2" type="CollisionShape3D" parent="Collisions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 3.75, 3.37, 1.75)
+shape = SubResource("col_mob_table_2")
+
+[node name="col_mob_chaise_3" type="CollisionShape3D" parent="Collisions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4.69, 3.44, 1.75)
+shape = SubResource("col_mob_chaise_3")
+
+[node name="col_mob_etagere_4" type="CollisionShape3D" parent="Collisions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 4.65, 3.74, 7.85)
+shape = SubResource("col_mob_etagere_4")

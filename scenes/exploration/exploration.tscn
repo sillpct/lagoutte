@@ -67,9 +67,10 @@ mesh = SubResource("BoxMesh_cvbhj")
 [node name="CombatGrid" parent="." unique_id=951227565 instance=ExtResource("2_combat_grid")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0.06, -4.5)
 
-[node name="WorldMouseQuery" type="Node" parent="." unique_id=511842449 node_paths=PackedStringArray("path_service")]
+[node name="WorldMouseQuery" type="Node" parent="." unique_id=511842449 node_paths=PackedStringArray("path_service", "floor_visibility_controller")]
 script = ExtResource("16_world_mouse_query")
 path_service = NodePath("../PathService")
+floor_visibility_controller = NodePath("../BruyeresPrologueAssemblage/FloorVisibilityController")
 
 [node name="PathService" type="Node" parent="." unique_id=1442252667 node_paths=PackedStringArray("navigation_region")]
 script = ExtResource("19_path_service")

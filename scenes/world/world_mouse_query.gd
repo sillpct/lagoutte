@@ -4,9 +4,12 @@ extends Node
 const HOVERABLE_UNIT_COLLISION_MASK := 4
 const INVALID_WORLD_POSITION := Vector3(INF, INF, INF)
 const NAVMESH_INTERSECTION_EPSILON := 0.01
+const NAVMESH_INTERSECTION_SKIP_DISTANCE := 0.05
+const MAX_NAVMESH_INTERSECTIONS := 8
 
 @export var ray_length: float = 1000.0
 @export var path_service: PathService
+@export var floor_visibility_controller: FloorVisibilityController
 
 func get_hovered_unit() -> Node3D:
 	var camera := get_viewport().get_camera_3d()
@@ -44,21 +47,33 @@ func get_ground_point_at_screen_position(mouse_position: Vector2) -> Vector3:
 	if not navigation_map.is_valid():
 		return INVALID_WORLD_POSITION
 
-	var intersection_point := NavigationServer3D.map_get_closest_point_to_segment(
-		navigation_map,
-		ray_origin,
-		ray_end,
-		true
-	)
-	if (
-		_distance_to_segment(intersection_point, ray_origin, ray_end)
-		> NAVMESH_INTERSECTION_EPSILON
-	):
-		return INVALID_WORLD_POSITION
+	var ray_direction := (ray_end - ray_origin).normalized()
+	var segment_start := ray_origin
+	for _intersection_index in range(MAX_NAVMESH_INTERSECTIONS):
+		var intersection_point := NavigationServer3D.map_get_closest_point_to_segment(
+			navigation_map,
+			segment_start,
+			ray_end,
+			true
+		)
+		if (
+			_distance_to_segment(intersection_point, segment_start, ray_end)
+			> NAVMESH_INTERSECTION_EPSILON
+		):
+			return INVALID_WORLD_POSITION
+		if (
+			floor_visibility_controller == null
+			or floor_visibility_controller.is_navigation_point_clickable(intersection_point)
+		):
+			return intersection_point
 
-	## Dette : la projection navmesh ne tient pas encore compte de l'occlusion
-	## visuelle par un toit. À ajouter lorsqu'un cas de jeu réel l'exigera.
-	return intersection_point
+		segment_start = (
+			intersection_point + ray_direction * NAVMESH_INTERSECTION_SKIP_DISTANCE
+		)
+		if segment_start.distance_squared_to(ray_end) <= NAVMESH_INTERSECTION_EPSILON:
+			break
+
+	return INVALID_WORLD_POSITION
 
 func _distance_to_segment(
 	point: Vector3,
