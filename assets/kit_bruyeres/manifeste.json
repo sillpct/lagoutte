@@ -129,7 +129,7 @@
     {
       "nom": "FAC_fenetre",
       "famille": "facade",
-      "note": "1.10 x 1.20, allege 0.90",
+      "note": "baie cintree 1.10, allege 0.90 - la fenetre type de Bruyeres",
       "min": [
         0.0,
         0.0,
@@ -140,32 +140,32 @@
         3.0,
         0.3
       ],
-      "triangles": 32,
+      "triangles": 52,
       "collision_boites": 1,
       "passage_navmesh_m": null
     },
     {
       "nom": "FAC_fenetre_balcon",
       "famille": "facade",
-      "note": "fenetre + balcon 0.70",
+      "note": "baie cintree + balcon a bout arrondi",
       "min": [
         0.0,
         0.0,
-        -0.72
+        -0.74
       ],
       "dimensions": [
         2.0,
         3.0,
-        1.02
+        1.04
       ],
-      "triangles": 80,
+      "triangles": 280,
       "collision_boites": 1,
       "passage_navmesh_m": null
     },
     {
       "nom": "FAC_fenetre_haute",
       "famille": "facade",
-      "note": "0.80 x 0.80, dernier etage",
+      "note": "baie cintree 0.80, dernier etage",
       "min": [
         0.0,
         0.0,
@@ -176,14 +176,14 @@
         3.0,
         0.3
       ],
-      "triangles": 32,
+      "triangles": 52,
       "collision_boites": 1,
       "passage_navmesh_m": null
     },
     {
       "nom": "FAC_fenetre_jumelle",
       "famille": "facade",
-      "note": "deux fenetres etroites",
+      "note": "deux baies cintrees etroites",
       "min": [
         0.0,
         0.0,
@@ -194,7 +194,7 @@
         3.0,
         0.3
       ],
-      "triangles": 48,
+      "triangles": 72,
       "collision_boites": 1,
       "passage_navmesh_m": null
     },
@@ -219,7 +219,7 @@
     {
       "nom": "FAC_porte",
       "famille": "facade",
-      "note": "porte 1.40 x 2.10",
+      "note": "porte cintree 1.40 x 2.10 - passage de reference",
       "min": [
         0.0,
         0.0,
@@ -230,7 +230,7 @@
         3.0,
         0.3
       ],
-      "triangles": 28,
+      "triangles": 48,
       "collision_boites": 3,
       "passage_navmesh_m": 0.5
     },
@@ -327,18 +327,18 @@
     {
       "nom": "INT_escalier",
       "famille": "interieur",
-      "note": "volee d'un etage : 15 marches, rise 0.20 / run 0.24, large 1.90 m",
+      "note": "volee massive, 15 marches, bout arrondi evase, nez adoucis",
       "min": [
+        -0.55,
         0.0,
-        0.0,
-        0.0
+        -0.42
       ],
       "dimensions": [
-        1.9,
+        2.45,
         3.0,
-        3.6
+        4.42
       ],
-      "triangles": 180,
+      "triangles": 436,
       "collision_boites": 1,
       "passage_navmesh_m": null
     },
@@ -381,43 +381,43 @@
     {
       "nom": "MOB_bassin",
       "famille": "mobilier",
-      "note": "bassin de pierre, point d'eau domestique",
+      "note": "bassin circulaire - l'eau, banale et quotidienne",
       "min": [
         0.0,
         0.0,
         0.0
       ],
       "dimensions": [
-        0.7,
-        0.7,
-        0.5
+        0.76,
+        0.68,
+        0.76
       ],
-      "triangles": 60,
+      "triangles": 124,
       "collision_boites": 1,
       "passage_navmesh_m": null
     },
     {
       "nom": "MOB_chaise",
       "famille": "mobilier",
-      "note": "chaise",
+      "note": "tabouret rond",
       "min": [
         0.0,
         0.0,
-        0.0
+        0.012
       ],
       "dimensions": [
-        0.42,
-        0.95,
-        0.42
+        0.48,
+        0.92,
+        0.457
       ],
-      "triangles": 72,
+      "triangles": 136,
       "collision_boites": 1,
       "passage_navmesh_m": null
     },
     {
       "nom": "MOB_coffre",
       "famille": "mobilier",
-      "note": "coffre",
+      "note": "coffre a couvercle arrondi",
       "min": [
         -0.02,
         0.0,
@@ -425,17 +425,17 @@
       ],
       "dimensions": [
         0.94,
-        0.51,
+        0.5,
         0.54
       ],
-      "triangles": 24,
+      "triangles": 120,
       "collision_boites": 1,
       "passage_navmesh_m": null
     },
     {
       "nom": "MOB_etagere",
       "famille": "mobilier",
-      "note": "etagere murale",
+      "note": "etagere, tablettes a bords adoucis",
       "min": [
         0.0,
         0.0,
@@ -443,17 +443,17 @@
       ],
       "dimensions": [
         0.9,
-        1.6,
+        1.48,
         0.3
       ],
-      "triangles": 72,
+      "triangles": 308,
       "collision_boites": 1,
       "passage_navmesh_m": null
     },
     {
       "nom": "MOB_lit",
       "famille": "mobilier",
-      "note": "lit une place",
+      "note": "lit une place, angles adoucis",
       "min": [
         0.0,
         0.0,
@@ -461,28 +461,28 @@
       ],
       "dimensions": [
         2.0,
-        0.8,
+        0.78,
         0.9
       ],
-      "triangles": 36,
+      "triangles": 164,
       "collision_boites": 1,
       "passage_navmesh_m": null
     },
     {
       "nom": "MOB_table",
       "famille": "mobilier",
-      "note": "table simple",
+      "note": "table ronde a pied central",
       "min": [
         0.0,
         0.0,
         0.0
       ],
       "dimensions": [
-        1.2,
+        1.1,
         0.74,
-        0.7
+        1.1
       ],
-      "triangles": 60,
+      "triangles": 108,
       "collision_boites": 1,
       "passage_navmesh_m": null
     },
