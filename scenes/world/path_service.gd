@@ -3,12 +3,17 @@ extends Node
 
 @export var navigation_region: NavigationRegion3D
 
+func get_navigation_map() -> RID:
+	if navigation_region == null:
+		return RID()
+	return navigation_region.get_navigation_map()
+
 func get_world_path(from_position: Vector3, to_position: Vector3) -> PackedVector3Array:
 	if navigation_region == null:
 		push_warning("PathService : aucun NavigationRegion3D assigné.")
 		return PackedVector3Array()
 
-	var navigation_map := navigation_region.get_navigation_map()
+	var navigation_map := get_navigation_map()
 	if not navigation_map.is_valid():
 		push_warning("PathService : la navigation map est invalide.")
 		return PackedVector3Array()
