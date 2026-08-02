@@ -28,6 +28,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/subtitle_ui.tscn" id="27_subtitle_ui"]
 [ext_resource type="Script" path="res://scenes/sequences/afflux_window_sequence.gd" id="28_afflux_window_sequence"]
 [ext_resource type="PackedScene" path="res://scenes/sequences/sequence_trigger.tscn" id="29_sequence_trigger"]
+[ext_resource type="Script" path="res://scenes/exploration/player_spawn_controller.gd" id="30_player_spawn_controller"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_cvbhj"]
 size = Vector3(20, 0.1, 20)
@@ -66,9 +67,9 @@ mesh = SubResource("BoxMesh_cvbhj")
 [node name="CombatGrid" parent="." unique_id=951227565 instance=ExtResource("2_combat_grid")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0.06, -4.5)
 
-[node name="WorldMouseQuery" type="Node" parent="." unique_id=511842449]
+[node name="WorldMouseQuery" type="Node" parent="." unique_id=511842449 node_paths=PackedStringArray("path_service")]
 script = ExtResource("16_world_mouse_query")
-ground_y = 0.06
+path_service = NodePath("../PathService")
 
 [node name="PathService" type="Node" parent="." unique_id=1442252667 node_paths=PackedStringArray("navigation_region")]
 script = ExtResource("19_path_service")
@@ -99,6 +100,11 @@ player = NodePath("../Player")
 [node name="Player" parent="." unique_id=295733018 node_paths=PackedStringArray("scripted_sequence_manager") instance=ExtResource("1_toxw2")]
 scripted_sequence_manager = NodePath("../ScriptedSequenceManager")
 
+[node name="PlayerSpawnController" type="Node" parent="." node_paths=PackedStringArray("player", "spawn_point")]
+script = ExtResource("30_player_spawn_controller")
+player = NodePath("../Player")
+spawn_point = NodePath("../BruyeresPrologueAssemblage/PlayerSpawn")
+
 [node name="CombatRangeVisual" type="MeshInstance3D" parent="." unique_id=1278997254 node_paths=PackedStringArray("combat_movement", "combat_manager", "active_unit")]
 script = ExtResource("15_combat_range_visual")
 combat_movement = NodePath("../CombatMovement")
@@ -111,13 +117,14 @@ grid = NodePath("../CombatGrid")
 scripted_sequence_manager = NodePath("../ScriptedSequenceManager")
 units = [NodePath("../Player"), NodePath("../SectRenegade")]
 
-[node name="CombatMovement" type="Node" parent="." unique_id=171960228 node_paths=PackedStringArray("grid", "combat_manager", "scripted_sequence_manager", "active_unit", "combat_attack", "path_service", "unit_path_mover")]
+[node name="CombatMovement" type="Node" parent="." unique_id=171960228 node_paths=PackedStringArray("grid", "combat_manager", "scripted_sequence_manager", "active_unit", "combat_attack", "world_mouse_query", "path_service", "unit_path_mover")]
 script = ExtResource("7_combat_movement")
 grid = NodePath("../CombatGrid")
 combat_manager = NodePath("../CombatManager")
 scripted_sequence_manager = NodePath("../ScriptedSequenceManager")
 active_unit = NodePath("../Player")
 combat_attack = NodePath("../CombatAttack")
+world_mouse_query = NodePath("../WorldMouseQuery")
 path_service = NodePath("../PathService")
 unit_path_mover = NodePath("../UnitPathMover")
 
