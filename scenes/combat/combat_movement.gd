@@ -12,13 +12,13 @@ signal path_movement_started
 signal path_movement_finished
 
 const START_CELL := Vector2i(5, 5)
-const INVALID_WORLD_POSITION := Vector3(INF, INF, INF)
 
 @export var grid: CombatGrid
 @export var combat_manager: CombatManager
 @export var scripted_sequence_manager: ScriptedSequenceManager
 @export var active_unit: Node3D
 @export var combat_attack: Node
+@export var world_mouse_query: WorldMouseQuery
 @export var path_service: PathService
 @export var unit_path_mover: UnitPathMover
 @export var movement_speed := 4.0
@@ -28,8 +28,8 @@ var current_mode := PlayerCombatMode.NEUTRAL
 var _event_bus = null
 
 func _ready() -> void:
-	if grid == null or combat_manager == null or active_unit == null or path_service == null or unit_path_mover == null:
-		push_warning("CombatMovement a besoin d'une grille, d'un manager de combat, d'une unité active, d'un PathService et d'un UnitPathMover.")
+	if grid == null or combat_manager == null or active_unit == null or world_mouse_query == null or path_service == null or unit_path_mover == null:
+		push_warning("CombatMovement a besoin d'une grille, d'un manager de combat, d'une unité active, de WorldMouseQuery, d'un PathService et d'un UnitPathMover.")
 		return
 
 	_event_bus = get_node_or_null("/root/EventBus")
@@ -89,28 +89,14 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 
 func _update_cursor_from_mouse(mouse_position: Vector2) -> void:
-	var world_position := get_world_position_from_mouse(mouse_position)
-	if world_position == INVALID_WORLD_POSITION:
+	var world_position := world_mouse_query.get_ground_point_at_screen_position(
+		mouse_position
+	)
+	if world_position == WorldMouseQuery.INVALID_WORLD_POSITION:
 		return
 
 	if is_movement_mode_active():
 		movement_target_world = world_position
-
-func get_world_position_from_mouse(mouse_position: Vector2) -> Vector3:
-	var camera := get_viewport().get_camera_3d()
-	if camera == null:
-		return INVALID_WORLD_POSITION
-
-	var ray_origin := camera.project_ray_origin(mouse_position)
-	var ray_direction := camera.project_ray_normal(mouse_position)
-	if is_zero_approx(ray_direction.y):
-		return INVALID_WORLD_POSITION
-
-	var distance_to_grid_plane := (grid.global_position.y - ray_origin.y) / ray_direction.y
-	if distance_to_grid_plane < 0.0:
-		return INVALID_WORLD_POSITION
-
-	return ray_origin + ray_direction * distance_to_grid_plane
 
 func _try_move_to_world_target() -> void:
 	if not combat_manager.is_combat_active():
